@@ -6,132 +6,692 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
     body {
       font-family: 'Montserrat', sans-serif;
       background: linear-gradient(135deg, #C9A9A8 0%, #9BA89C 50%, #B5A69B 100%);
-      min-height: 100vh; padding: 20px;
+      min-height: 100vh;
+      padding: 20px;
     }
-    .container { max-width: 1200px; margin: 0 auto; }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
     .header {
-      background: rgba(255,255,255,0.95); border-radius: 20px;
-      padding: 30px 40px; margin-bottom: 30px;
+      background: rgba(255,255,255,0.95);
+      border-radius: 20px;
+      padding: 30px 40px;
+      margin-bottom: 30px;
       box-shadow: 0 10px 40px rgba(0,0,0,0.15);
-      display: flex; justify-content: space-between; align-items: center;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
+    
     .header h1 {
       font-size: 2.5rem;
       background: linear-gradient(135deg, #9BA89C 0%, #6B7B6D 100%);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
+    
     .nav-btn {
-    .nav-btn {
-ackgrounx;
+      padding: 12px 25px;
       background: linear-gradient(135deg, #9BA89C 0%, #8B9A8C 100%);
-      color: white; text-decoration: none; border-      color: white; text-decoration: none; border-      color: white; text-decoration: none; border-      color: Y(      co
+      color: white;
+      text-decoration: none;
+      border-radius: 10px;
+      font-weight: 600;
+      transition: transform 0.3s;
+    }
+    
+    .nav-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 20px rgba(107, 123, 109, 0.4);
+    }
+    
     .customize-content {
-      background: rgba(255,255,255,0.95); bo      background: rgba(255,255,255,0.95); b-s      background: rgba(255,255,255,0.95); bo      background: rgba(255,255,255,0om: 25px; padding: 20px; background: #f9f9f9;
-                                                      89             .                                                      89     in-bottom: 15px;
+      background: rgba(255,255,255,0.95);
+      border-radius: 20px;
+      padding: 30px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.15);
     }
-    .frame-options {
+    
+    .lens-display {
+      text-align: center;
+      margin-bottom: 30px;
+      padding: 30px 20px;
+      background: linear-gradient(135deg, rgba(201, 169, 168, 0.1) 0%, rgba(155, 168, 156, 0.1) 100%);
+      border-radius: 15px;
+    }
+    
+    .lens-image {
+      width: 100%;
+      max-width: 400px;
+      height: 250px;
+      margin: 0 auto 20px;
+      background: radial-gradient(circle, rgba(255,255,255,0.9) 0%, rgba(200,220,255,0.3) 100%);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    }
+    
+    .lens-svg {
+      width: 70%;
+      height: 70%;
+    }
+    
+    .lens-title {
+      font-size: 2rem;
+      color: #6B7B6D;
+      margin-bottom: 10px;
+    }
+    
+    .lens-subtitle {
+      color: #888;
+      font-size: 1.1rem;
+    }
+    
+    .prescription-form {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    
+    .form-section {
+      margin-bottom: 25px;
+      padding: 20px;
+      background: #f9f9f9;
+      border-radius: 12px;
+      border-left: 4px solid #9BA89C;
+    }
+    
+    .section-title {
+      font-size: 1.2rem;
+      color: #6B7B6D;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .eye-options {
       display: grid;
-      grid-template-columns: rep      grid-template-columns: rep      grid-template-columns: rep      gr  }
-                   
-                         padding: 15px; border-radius: 8px;
-      border: 2px solid #e0e0e0; cu      border: 2px solid #e0e0e0; cu      border: 2px solid #e0e0e0; cu   .frame-o      bover { b      border:#9    C; }
-                                         -color: #6B7B6D;
-      background: linear-gradient(135deg, rgba(155,168,156,0.1), rgba(107,123,109,0.1));
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
     }
-    .frame-option input { display: none; }
-    .frame-name { font-weight: 700; color: #6B7B6    .frame-name { fpx; }
-    .frame-name { font-weight: 700; color: #6B7B6    .frame-name { fpx; }
-123,109,0.1));
-olid #e0e0e0; cu   .frame-o      bover { b      rgba(201,169,168,0.1), rgba(155,168,156,0.1));
-      padding: 20px; border-rad      padding: 20px; border-rad      padding: 20px; border-rad      padding: 20px; border-rad      padding: 20px; border-rad      padding: 20px; b  }
-     price-total {
-                      ustif                      ustif                      ustif                      ustif                      ustpx                  so                      ustif                      ustif     background: #fff3cd; border-left: 4px solid #ffc107;
-      padding: 15px; border-radius: 8px; margin-bottom: 20px; color: #856404;
+    
+    .eye-group {
+      background: white;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
     }
+    
+    .eye-label {
+      font-weight: 700;
+      color: #6B7B6D;
+      margin-bottom: 12px;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    
+    .form-group {
+      margin-bottom: 15px;
+    }
+    
+    .form-label {
+      display: block;
+      margin-bottom: 8px;
+      color: #555;
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+    
+    .form-select, .form-input {
+      width: 100%;
+      padding: 10px 12px;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      transition: border-color 0.2s;
+      font-family: 'Montserrat', sans-serif;
+    }
+    
+    .form-select:focus, .form-input:focus {
+      outline: none;
+      border-color: #9BA89C;
+    }
+    
+    .form-textarea {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      min-height: 100px;
+      resize: vertical;
+      font-family: 'Montserrat', sans-serif;
+    }
+    
+    .form-textarea:focus {
+      outline: none;
+      border-color: #9BA89C;
+    }
+    
+    .lens-options {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      margin-top: 12px;
+    }
+    
+    .lens-option {
+      background: white;
+      padding: 12px;
+      border-radius: 8px;
+      border: 2px solid #e0e0e0;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: center;
+    }
+    
+    .lens-option:hover {
+      border-color: #9BA89C;
+      transform: translateY(-1px);
+    }
+    
+    .lens-option.selected {
+      border-color: #6B7B6D;
+      background: linear-gradient(135deg, rgba(155, 168, 156, 0.1) 0%, rgba(107, 123, 109, 0.1) 100%);
+    }
+    
+    .lens-option input[type="radio"] {
+      display: none;
+    }
+    
+    .lens-option-title {
+      font-weight: 700;
+      color: #6B7B6D;
+      margin-bottom: 5px;
+    }
+    
+    .lens-option-desc {
+      font-size: 0.85rem;
+      color: #888;
+    }
+    
+    .submit-section {
+      text-align: center;
+      margin-top: 30px;
+      padding-top: 25px;
+      border-top: 2px solid #e0e0e0;
+    }
+    
     .submit-btn {
       padding: 15px 50px;
       background: linear-gradient(135deg, #9BA89C 0%, #8B9A8C 100%);
-      color: white; border: none; border-radius: 12px;
-      font-size: 1.1rem; font-weight: 700; curs      font-size: 1.1rem; font-weight: 700; curs      font-size: 1.1rem;         font-size: 1.1rem; font-weight: 700; curs      font-size: 1.1rem; nd      font-sss="nav-btn">返回首页</a>
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+      box-shadow: 0 4px 15px rgba(107, 123, 109, 0.3);
+    }
+    
+    .submit-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(107, 123, 109, 0.4);
+    }
+    
+    .price-summary {
+      background: linear-gradient(135deg, rgba(201, 169, 168, 0.1) 0%, rgba(155, 168, 156, 0.1) 100%);
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+    }
+    
+    .price-item {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      color: #555;
+    }
+    
+    .price-total {
+      display: flex;
+      justify-content: space-between;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #6B7B6D;
+      padding-top: 15px;
+      border-top: 2px solid #9BA89C;
+      margin-top: 15px;
+    }
+    
+    .info-box {
+      background: #fff3cd;
+      border-left: 4px solid #ffc107;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      color: #856404;
+    }
+    
+    /* ===== 响应式设计 ===== */
+    /* iPad / 平板 */
+    @media (max-width: 1024px) {
+      body {
+        padding: 15px;
+      }
+      .header {
+        padding: 25px 30px;
+      }
+      .header h1 {
+        font-size: 2rem;
+      }
+      .lens-options {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    
+    /* 手机 */
+    @media (max-width: 768px) {
+      body {
+        padding: 10px;
+      }
+      .header {
+        flex-direction: column;
+        gap: 15px;
+        padding: 20px;
+        border-radius: 14px;
+        text-align: center;
+      }
+      .header h1 {
+        font-size: 1.5rem;
+      }
+      .nav-btn {
+        padding: 10px 20px;
+        font-size: 0.9rem;
+      }
+      .customize-content {
+        padding: 20px;
+        border-radius: 14px;
+      }
+      .lens-display {
+        padding: 20px 15px;
+        margin-bottom: 20px;
+      }
+      .lens-image {
+        max-width: 280px;
+        height: 180px;
+      }
+      .lens-title {
+        font-size: 1.4rem;
+      }
+      .lens-subtitle {
+        font-size: 0.9rem;
+      }
+      .eye-options {
+        grid-template-columns: 1fr;
+        gap: 15px;
+      }
+      .form-section {
+        padding: 15px;
+        margin-bottom: 18px;
+      }
+      .section-title {
+        font-size: 1.05rem;
+      }
+      .lens-options {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+      .lens-option {
+        padding: 10px;
+      }
+      .lens-option-title {
+        font-size: 0.9rem;
+      }
+      .lens-option-desc {
+        font-size: 0.75rem;
+      }
+      .price-summary {
+        padding: 15px;
+      }
+      .price-total {
+        font-size: 1.3rem;
+      }
+      .submit-btn {
+        padding: 14px 40px;
+        font-size: 1rem;
+      }
+    }
+    
+    /* 小屏手机 */
+    @media (max-width: 480px) {
+      .header h1 {
+        font-size: 1.2rem;
+      }
+      .lens-options {
+        grid-template-columns: 1fr;
+      }
+      .lens-image {
+        max-width: 220px;
+        height: 150px;
+      }
+      .eye-group {
+        padding: 12px;
+      }
+      .form-select, .form-input {
+        padding: 8px 10px;
+        font-size: 0.9rem;
+      }
+      .form-textarea {
+        font-size: 0.9rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>🔬 镜片定制服务</h1>
+      <a href="index.html" class="nav-btn">返回首页</a>
     </div>
     
     <div class="customize-content">
-      <form id="      <form id="      <form id="      <form id="      <form id="      <form id="      <form id="      <form id="      <form id="      <form id="      <form id="      <form id="   class="form-section">      <form id="      <form id="      <form id="      <form id="      <form id="      <form id="      <form id="      <form id="      <form id="      <form id="      <form id="      <form id="   class="form-section">      <form id="      <form id="      <form id="            <div class="frame-name">Classic NO.1</div>
-              <div class="    e-price">¥258</div>              <div cla            <label class="frame-option">
-              <input type="radio" name="frameModel" value="2" data-price="249" onchange              <input type="radio" name="frameModel" value="2" data-price="249" onchange              <input type="radio" name="frameModel" value="2" data-price="249" onchange              <input type="radio" name="frameModel" value="2"del" value="3" data-price="219" onchange="updatePrice(              <input type="radio" name="frameModel" value="2" data-price="249" onchange              <input type="radio" name="frameModel" value="2" data-price="249" onchange              <input type="radio" name="frameModel" value="2" data-price="249" onchange              <input type="radio" name="frameModel" value="2"del" value="3" data-price="219" onchange="updatePrice(              <input type="radio" name="frameModel" value="2" data-price="249" onchange              <input type="radio" name="frameModel" value="2" data-pringe="updatePrice()">
-              <div class="frame-name">Classic NO.5</div>
-              <div class="frame-price">¥489</div>
-            </label>
-            <label class="frame-option">
-              <input type="radio" name="frameModel" value="6" data-price="249" onchange="updatePrice()">
-              <div class="frame-name">Classic NO.6</div>
-              <div class="frame-price">¥249</div>
-            </label>
-            <label class="frame-option">
-              <input type="radio" name="frameModel" value="7" data-price="358" onchange="updatePrice()">
-              <div class="frame-name">Classic NO.7</div>
-              <div class="frame-price">¥358</div>
-            </label>
+      <!-- 镜片展示 -->
+      <div class="lens-display">
+        <div class="lens-image">
+          <svg class="lens-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+            <!-- 镜片主体 -->
+            <defs>
+              <radialGradient id="lensGradient">
+                <stop offset="0%" style="stop-color:rgba(255,255,255,0.9);stop-opacity:1" />
+                <stop offset="50%" style="stop-color:rgba(200,220,255,0.5);stop-opacity:1" />
+                <stop offset="100%" style="stop-color:rgba(150,180,220,0.3);stop-opacity:1" />
+              </radialGradient>
+              <filter id="blur">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="2" />
+              </filter>
+            </defs>
+            
+            <!-- 左镜片 -->
+            <circle cx="60" cy="100" r="45" fill="url(#lensGradient)" stroke="#9BA89C" stroke-width="3" opacity="0.8"/>
+            <circle cx="60" cy="100" r="40" fill="none" stroke="#B5A69B" stroke-width="1" opacity="0.4"/>
+            <circle cx="60" cy="100" r="30" fill="none" stroke="#C9A9A8" stroke-width="1" opacity="0.3"/>
+            
+            <!-- 右镜片 -->
+            <circle cx="140" cy="100" r="45" fill="url(#lensGradient)" stroke="#9BA89C" stroke-width="3" opacity="0.8"/>
+            <circle cx="140" cy="100" r="40" fill="none" stroke="#B5A69B" stroke-width="1" opacity="0.4"/>
+            <circle cx="140" cy="100" r="30" fill="none" stroke="#C9A9A8" stroke-width="1" opacity="0.3"/>
+            
+            <!-- 鼻梁 -->
+            <path d="M 105 95 Q 100 100 105 105" stroke="#9BA89C" stroke-width="3" fill="none"/>
+            
+            <!-- 光线反射效果 -->
+            <ellipse cx="50" cy="85" rx="15" ry="20" fill="white" opacity="0.4" filter="url(#blur)"/>
+            <ellipse cx="130" cy="85" rx="15" ry="20" fill="white" opacity="0.4" filter="url(#blur)"/>
+          </svg>
+        </div>
+        <h2 class="lens-title">专业验光配镜服务</h2>
+        <p class="lens-subtitle">高品质镜片 · 精准度数定制 · 专业验光师团队</p>
+      </div>
+      
+      <!-- 定制表单 -->
+      <form class="prescription-form" id="customizeForm">
+        <div class="info-box">
+          <strong>💡 温馨提示：</strong> 请根据您的验光单填写准确的度数信息，如有疑问可联系客服协助。
+        </div>
+        
+        <!-- 近视度数选择 -->
+        <div class="form-section">
+          <h3 class="section-title">👁️ 近视度数（SPH球镜）</h3>
+          <div class="eye-options">
+            <!-- 左眼 -->
+            <div class="eye-group">
+              <div class="eye-label">🔵 左眼 (L)</div>
+              <div class="form-group">
+                <label class="form-label">近视度数</label>
+                <select class="form-select" id="leftSph" onchange="updatePrice()">
+                  <option value="0">0度（平光）</option>
+                  <option value="100">-1.00（100度）</option>
+                  <option value="150">-1.50（150度）</option>
+                  <option value="200">-2.00（200度）</option>
+                  <option value="250">-2.50（250度）</option>
+                  <option value="300">-3.00（300度）</option>
+                  <option value="350">-3.50（350度）</option>
+                  <option value="400">-4.00（400度）</option>
+                  <option value="450">-4.50（450度）</option>
+                  <option value="500">-5.00（500度）</option>
+                  <option value="550">-5.50（550度）</option>
+                  <option value="600">-6.00（600度）</option>
+                  <option value="650">-6.50（650度）</option>
+                  <option value="700">-7.00（700度）</option>
+                  <option value="750">-7.50（750度）</option>
+                  <option value="800">-8.00（800度）</option>
+                  <option value="custom">其他度数</option>
+                </select>
+              </div>
+              <div class="form-group" id="leftSphCustom" style="display:none;">
+                <label class="form-label">具体度数</label>
+                <input type="text" class="form-input" placeholder="例如：-3.75" onchange="updatePrice()">
+              </div>
+            </div>
+            
+            <!-- 右眼 -->
+            <div class="eye-group">
+              <div class="eye-label">🔴 右眼 (R)</div>
+              <div class="form-group">
+                <label class="form-label">近视度数</label>
+                <select class="form-select" id="rightSph" onchange="updatePrice()">
+                  <option value="0">0度（平光）</option>
+                  <option value="100">-1.00（100度）</option>
+                  <option value="150">-1.50（150度）</option>
+                  <option value="200">-2.00（200度）</option>
+                  <option value="250">-2.50（250度）</option>
+                  <option value="300">-3.00（300度）</option>
+                  <option value="350">-3.50（350度）</option>
+                  <option value="400">-4.00（400度）</option>
+                  <option value="450">-4.50（450度）</option>
+                  <option value="500">-5.00（500度）</option>
+                  <option value="550">-5.50（550度）</option>
+                  <option value="600">-6.00（600度）</option>
+                  <option value="650">-6.50（650度）</option>
+                  <option value="700">-7.00（700度）</option>
+                  <option value="750">-7.50（750度）</option>
+                  <option value="800">-8.00（800度）</option>
+                  <option value="custom">其他度数</option>
+                </select>
+              </div>
+              <div class="form-group" id="rightSphCustom" style="display:none;">
+                <label class="form-label">具体度数</label>
+                <input type="text" class="form-input" placeholder="例如：-3.75" onchange="updatePrice()">
+              </div>
+            </div>
           </div>
         </div>
         
+        <!-- 散光度数 -->
         <div class="form-section">
-          <h3 class="section-title">镜片类型选择</h3>
-          <div class="frame-options">
-            <label class="frame-option selected">
+          <h3 class="section-title">🌀 散光度数（CYL柱镜）</h3>
+          <div class="eye-options">
+            <!-- 左眼散光 -->
+            <div class="eye-group">
+              <div class="eye-label">🔵 左眼散光</div>
+              <div class="form-group">
+                <label class="form-label">散光度数</label>
+                <select class="form-select" onchange="updatePrice()">
+                  <option value="0">无散光</option>
+                  <option value="50">-0.50（50度）</option>
+                  <option value="75">-0.75（75度）</option>
+                  <option value="100">-1.00（100度）</option>
+                  <option value="125">-1.25（125度）</option>
+                  <option value="150">-1.50（150度）</option>
+                  <option value="175">-1.75（175度）</option>
+                  <option value="200">-2.00（200度）</option>
+                  <option value="250">-2.50（250度）</option>
+                  <option value="300">-3.00（300度）</option>
+                  <option value="custom">其他度数</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">散光轴位（0-180°）</label>
+                <input type="number" class="form-input" min="0" max="180" placeholder="例如：90">
+              </div>
+            </div>
+            
+            <!-- 右眼散光 -->
+            <div class="eye-group">
+              <div class="eye-label">🔴 右眼散光</div>
+              <div class="form-group">
+                <label class="form-label">散光度数</label>
+                <select class="form-select" onchange="updatePrice()">
+                  <option value="0">无散光</option>
+                  <option value="50">-0.50（50度）</option>
+                  <option value="75">-0.75（75度）</option>
+                  <option value="100">-1.00（100度）</option>
+                  <option value="125">-1.25（125度）</option>
+                  <option value="150">-1.50（150度）</option>
+                  <option value="175">-1.75（175度）</option>
+                  <option value="200">-2.00（200度）</option>
+                  <option value="250">-2.50（250度）</option>
+                  <option value="300">-3.00（300度）</option>
+                  <option value="custom">其他度数</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">散光轴位（0-180°）</label>
+                <input type="number" class="form-input" min="0" max="180" placeholder="例如：90">
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- 镜片类型 -->
+        <div class="form-section">
+          <h3 class="section-title">✨ 镜片类型选择</h3>
+          <div class="lens-options">
+            <label class="lens-option selected">
               <input type="radio" name="lensType" value="standard" checked onchange="updatePrice()">
-              <div class="frame-name">标准镜片</div>
-              <div c              <div c              <div c     label>
-            <label c            <label c            <label ut type="radio" name="lensType" value="antiblue" onchange="updatePrice()">
-              <div class="frame-name">防蓝光镜片</div>
-              <div class="frame-price">¥299</div>
+              <div class="lens-option-title">标准镜片（1.56）</div>
+              <div class="lens-option-desc">基础款，适合日常使用</div>
+              <div style="margin-top:8px; font-weight:700; color:#6B7B6D;">¥179</div>
             </label>
-            <label class="frame-option">
+            
+            <label class="lens-option">
+              <input type="radio" name="lensType" value="antiblue" onchange="updatePrice()">
+              <div class="lens-option-title">防蓝光镜片（1.56）</div>
+              <div class="lens-option-desc">防护电子屏幕蓝光</div>
+              <div style="margin-top:8px; font-weight:700; color:#6B7B6D;">¥299</div>
+            </label>
+            
+            <label class="lens-option">
               <input type="radio" name="lensType" value="photochromic" onchange="updatePrice()">
-              <div class="frame-name">变色镜片</div>
-              <div class="frame-price">¥499</div>
+              <div class="lens-option-title">变色镜片（1.56）</div>
+              <div class="lens-option-desc">室内外自动变色</div>
+              <div style="margin-top:8px; font-weight:700; color:#6B7B6D;">¥499</div>
             </label>
-            <label class="frame-option">
+            
+            <label class="lens-option">
               <input type="radio" name="lensType" value="progressive" onchange="updatePrice()">
-              <div class="frame-name">渐进多焦点</div>
-              <div class="frame-price">¥899</div>
+              <div class="lens-option-title">渐进多焦点</div>
+              <div class="lens-option-desc">远中近一体，无感切换</div>
+              <div style="margin-top:8px; font-weight:700; color:#6B7B6D;">¥899</div>
             </label>
           </div>
         </div>
         
+        <!-- 镜片折射率 -->
         <div class="form-section">
-          <h3 cla          <h3 cla          <h3 cla          <h3 cla  v cl          <h3 cla          <h3 cla          <h3 cla          <h3 cla  
+          <h3 class="section-title">🔍 镜片折射率</h3>
+          <div class="lens-options">
+            <label class="lens-option selected">
               <input type="radio" name="refractiveIndex" value="1.56" checked onchange="updatePrice()">
-              <div class="frame-name">1.56折射率</div>
-              <div class="frame-price">标准</div>
+              <div class="lens-option-title">1.56折射率</div>
+              <div class="lens-option-desc">400度以下推荐</div>
+              <div style="margin-top:8px; font-weight:700; color:#6B7B6D;">标准</div>
             </label>
-            <label class="frame-option">
+            
+            <label class="lens-option">
               <input type="radio" name="refractiveIndex" value="1.60" onchange="updatePrice()">
-              <div class="frame-name">1.60折射率</div>
-              <div class="frame-price">+¥80</div>
+              <div class="lens-option-title">1.60折射率</div>
+              <div class="lens-option-desc">400-600度推荐</div>
+              <div style="margin-top:8px; font-weight:700; color:#6B7B6D;">+¥80</div>
             </label>
-            <label class="frame-option">
+            
+            <label class="lens-option">
               <input type="radio" name="refractiveIndex" value="1.67" onchange="updatePrice()">
-              <div class="frame-name">1.67折射率</div>
-              <div class="frame-price">+¥150</div>
+              <div class="lens-option-title">1.67折射率</div>
+              <div class="lens-option-desc">600-800度推荐</div>
+              <div style="margin-top:8px; font-weight:700; color:#6B7B6D;">+¥150</div>
             </label>
-            <label class="frame-option">
+            
+            <label class="lens-option">
               <input type="radio" name="refractiveIndex" value="1.74" onchange="updatePrice()">
-              <div class="frame-name">1.74超薄</div>
-              <div class="frame-price">+¥300</div>
+              <div class="lens-option-title">1.74超薄</div>
+              <div class="lens-option-desc">800度以上推荐</div>
+              <div style="margin-top:8px; font-weight:700; color:#6B7B6D;">+¥300</div>
             </label>
           </div>
         </div>
         
-        <div class="price-summary">
-          <div class="price-item">
-            <span>镜框价格（<span id="frameName">Classic NO.1</span>）</span>
-            <span id="framePrice">¥258</span>
+        <!-- 配送地区选择 -->
+        <div class="form-section">
+          <h3 class="section-title">🌏 配送地区</h3>
+          <div class="form-group">
+            <label class="form-label">选择配送地区</label>
+            <select class="form-select" id="shippingRegion" onchange="updateShippingInfo()">
+              <option value="china">中国大陆</option>
+              <option value="uk">英国 United Kingdom</option>
+              <option value="japan">日本 Japan</option>
+              <option value="korea">韩国 South Korea</option>
+              <option value="hkmt">港澳台地区</option>
+            </select>
           </div>
+          
+          <div class="form-group">
+            <label class="form-label">详细地址</label>
+            <textarea class="form-textarea" placeholder="请填写详细的收货地址，包括：&#10;- 省/州/地区&#10;- 城市&#10;- 街道门牌号&#10;- 邮政编码" rows="4"></textarea>
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label">收件人姓名</label>
+            <input type="text" class="form-input" placeholder="请输入收件人姓名">
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label">联系方式</label>
+            <input type="text" class="form-input" placeholder="请留下您的手机号码或联系电话">
+          </div>
+        </div>
+        
+        <!-- 其他需求备注 -->
+        <div class="form-section">
+          <h3 class="section-title">📝 其他需求与备注</h3>
+          <div class="form-group">
+            <label class="form-label">特殊度数说明（如有其他度数要求）</label>
+            <textarea class="form-textarea" placeholder="请详细说明您的特殊度数需求，例如：&#10;- 左眼近视-3.75，散光-0.75，轴位85°&#10;- 右眼近视-4.25，散光-1.25，轴位95°&#10;- 需要添加阅读度数+1.50&#10;- 其他特殊要求"></textarea>
+          </div>
+        </div>
+        
+        <!-- 价格总结 -->
+        <div class="price-summary">
           <div class="price-item">
             <span>镜片类型</span>
             <span id="lensTypePrice">¥179</span>
@@ -140,47 +700,107 @@ olid #e0e0e0; cu   .frame-o      bover { b      rgba(201,169,168,0.1), rgba(155,
             <span>折射率附加</span>
             <span id="refractivePrice">¥0</span>
           </div>
+          <div class="price-item">
+            <span>镜框价格</span>
+            <span>¥899</span>
+          </div>
           <div class="price-total">
             <span>总计</span>
-            <span id="totalPrice">¥437</span>
+            <span id="totalPrice">¥1,078</span>
           </div>
         </div>
         
-        <div style="text-align:center;">
+        <!-- 提交按钮 -->
+        <div class="submit-section">
           <button type="submit" class="submit-btn">提交定制订单</button>
+          <p style="margin-top:15px; color:#888; font-size:0.9rem;">
+            提交后我们的验光师将在24小时内与您联系确认
+          </p>
         </div>
       </form>
     </div>
   </div>
   
   <script>
-    document.querySelectorAll('.frame-option').forEach(option => {
+    // 监听"其他度数"选项
+    document.getElementById('leftSph').addEventListener('change', function() {
+      document.getElementById('leftSphCustom').style.display = 
+        this.value === 'custom' ? 'block' : 'none';
+    });
+    
+    document.getElementById('rightSph').addEventListener('change', function() {
+      document.getElementById('rightSphCustom').style.display = 
+        this.value === 'custom' ? 'block' : 'none';
+    });
+    
+    // 镜片类型选择样式
+    document.querySelectorAll('.lens-option').forEach(option => {
       option.addEventListener('click', function() {
-        const parent = this.closest('.frame-options, .form-section');
-        parent.querySelectorAll('.frame-option').forEach(opt => opt.classList.remove('selected'));
+        document.querySelectorAll('.lens-option').forEach(opt => opt.classList.remove('selected'));
         this.classList.add('selected');
       });
     });
     
+    // 更新价格
     function updatePrice() {
-      const frameInput = document.querySelector('input[name="frameModel"]:checked');
-      const framePrice = parseInt(frameInput.dataset.price);
-      const frameNumber = frameInput.value;
-      
       const lensType = document.querySelector('input[name="lensType"]:checked').value;
-      const refractiveIndex = document.querySelector('input[name="refractiveIndex"]:check      const refractiveIndex = document.quices =      codard': 17      consue': 299, 'photochromic': 499, 'progressive': 899 };
-      const refractivePrices = { '1.56': 0, '1.60': 80, '1.67': 150, '1.74': 300       const     const lensPri      conTypePrices[lensType];
+      const refractiveIndex = document.querySelector('input[name="refractiveIndex"]:checked').value;
+      
+      const lensTypePrices = {
+        'standard': 179,
+        'antiblue': 299,
+        'photochromic': 499,
+        'progressive': 899
+      };
+      
+      const refractivePrices = {
+        '1.56': 0,
+        '1.60': 80,
+        '1.67': 150,
+        '1.74': 300
+      };
+      
+      const lensPrice = lensTypePrices[lensType];
       const refractivePrice = refractivePrices[refractiveIndex];
-                                                       Pr                                                       Pr          = 'Classic NO.' + frameNumber;
-      document.getElementById('framePrice').textContent = '¥' + framePrice;
-      document.getElementById('lensTypePrice').textConten      document.getElementBy document.getElementById('refractivePrice').textContent = '¥' + refractivePrice;
+      const framePrice = 899;
+      const total = lensPrice + refractivePrice + framePrice;
+      
+      document.getElementById('lensTypePrice').textContent = '¥' + lensPrice;
+      document.getElementById('refractivePrice').textContent = '¥' + refractivePrice;
       document.getElementById('totalPrice').textContent = '¥' + total.toLocaleString();
     }
     
-    document.getE    document.getE    document.getE    document.getE    document.getE    document.getEefault();
-      const frameName = document.getElementById('frameName').textContent;
-      const totalPrice = document.getElementById('totalPrice').textContent;
-      alert('定制订单已提交！\n\n选择的镜框：' + frameName + '\n总价：' + totalPrice);
+    // 更新配送信息提示
+    function updateShippingInfo() {
+      const region = document.getElementById('shippingRegion').value;
+      const shippingInfo = {
+        'china': '中国大陆地区，预计3-5个工作日送达',
+        'uk': '英国地区，国际配送约7-14个工作日',
+        'japan': '日本地区，国际配送约5-10个工作日',
+        'korea': '韩国地区，国际配送约5-10个工作日',
+        'hkmt': '港澳台地区，预计5-7个工作日送达'
+      };
+      
+      // 可以在这里添加配送信息的显示逻辑
+      console.log('选择的地区：' + shippingInfo[region]);
+    }
+    
+    // 表单提交
+    document.getElementById('customizeForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const leftSph = document.getElementById('leftSph').value;
+      const rightSph = document.getElementById('rightSph').value;
+      
+      if (leftSph === '0' && rightSph === '0') {
+        alert('请至少选择一只眼睛的度数！');
+        return;
+      }
+      
+      alert('定制订单已提交！\n\n我们的验光师将在24小时内与您联系确认度数信息。\n感谢您选择 Splurge Vision！');
+      
+      // 这里可以添加实际的表单提交逻辑
+      // 例如：发送到后端API
     });
   </script>
 </body>

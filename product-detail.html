@@ -275,10 +275,88 @@
       .detail-content {
         grid-template-columns: 1fr;
         gap: 30px;
+        padding: 30px;
       }
       
       .main-image-container {
         height: 400px;
+      }
+    }
+    
+    /* 手机 */
+    @media (max-width: 768px) {
+      body {
+        padding: 10px;
+      }
+      .detail-content {
+        padding: 20px;
+        gap: 20px;
+        border-radius: 16px;
+      }
+      .back-btn {
+        padding: 8px 16px;
+        font-size: 0.9rem;
+      }
+      .main-image-container {
+        height: 300px;
+        padding: 20px;
+      }
+      .thumbnail {
+        width: 70px;
+        height: 70px;
+        padding: 6px;
+      }
+      .detail-name {
+        font-size: 1.5rem;
+      }
+      .detail-desc {
+        font-size: 0.95rem;
+      }
+      .detail-price {
+        font-size: 2rem;
+      }
+      .color-option {
+        padding: 10px 16px;
+        font-size: 0.9rem;
+      }
+      .specs-section {
+        padding: 15px;
+      }
+      .spec-item {
+        padding: 8px 0;
+        font-size: 0.9rem;
+      }
+      .action-buttons {
+        flex-direction: column;
+        gap: 10px;
+      }
+      .action-btn {
+        padding: 14px;
+        font-size: 1rem;
+      }
+    }
+    
+    /* 小屏手机 */
+    @media (max-width: 480px) {
+      .main-image-container {
+        height: 250px;
+        padding: 15px;
+      }
+      .thumbnail-gallery {
+        gap: 8px;
+      }
+      .thumbnail {
+        width: 60px;
+        height: 60px;
+      }
+      .detail-name {
+        font-size: 1.3rem;
+      }
+      .detail-price {
+        font-size: 1.6rem;
+      }
+      .detail-info {
+        gap: 18px;
       }
     }
   </style>

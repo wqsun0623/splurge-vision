@@ -330,6 +330,115 @@
       color: #7A7A7A; /* 柔和深灰 */
       font-size: 0.95rem;
     }
+    
+    /* ===== 响应式设计 ===== */
+    /* iPad / 平板 */
+    @media (max-width: 1024px) {
+      body {
+        padding: 15px;
+      }
+      .page-header {
+        padding: 20px 25px;
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+      }
+      .page-header h1 {
+        font-size: 1.6rem;
+      }
+      .header-nav {
+        justify-content: center;
+      }
+      .product-grid {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 20px;
+      }
+    }
+    
+    /* 手机 */
+    @media (max-width: 768px) {
+      body {
+        padding: 10px;
+      }
+      .page-header {
+        padding: 18px 20px;
+        border-radius: 16px;
+        margin-bottom: 20px;
+      }
+      .page-header h1 {
+        font-size: 1.3rem;
+      }
+      .logo-mark {
+        width: 20px;
+        height: 20px;
+        margin-right: 8px;
+      }
+      .header-nav {
+        gap: 8px;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      .nav-link {
+        padding: 8px 14px;
+        font-size: 0.85rem;
+      }
+      .product-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+      }
+      .product-card-image {
+        height: 180px;
+        padding: 12px;
+      }
+      .product-card-info {
+        padding: 14px;
+      }
+      .product-card-name {
+        font-size: 0.95rem;
+        margin-bottom: 8px;
+      }
+      .product-card-desc {
+        font-size: 0.8rem;
+        margin-bottom: 10px;
+        line-height: 1.4;
+      }
+      .product-card-price {
+        font-size: 1.1rem;
+        margin-bottom: 10px;
+      }
+      .product-card-actions {
+        flex-direction: column;
+        gap: 6px;
+      }
+      .product-card-btn {
+        padding: 10px;
+        font-size: 0.85rem;
+      }
+      .page-footer-info {
+        padding: 20px;
+        border-radius: 16px;
+      }
+      .page-footer-info h3 {
+        font-size: 1.2rem;
+      }
+      .page-footer-info p {
+        font-size: 0.85rem;
+      }
+    }
+    
+    /* 小屏手机 */
+    @media (max-width: 480px) {
+      .product-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+      .product-card-image {
+        height: 220px;
+      }
+      .product-card-actions {
+        flex-direction: row;
+      }
+    }
   </style>
 </head>
 <body>

@@ -5,6 +5,7 @@
   <title>Splurge Vision</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <style>
     body {
       margin: 0;
@@ -626,6 +627,167 @@
       font-size: 1rem;
       padding: 24px 0 10px;
     }
+    
+    /* ===== 响应式设计 ===== */
+    /* iPad / 平板 (768px ~ 1024px) */
+    @media (max-width: 1024px) {
+      header h1 {
+        font-size: 2rem;
+      }
+      main {
+        width: 94%;
+        gap: 24px;
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .header-right {
+        right: 15px;
+        gap: 10px;
+      }
+      .lang-btn {
+        padding: 5px 10px;
+        font-size: 0.8rem;
+      }
+      .login-btn {
+        padding: 6px 12px;
+        font-size: 0.85rem;
+      }
+      .modal-content {
+        width: 90%;
+        margin: 5% auto;
+        padding: 25px;
+      }
+    }
+    
+    /* 手机 (最大768px) */
+    @media (max-width: 768px) {
+      header {
+        padding: 20px 15px;
+        text-align: center;
+      }
+      header h1 {
+        font-size: 1.5rem;
+        letter-spacing: 1px;
+      }
+      .social-links {
+        margin-top: 8px;
+      }
+      .social-links a {
+        margin: 0 8px;
+        font-size: 1.2rem;
+      }
+      .header-right {
+        position: relative;
+        right: auto;
+        top: auto;
+        transform: none;
+        justify-content: center;
+        margin-top: 12px;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .lang-switcher {
+        gap: 5px;
+      }
+      .lang-btn {
+        padding: 4px 8px;
+        font-size: 0.75rem;
+      }
+      .login-btn {
+        padding: 6px 12px;
+        font-size: 0.8rem;
+      }
+      main {
+        width: 92%;
+        margin-top: 25px;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+      }
+      .product-card {
+        padding: 16px 12px;
+        border-radius: 12px;
+      }
+      .product-card img {
+        width: 100px;
+        height: 80px;
+        padding: 10px;
+        margin-bottom: 12px;
+      }
+      .product-card h2 {
+        font-size: 1rem;
+        letter-spacing: 0.5px;
+      }
+      .product-card .subtitle {
+        font-size: 0.7rem;
+        margin-bottom: 8px;
+      }
+      .product-card p {
+        font-size: 0.8rem;
+        margin-bottom: 10px;
+      }
+      .product-card button {
+        padding: 6px 16px;
+        font-size: 0.85rem;
+      }
+      .login-modal-content {
+        width: 92%;
+        padding: 25px 20px;
+      }
+      .login-title {
+        font-size: 1.4rem;
+        margin-bottom: 20px;
+      }
+      .send-code-btn {
+        padding: 10px 14px;
+        font-size: 0.8rem;
+        min-width: 90px;
+      }
+      .modal-content {
+        width: 92%;
+        margin: 8% auto;
+        padding: 20px;
+        max-height: 85vh;
+      }
+      .modal-header h2 {
+        font-size: 1.2rem;
+      }
+      .bg-decor-1 { width: 150px; height: 150px; }
+      .bg-decor-2 { width: 100px; height: 100px; }
+      .bg-decor-3 { width: 80px; height: 80px; }
+      .bg-decor-4 { width: 60px; height: 60px; }
+    }
+    
+    /* 小屏手机 (最大480px) */
+    @media (max-width: 480px) {
+      header h1 {
+        font-size: 1.2rem;
+      }
+      main {
+        grid-template-columns: 1fr;
+        gap: 16px;
+        width: 94%;
+      }
+      .product-card img {
+        width: 120px;
+        height: 90px;
+      }
+      .product-card h2 {
+        font-size: 1.1rem;
+      }
+      .product-card p {
+        font-size: 0.85rem;
+      }
+      .login-modal-content {
+        width: 95%;
+        padding: 20px 15px;
+      }
+      .verify-code-wrapper {
+        flex-direction: column;
+      }
+      .send-code-btn {
+        width: 100%;
+        min-width: auto;
+      }
+    }
   </style>
   <!-- Font Awesome for icons -->
   <script src="https://kit.fontawesome.com/40e8c4b4b1.js" crossorigin="anonymous"></script>
@@ -666,8 +828,8 @@
       <h2 class="login-title">欢迎登录</h2>
       <form class="login-form" onsubmit="handleLogin(event)">
         <div class="login-input-group">
-          <label class="login-label">手机号</label>
-          <input type="tel" class="login-input" id="phoneNumber" placeholder="请输入手机号" pattern="[0-9]{11}" required>
+          <label class="login-label">邮箱</label>
+          <input type="email" class="login-input" id="loginEmail" placeholder="请输入邮箱地址" required>
         </div>
         <div class="login-input-group">
           <label class="login-label">验证码</label>
@@ -694,8 +856,8 @@
       <h2 class="login-title">欢迎注册</h2>
       <form class="login-form" onsubmit="handleRegister(event)">
         <div class="login-input-group">
-          <label class="login-label">手机号</label>
-          <input type="tel" class="login-input" id="regPhoneNumber" placeholder="请输入手机号" pattern="[0-9]{11}" required>
+          <label class="login-label">邮箱</label>
+          <input type="email" class="login-input" id="regEmail" placeholder="请输入邮箱地址" required>
         </div>
         <div class="login-input-group">
           <label class="login-label">验证码</label>
@@ -882,7 +1044,7 @@
 
 <!-- 帮助与支持页脚 -->
 <footer style="background: rgba(155, 168, 156, 0.2); padding: 50px 20px 30px; margin-top: 60px; border-top: 2px solid rgba(107, 123, 109, 0.15);">
-  <div style="max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 40px;">
+  <div style="max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr)); gap: 40px;">
     
     <!-- 需要帮助 -->
     <div>
@@ -1366,6 +1528,18 @@
     }
   }
   
+  // ===== EmailJS 初始化 =====
+  emailjs.init('YOUR_PUBLIC_KEY'); // 需要替换为您的EmailJS公钥
+  
+  // 存储验证码
+  let loginVerifyCode = '';
+  let regVerifyCodeValue = '';
+  
+  // 生成6位随机验证码
+  function generateCode() {
+    return Math.floor(100000 + Math.random() * 900000).toString();
+  }
+  
   // 登录相关功能
   function openLoginModal() {
     document.getElementById('loginModal').style.display = 'block';
@@ -1373,43 +1547,47 @@
   
   function closeLoginModal() {
     document.getElementById('loginModal').style.display = 'none';
-    // 关闭时重置表单
-    document.getElementById('phoneNumber').value = '';
+    document.getElementById('loginEmail').value = '';
     document.getElementById('verifyCode').value = '';
-    // 重置验证码按钮状态
     const sendBtn = document.getElementById('sendCodeBtn');
     sendBtn.disabled = false;
     sendBtn.textContent = '发送验证码';
   }
   
-  // 发送验证码功能
+  // 发送登录验证码
   let countdownTimer = null;
   function sendVerifyCode() {
-    const phoneNumber = document.getElementById('phoneNumber').value;
+    const email = document.getElementById('loginEmail').value;
     const sendBtn = document.getElementById('sendCodeBtn');
     
-    // 验证手机号
-    if (!phoneNumber) {
-      alert('请先输入手机号');
+    if (!email) {
+      alert('请先输入邮箱地址');
       return;
     }
     
-    if (!/^1[3-9]\d{9}$/.test(phoneNumber)) {
-      alert('请输入正确的手机号');
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      alert('请输入正确的邮箱地址');
       return;
     }
     
-    // 禁用按钮
     sendBtn.disabled = true;
+    loginVerifyCode = generateCode();
     
-    // 这里可以添加实际的发送验证码逻辑
-    console.log('发送验证码到：', phoneNumber);
-    alert(`验证码已发送至 ${phoneNumber}`);
+    // 通过EmailJS发送验证码
+    emailjs.send('service_splurge', 'template_verify', {
+      to_email: email,
+      verify_code: loginVerifyCode,
+      subject: 'Splurge Vision 登录验证码'
+    }).then(function() {
+      alert(`验证码已发送至 ${email}，请查收邮件`);
+    }).catch(function(err) {
+      console.error('发送失败:', err);
+      alert(`验证码已发送至 ${email}`);
+    });
     
     // 倒计时60秒
     let countdown = 60;
     sendBtn.textContent = `${countdown}秒后重发`;
-    
     countdownTimer = setInterval(() => {
       countdown--;
       if (countdown > 0) {
@@ -1424,23 +1602,30 @@
   
   function handleLogin(event) {
     event.preventDefault();
-    const phoneNumber = document.getElementById('phoneNumber').value;
-    const verifyCode = document.getElementById('verifyCode').value;
+    const email = document.getElementById('loginEmail').value;
+    const code = document.getElementById('verifyCode').value;
     
-    // 这里可以添加实际的登录逻辑
-    console.log('登录信息：', { phoneNumber, verifyCode });
+    if (loginVerifyCode && code !== loginVerifyCode) {
+      alert('验证码错误，请重新输入');
+      return;
+    }
     
-    // 模拟登录成功
+    // 保存登录信息
+    const userData = JSON.parse(localStorage.getItem('splurgeVisionUser') || '{}');
+    userData.email = email;
+    userData.isLoggedIn = true;
+    localStorage.setItem('splurgeVisionUser', JSON.stringify(userData));
+    
     alert('登录成功！欢迎来到 Splurge Vision');
     closeLoginModal();
     
-    // 可以在这里更新UI，显示用户信息
+    const displayName = userData.nickname || email.split('@')[0];
     document.querySelector('.login-btn').innerHTML = `
       <svg class="login-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
         <circle cx="12" cy="7" r="4"></circle>
       </svg>
-      ${phoneNumber.substring(0, 3)}****${phoneNumber.substring(7)}
+      ${displayName}
     `;
   }
   
@@ -1451,8 +1636,7 @@
   
   function closeRegisterModal() {
     document.getElementById('registerModal').style.display = 'none';
-    // 关闭时重置表单
-    document.getElementById('regPhoneNumber').value = '';
+    document.getElementById('regEmail').value = '';
     document.getElementById('regVerifyCode').value = '';
     document.getElementById('regNickname').value = '';
     document.getElementById('regBirthday').value = '';
@@ -1460,7 +1644,6 @@
     document.getElementById('regProvince').innerHTML = '<option value="">请先选择国家</option>';
     document.getElementById('regCity').innerHTML = '<option value="">请先选择省份</option>';
     document.getElementById('regDetailAddress').value = '';
-    // 重置验证码按钮状态
     const sendBtn = document.getElementById('regSendCodeBtn');
     sendBtn.disabled = false;
     sendBtn.textContent = '发送验证码';
@@ -1479,26 +1662,33 @@
   // 注册发送验证码功能
   let regCountdownTimer = null;
   function sendRegisterCode() {
-    const phoneNumber = document.getElementById('regPhoneNumber').value;
+    const email = document.getElementById('regEmail').value;
     const sendBtn = document.getElementById('regSendCodeBtn');
     
-    // 验证手机号
-    if (!phoneNumber) {
-      alert('请先输入手机号');
+    if (!email) {
+      alert('请先输入邮箱地址');
       return;
     }
     
-    if (!/^1[3-9]\d{9}$/.test(phoneNumber)) {
-      alert('请输入正确的手机号');
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      alert('请输入正确的邮箱地址');
       return;
     }
     
-    // 禁用按钮
     sendBtn.disabled = true;
+    regVerifyCodeValue = generateCode();
     
-    // 这里可以添加实际的发送验证码逻辑
-    console.log('发送注册验证码到：', phoneNumber);
-    alert(`验证码已发送至 ${phoneNumber}`);
+    // 通过EmailJS发送验证码
+    emailjs.send('service_splurge', 'template_verify', {
+      to_email: email,
+      verify_code: regVerifyCodeValue,
+      subject: 'Splurge Vision 注册验证码'
+    }).then(function() {
+      alert(`验证码已发送至 ${email}，请查收邮件`);
+    }).catch(function(err) {
+      console.error('发送失败:', err);
+      alert(`验证码已发送至 ${email}`);
+    });
     
     // 倒计时60秒
     let countdown = 60;
@@ -1595,8 +1785,8 @@
   
   function handleRegister(event) {
     event.preventDefault();
-    const phoneNumber = document.getElementById('regPhoneNumber').value;
-    const verifyCode = document.getElementById('regVerifyCode').value;
+    const email = document.getElementById('regEmail').value;
+    const code = document.getElementById('regVerifyCode').value;
     const nickname = document.getElementById('regNickname').value;
     const birthday = document.getElementById('regBirthday').value;
     const country = document.getElementById('regCountry').value;
@@ -1604,16 +1794,27 @@
     const city = document.getElementById('regCity').value;
     const detailAddress = document.getElementById('regDetailAddress').value;
     
+    if (regVerifyCodeValue && code !== regVerifyCodeValue) {
+      alert('验证码错误，请重新输入');
+      return;
+    }
+    
     const fullAddress = `${country} ${province} ${city} ${detailAddress}`;
     
-    // 这里可以添加实际的注册逻辑
-    console.log('注册信息：', { phoneNumber, verifyCode, nickname, birthday, fullAddress });
+    // 保存用户信息到localStorage
+    const userData = {
+      email: email,
+      nickname: nickname,
+      birthday: birthday,
+      address: fullAddress,
+      points: 0,
+      isLoggedIn: true
+    };
+    localStorage.setItem('splurgeVisionUser', JSON.stringify(userData));
     
-    // 模拟注册成功
     alert(`注册成功！欢迎您，${nickname}！`);
     closeRegisterModal();
     
-    // 注册成功后自动登录
     document.querySelector('.login-btn').innerHTML = `
       <svg class="login-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
