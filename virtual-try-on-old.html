@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>虚拟试戴 - Splurge Vision</title>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils"></script>
+  <style>
+    :root {
+      --primary: #8f9f91;
+      --text-main: #4e544f;
+      --text-muted: #7a807b;
+      --bg-card: #f4f2ee;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: linear-gradient(135deg, #d6d1c9, #c8cec6, #bfc5bc);
+      min-height: 100vh;
+      padding: 20px;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    .header {
+      background: var(--bg-card);
+      border-radius: 20px;
+      padding: 25px 40px;
+      margin-bottom: 30px;
+      box-shadow: 0 2px 12px rgba(107, 123, 109, 0.08);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .header h1 {
+      font-size: 2rem;
+      color: var(--text-main);
+      font-weight: 600;
+    }
+    
+    .back-btn {
+      padding: 10px 20px;
+      background: var(--primary);
+      color: white;
+      text-decoration: none;
+      border-radius: 10px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+    
+    .back-btn:hover {
+      background: #7e8e80;
+      transform: translateY(-1px);
+    }
+    
+    .main-content {
+      display: grid;
+      grid-template-columns: 1fr 300px;
+      gap: 30px;
+      margin-bottom: 30px;
+    }
+    
+    .video-section {
+      background: var(--bg-card);
+      border-radius: 20px;
+      padding: 30px;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.06);
+    }
+    
+    .video-wrapper {
+      position: relative;
+      width: 100%;
+      max-width: 640px;
+      margin: 0 auto;
+      border-radius: 12px;
+      overflow: hidden;
+      background: #000;
+    }
+    
+    #video {
+      width: 100%;
+      display: block;
+      transform: scaleX(-1);
+    }
+    
+    #canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      transform: scaleX(-1);
+    }
+    
+    .controls {
+      margin-top: 20px;
+      text-align: center;
+    }
+    
+    .control-btn {
+      padding: 12px 24px;
+      margin: 0 10px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .control-btn:hover {
+      background: #7e8e80;
+      transform: translateY(-1px);
+    }
+    
+    .control-btn:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+    
+    .glasses-selector {
+      background: var(--bg-card);
+      border-radius: 20px;
+      padding: 25px;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.06);
+    }
+    
+    .glasses-selector h2 {
+      font-size: 1.2rem;
+      color: var(--text-main);
+      margin-bottom: 20px;
+      font-weight: 600;
+    }
+    
+    .glasses-list {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+    
+    .glasses-item {
+      display: flex;
+      align-items: center;
+      padding: 15px;
+      background: rgba(237, 230, 225, 0.3);
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: 2px solid transparent;
+    }
+    
+    .glasses-item:hover {
+      background: rgba(237, 230, 225, 0.5);
+      transform: translateX(5px);
+    }
+    
+    .glasses-item.active {
+      border-color: var(--primary);
+      background: rgba(143, 159, 145, 0.15);
+    }
+    
+    .glasses-item img {
+      width: 60px;
+      height: 40px;
+      object-fit: contain;
+      margin-right: 15px;
+      background: white;
+      border-radius: 8px;
+      padding: 5px;
+    }
+    
+    .glasses-info {
+      flex: 1;
+    }
+    
+    .glasses-name {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-main);
+      margin-bottom: 3px;
+    }
+    
+    .glasses-price {
+      font-size: 0.85rem;
+      color: var(--primary);
+    }
+    
+    .status-message {
+      text-align: center;
+      padding: 20px;
+      background: rgba(237, 230, 225, 0.4);
+      border-radius: 12px;
+      margin-bottom: 20px;
+      color: var(--text-main);
+    }
+    
+    @media (max-width: 768px) {
+      .main-content {
+        grid-template-columns: 1fr;
+      }
+      
+      .glasses-selector {
+        order: -1;
+      }
+      
+      .glasses-list {
+        flex-direction: row;
+        overflow-x: auto;
+      }
+      
+      .glasses-item {
+        flex-direction: column;
+        min-width: 120px;
+      }
+      
+      .glasses-item img {
+        margin-right: 0;
+        margin-bottom: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>虚拟试戴</h1>
+      <a href="index.html" class="back-btn">返回首页</a>
+    </div>
+    
+    <div class="status-message" id="statusMessage">
+      点击下方按钮开启摄像头，然后选择眼镜进行试戴
+    </div>
+    
+    <div class="main-content">
+      <div class="video-section">
+        <div class="video-wrapper">
+          <video id="video" autoplay playsinline></video>
+          <canvas id="canvas"></canvas>
+        </div>
+        <div class="controls">
+          <button class="control-btn" id="startBtn">开启摄像头</button>
+          <button class="control-btn" id="captureBtn" disabled>拍照保存</button>
+        </div>
+      </div>
+      
+      <div class="glasses-selector">
+        <h2>选择眼镜款式</h2>
+        <div class="glasses-list" id="glassesList">
+          <!-- 眼镜列表将通过JavaScript动态生成 -->
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    // 商品数据（与products.html保持一致）
+    const glassesProducts = [
+      { id: 1, name: 'SPLURGE VISION NO.1', image: '1号.jpg', price: 899 },
+      { id: 2, name: 'SPLURGE VISION NO.2', image: '2号.jpg', price: 899 },
+      { id: 3, name: 'SPLURGE VISION NO.3', image: '3号.jpg', price: 899 },
+      { id: 4, name: 'SPLURGE VISION NO.4', image: '4号.jpg', price: 899 },
+      { id: 5, name: 'SPLURGE VISION NO.5', image: '5号.jpg', price: 899 },
+      { id: 6, name: 'SPLURGE VISION NO.6', image: '6号.jpg', price: 899 },
+      { id: 7, name: 'SPLURGE VISION NO.7', image: '7号.jpg', price: 899 }
+    ];
+    
+    const video = document.getElementById('video');
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const startBtn = document.getElementById('startBtn');
+    const captureBtn = document.getElementById('captureBtn');
+    const statusMessage = document.getElementById('statusMessage');
+    const glassesList = document.getElementById('glassesList');
+    
+    let stream = null;
+    let selectedGlasses = null;
+    let glassesImage = new Image();
+    
+    // 渲染眼镜列表
+    function renderGlassesList() {
+      glassesList.innerHTML = glassesProducts.map(item => `
+        <div class="glasses-item" data-id="${item.id}" data-image="${item.image}">
+          <img src="${item.image}" alt="${item.name}">
+          <div class="glasses-info">
+            <div class="glasses-name">${item.name}</div>
+            <div class="glasses-price">¥${item.price}</div>
+          </div>
+        </div>
+      `).join('');
+      
+      // 添加点击事件
+      document.querySelectorAll('.glasses-item').forEach(item => {
+        item.addEventListener('click', function() {
+          document.querySelectorAll('.glasses-item').forEach(i => i.classList.remove('active'));
+          this.classList.add('active');
+          
+          const imageSrc = this.dataset.image;
+          selectedGlasses = imageSrc;
+          glassesImage.src = imageSrc;
+          statusMessage.textContent = `已选择：${this.querySelector('.glasses-name').textContent}`;
+        });
+      });
+    }
+    
+    // 开启摄像头
+    async function startCamera() {
+      try {
+        stream = await navigator.mediaDevices.getUserMedia({ 
+          video: { 
+            width: 640, 
+            height: 480,
+            facingMode: 'user'
+          } 
+        });
+        video.srcObject = stream;
+        
+        video.addEventListener('loadedmetadata', () => {
+          canvas.width = video.videoWidth;
+          canvas.height = video.videoHeight;
+          startBtn.textContent = '关闭摄像头';
+          captureBtn.disabled = false;
+          statusMessage.textContent = '摄像头已开启，请选择眼镜款式';
+          drawFrame();
+        });
+      } catch (err) {
+        console.error('无法访问摄像头:', err);
+        statusMessage.textContent = '无法访问摄像头，请检查权限设置';
+      }
+    }
+    
+    // 关闭摄像头
+    function stopCamera() {
+      if (stream) {
+        stream.getTracks().forEach(track => track.stop());
+        video.srcObject = null;
+        stream = null;
+        startBtn.textContent = '开启摄像头';
+        captureBtn.disabled = true;
+        statusMessage.textContent = '摄像头已关闭';
+      }
+    }
+    
+    // 绘制视频帧和眼镜
+    function drawFrame() {
+      if (!stream) return;
+      
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      
+      // 如果选择了眼镜且图片已加载，绘制眼镜
+      if (selectedGlasses && glassesImage.complete) {
+        // 简单的眼镜叠加（在视频中间偏上的位置）
+        // 实际应用中应该使用面部识别来定位
+        const glassesWidth = canvas.width * 0.4;
+        const glassesHeight = glassesWidth * (glassesImage.height / glassesImage.width);
+        const x = (canvas.width - glassesWidth) / 2;
+        const y = canvas.height * 0.3;
+        
+        ctx.drawImage(glassesImage, x, y, glassesWidth, glassesHeight);
+      }
+      
+      requestAnimationFrame(drawFrame);
+    }
+    
+    // 拍照保存
+    function capturePhoto() {
+      const tempCanvas = document.createElement('canvas');
+      tempCanvas.width = video.videoWidth;
+      tempCanvas.height = video.videoHeight;
+      const tempCtx = tempCanvas.getContext('2d');
+      
+      // 绘制视频帧
+      tempCtx.save();
+      tempCtx.scale(-1, 1);
+      tempCtx.drawImage(video, -tempCanvas.width, 0, tempCanvas.width, tempCanvas.height);
+      tempCtx.restore();
+      
+      // 绘制眼镜
+      if (selectedGlasses && glassesImage.complete) {
+        const glassesWidth = tempCanvas.width * 0.4;
+        const glassesHeight = glassesWidth * (glassesImage.height / glassesImage.width);
+        const x = (tempCanvas.width - glassesWidth) / 2;
+        const y = tempCanvas.height * 0.3;
+        
+        tempCtx.save();
+        tempCtx.scale(-1, 1);
+        tempCtx.drawImage(glassesImage, -x - glassesWidth, y, glassesWidth, glassesHeight);
+        tempCtx.restore();
+      }
+      
+      // 下载图片
+      tempCanvas.toBlob(blob => {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `splurge-vision-try-on-${Date.now()}.jpg`;
+        a.click();
+        URL.revokeObjectURL(url);
+        statusMessage.textContent = '照片已保存！';
+      });
+    }
+    
+    // 事件监听
+    startBtn.addEventListener('click', () => {
+      if (stream) {
+        stopCamera();
+      } else {
+        startCamera();
+      }
+    });
+    
+    captureBtn.addEventListener('click', capturePhoto);
+    
+    // 初始化
+    renderGlassesList();
+  </script>
+</body>
+</html>

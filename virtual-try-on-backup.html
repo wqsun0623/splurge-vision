@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>虚拟试戴 - Splurge Vision</title>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils"></script>
+  <style>
+    :root {
+      --primary: #8f9f91;
+      --text-main: #4e544f;
+      --text-muted: #7a807b;
+      --bg-card: #f4f2ee;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: linear-gradient(135deg, #d6d1c9, #c8cec6, #bfc5bc);
+      min-height: 100vh;
+      padding: 20px;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    .header {
+      background: var(--bg-card);
+      border-radius: 20px;
+      padding: 25px 40px;
+      margin-bottom: 30px;
+      box-shadow: 0 2px 12px rgba(107, 123, 109, 0.08);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .header h1 {
+      font-size: 2rem;
+      color: var(--text-main);
+      font-weight: 600;
+    }
+    
+    .back-btn {
+      padding: 10px 20px;
+      background: var(--primary);
+      color: white;
+      text-decoration: none;
+      border-radius: 10px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+    
+    .back-btn:hover {
+      background: #7e8e80;
+      transform: translateY(-1px);
+    }
+    
+    .main-content {
+      display: grid;
+      grid-template-columns: 1fr 300px;
+      gap: 30px;
+      margin-bottom: 30px;
+    }
+    
+    .video-section {
+      background: var(--bg-card);
+      border-radius: 20px;
+      padding: 30px;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.06);
+    }
+    
+    .video-wrapper {
+      position: relative;
+      width: 100%;
+      max-width: 640px;
+      margin: 0 auto;
+      border-radius: 12px;
+      overflow: hidden;
+      background: #000;
+    }
+    
+    #video {
+      width: 100%;
+      display: block;
+      transform: scaleX(-1);
+    }
+    
+    #canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      transform: scaleX(-1);
+    }
+    
+    .controls {
+      margin-top: 20px;
+      text-align: center;
+    }
+    
+    .control-btn {
+      padding: 12px 24px;
+      margin: 0 10px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .control-btn:hover {
+      background: #7e8e80;
+      transform: translateY(-1px);
+    }
+    
+    .control-btn:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+    
+    .glasses-selector {
+      background: var(--bg-card);
+      border-radius: 20px;
+      padding: 25px;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.06);
+    }
+    
+    .glasses-selector h2 {
+      font-size: 1.2rem;
+      color: var(--text-main);
+      margin-bottom: 20px;
+      font-weight: 600;
+    }
+    
+    .glasses-list {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+    
+    .glasses-item {
+      display: flex;
+      align-items: center;
+      padding: 15px;
+      background: rgba(237, 230, 225, 0.3);
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: 2px solid transparent;
+    }
+    
+    .glasses-item:hover {
+      background: rgba(237, 230, 225, 0.5);
+      transform: translateX(5px);
+    }
+    
+    .glasses-item.active {
+      border-color: var(--primary);
+      background: rgba(143, 159, 145, 0.15);
+    }
+    
+    .glasses-item img {
+      width: 60px;
+      height: 40px;
+      object-fit: contain;
+      margin-right: 15px;
+      background: white;
+      border-radius: 8px;
+      padding: 5px;
+    }
+    
+    .glasses-info {
+      flex: 1;
+    }
+    
+    .glasses-name {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-main);
+      margin-bottom: 3px;
+    }
+    
+    .glasses-price {
+      font-size: 0.85rem;
+      color: var(--primary);
+    }
+    
+    .status-message {
+      text-align: center;
+      padding: 20px;
+      background: rgba(237, 230, 225, 0.4);
+      border-radius: 12px;
+      margin-bottom: 20px;
+      color: var(--text-main);
+    }
+    
+    @media (max-width: 768px) {
+      .main-content {
+        grid-template-columns: 1fr;
+      }
+      
+      .glasses-selector {
+        order: -1;
+      }
+      
+      .glasses-list {
+        flex-direction: row;
+        overflow-x: auto;
+      }
+      
+      .glasses-item {
+        flex-direction: column;
+        min-width: 120px;
+      }
+      
+      .glasses-item img {
+        margin-right: 0;
+        margin-bottom: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>虚拟试戴（面部识别）</h1>
+      <a href="index.html" class="back-btn">返回首页</a>
+    </div>
+    
+    <div class="status-message" id="statusMessage">
+      点击下方按钮开启摄像头，系统将自动检测您的面部并精准贴合眼镜
+    </div>
+    
+    <div class="main-content">
+      <div class="video-section">
+        <div class="video-wrapper">
+          <video id="video" autoplay playsinline></video>
+          <canvas id="canvas"></canvas>
+        </div>
+        <div class="controls">
+          <button class="control-btn" id="startBtn">开启摄像头</button>
+          <button class="control-btn" id="captureBtn" disabled>拍照保存</button>
+        </div>
+      </div>
+      
+      <div class="glasses-selector">
+        <h2>选择眼镜款式</h2>
+        <div class="glasses-list" id="glassesList"></div>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    const glassesProducts = [
+      { id: 1, name: 'SPLURGE VISION NO.1', image: '1号.png', price: 899 },
+      { id: 2, name: 'SPLURGE VISION NO.2', image: '2号.png', price: 899 },
+      { id: 3, name: 'SPLURGE VISION NO.3', image: '3号.png', price: 899 },
+      { id: 4, name: 'SPLURGE VISION NO.4', image: '4号.png', price: 899 },
+      { id: 5, name: 'SPLURGE VISION NO.5', image: '5号.png', price: 899 },
+      { id: 6, name: 'SPLURGE VISION NO.6', image: '6号.png', price: 899 },
+      { id: 7, name: 'SPLURGE VISION NO.7', image: '7号.png', price: 899 }
+    ];
+    
+    const video = document.getElementById('video');
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const startBtn = document.getElementById('startBtn');
+    const captureBtn = document.getElementById('captureBtn');
+    const statusMessage = document.getElementById('statusMessage');
+    const glassesList = document.getElementById('glassesList');
+    
+    let stream = null;
+    let selectedGlasses = null;
+    let selectedGlassesId = null; // 追踪当前眼镜ID
+    let glassesImage = new Image();
+    let faceMesh = null;
+    let camera = null;
+    let lastFaceLandmarks = null;
+    
+    // 初始化MediaPipe Face Mesh
+    function initFaceMesh() {
+      faceMesh = new FaceMesh({
+        locateFile: (file) => {
+          return `https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/${file}`;
+        }
+      });
+      
+      faceMesh.setOptions({
+        maxNumFaces: 1,
+        refineLandmarks: true,
+        minDetectionConfidence: 0.5,
+        minTrackingConfidence: 0.5
+      });
+      
+      faceMesh.onResults(onFaceDetectionResults);
+    }
+    
+    // 面部检测结果回调
+    function onFaceDetectionResults(results) {
+      ctx.save();
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      
+      if (results.multiFaceLandmarks && results.multiFaceLandmarks.length > 0) {
+        lastFaceLandmarks = results.multiFaceLandmarks[0];
+        
+        // 绘制眼镜
+        if (selectedGlasses && glassesImage.complete) {
+          drawGlassesOnFace(lastFaceLandmarks);
+        }
+        
+        if (!statusMessage.textContent.includes('已选择') && !statusMessage.textContent.includes('检测到面部')) {
+          statusMessage.textContent = '✓ 检测到面部，请选择眼镜款式';
+        }
+      } else {
+        if (stream && !statusMessage.textContent.includes('未检测到')) {
+          statusMessage.textContent = '未检测到面部，请调整位置';
+        }
+      }
+      
+      ctx.restore();
+    }
+    
+    // 在面部绘制眼镜（3D优化版本）
+    function drawGlassesOnFace(landmarks) {
+      // 使用左右眼中心点
+      const leftEyeCenter = landmarks[159];
+      const rightEyeCenter = landmarks[386];
+      
+      // 关键面部点用于3D计算
+      const noseBridge = landmarks[6];
+      const noseTip = landmarks[1];
+      const leftTemple = landmarks[234]; // 左太阳穴
+      const rightTemple = landmarks[454]; // 右太阳穴
+      const forehead = landmarks[10]; // 额头中心
+      
+      // 1️⃣ 位置：两眼中点
+      const centerX = ((leftEyeCenter.x + rightEyeCenter.x) / 2) * canvas.width;
+      const centerY = ((leftEyeCenter.y + rightEyeCenter.y) / 2) * canvas.height;
+      
+      // 2️⃣ 角度：眼睛连线的倾斜角（Z轴旋转）
+      const angle = Math.atan2(
+        (rightEyeCenter.y - leftEyeCenter.y) * canvas.height,
+        (rightEyeCenter.x - leftEyeCenter.x) * canvas.width
+      );
+      
+      // 3️⃣ 计算两眼距离（基础缩放）
+      const eyeDistance = Math.sqrt(
+        Math.pow((rightEyeCenter.x - leftEyeCenter.x) * canvas.width, 2) +
+        Math.pow((rightEyeCenter.y - leftEyeCenter.y) * canvas.height, 2)
+      );
+      
+      // 4️⃣ 3D深度计算（使用Z坐标）
+      // MediaPipe提供的z值表示深度（负值表示远离摄像头）
+      const leftEyeZ = leftEyeCenter.z || 0;
+      const rightEyeZ = rightEyeCenter.z || 0;
+      const avgEyeZ = (leftEyeZ + rightEyeZ) / 2;
+      
+      // 根据深度调整整体缩放（脸离镜头越远，眼镜越小）
+      const depthScale = 1 + avgEyeZ * 0.5;
+      
+      // 5️⃣ Y轴旋转（左右转头）
+      const faceAngleX = (noseTip.x - noseBridge.x) * canvas.width;
+      const yRotation = Math.atan2(faceAngleX, 80); // Y轴旋转角度
+      
+      // 6️⃣ X轴旋转（上下点头）
+      const faceAngleY = (noseTip.y - forehead.y) * canvas.height;
+      const xRotation = Math.atan2(faceAngleY, 150) * 0.5; // X轴旋转角度
+      
+      // 7️⃣ 3D透视变换参数（针对眼镜腿优化）
+      // 水平缩放：侧脸时眼镜宽度压缩（增强效果让镜腿贴合）
+      const scaleX = Math.pow(Math.cos(yRotation), 1.5) * depthScale; // 使用幂次增强压缩
+      
+      // 垂直缩放：低头/抬头时高度调整
+      const scaleY = (1 - Math.abs(xRotation) * 0.3) * depthScale;
+      
+      // 倾斜变形：侧脸时的透视效果（增强镜腿贴合感）
+      const skewX = Math.sin(yRotation) * 0.4; // 增大倾斜系数
+      const skewY = Math.sin(xRotation) * 0.15;
+      
+      // 根据脸部角度调整眼镜宽度（侧脸时镜腿自然收缩）
+      const templeAdjustment = Math.abs(Math.sin(yRotation)) * 0.3; // 镜腿收缩系数
+      
+      // 8️⃣ 眼镜尺寸计算（考虑镜腿收缩）
+      const baseWidth = eyeDistance * (5.5 - templeAdjustment); // 侧脸时减小宽度
+      const glassesWidth = baseWidth * scaleX;
+      const glassesHeight = (baseWidth * (glassesImage.height / glassesImage.width)) * scaleY;
+      
+      // 9️⃣ 透明度调整（大角度侧脸时降低透明度）
+      const angleOpacity = Math.max(0.3, Math.cos(yRotation) * 0.9);
+      
+      // 🔟 绘制眼镜
+      ctx.save();
+      ctx.translate(centerX, centerY);
+      ctx.rotate(angle);
+      
+      // 应用3D透视变形矩阵
+      // transform(a, b, c, d, e, f)
+      // a=水平缩放, b=垂直倾斜, c=水平倾斜, d=垂直缩放, e=水平移动, f=垂直移动
+      ctx.transform(
+        Math.abs(scaleX), 
+        skewY, 
+        skewX, 
+        scaleY, 
+        0, 
+        0
+      );
+      
+      ctx.globalAlpha = angleOpacity;
+      ctx.drawImage(
+        glassesImage,
+        -baseWidth / 2,
+        -(baseWidth * (glassesImage.height / glassesImage.width)) / 2,
+        baseWidth,
+        baseWidth * (glassesImage.height / glassesImage.width)
+      );
+      ctx.restore();
+    }
+    
+    // 渲染眼镜列表
+    function renderGlassesList() {
+      glassesList.innerHTML = glassesProducts.map(item => `
+        <div class="glasses-item" data-id="${item.id}" data-image="${item.image}">
+          <img src="${item.image}" alt="${item.name}">
+          <div class="glasses-info">
+            <div class="glasses-name">${item.name}</div>
+            <div class="glasses-price">¥${item.price}</div>
+          </div>
+        </div>
+      `).join('');
+      
+      document.querySelectorAll('.glasses-item').forEach(item => {
+        item.addEventListener('click', function() {
+          document.querySelectorAll('.glasses-item').forEach(i => i.classList.remove('active'));
+          this.classList.add('active');
+          
+          const imageSrc = this.dataset.image;
+          const glassesId = parseInt(this.dataset.id); // 获取眼镜ID
+          selectedGlasses = imageSrc;
+          selectedGlassesId = glassesId;
+          glassesImage.src = imageSrc;
+          statusMessage.textContent = `✓ 已选择：${this.querySelector('.glasses-name').textContent}`;
+        });
+      });
+    }
+    
+    // 开启摄像头
+    async function startCamera() {
+      try {
+        stream = await navigator.mediaDevices.getUserMedia({ 
+          video: { 
+            width: 640, 
+            height: 480,
+            facingMode: 'user'
+          } 
+        });
+        video.srcObject = stream;
+        
+        video.addEventListener('loadedmetadata', () => {
+          canvas.width = video.videoWidth;
+          canvas.height = video.videoHeight;
+          startBtn.textContent = '关闭摄像头';
+          captureBtn.disabled = false;
+          statusMessage.textContent = '正在初始化面部检测...';
+          
+          // 启动MediaPipe面部检测
+          if (!camera) {
+            camera = new Camera(video, {
+              onFrame: async () => {
+                await faceMesh.send({image: video});
+              },
+              width: 640,
+              height: 480
+            });
+            camera.start();
+          }
+        });
+      } catch (err) {
+        console.error('无法访问摄像头:', err);
+        statusMessage.textContent = '无法访问摄像头，请检查权限设置';
+      }
+    }
+    
+    // 关闭摄像头
+    function stopCamera() {
+      if (stream) {
+        stream.getTracks().forEach(track => track.stop());
+        video.srcObject = null;
+        stream = null;
+        if (camera) {
+          camera.stop();
+        }
+        startBtn.textContent = '开启摄像头';
+        captureBtn.disabled = true;
+        statusMessage.textContent = '摄像头已关闭';
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+      }
+    }
+    
+    // 拍照保存
+    function capturePhoto() {
+      const tempCanvas = document.createElement('canvas');
+      tempCanvas.width = video.videoWidth;
+      tempCanvas.height = video.videoHeight;
+      const tempCtx = tempCanvas.getContext('2d');
+      
+      // 绘制视频帧（镜像）
+      tempCtx.save();
+      tempCtx.scale(-1, 1);
+      tempCtx.drawImage(video, -tempCanvas.width, 0, tempCanvas.width, tempCanvas.height);
+      tempCtx.restore();
+      
+      // 绘制眼镜
+      if (lastFaceLandmarks && selectedGlasses && glassesImage.complete) {
+        const adjustedLandmarks = lastFaceLandmarks.map(lm => ({
+          x: 1 - lm.x,
+          y: lm.y,
+          z: lm.z
+        }));
+        
+        const leftEyeInner = adjustedLandmarks[133];
+        const rightEyeInner = adjustedLandmarks[263];
+        
+        const eyeDistance = Math.sqrt(
+          Math.pow((rightEyeInner.x - leftEyeInner.x) * tempCanvas.width, 2) +
+          Math.pow((rightEyeInner.y - leftEyeInner.y) * tempCanvas.height, 2)
+        );
+        
+        const centerX = ((leftEyeInner.x + rightEyeInner.x) / 2) * tempCanvas.width;
+        const centerY = ((leftEyeInner.y + rightEyeInner.y) / 2) * tempCanvas.height;
+        
+        const glassesWidth = eyeDistance * 1.8;
+        const glassesHeight = glassesWidth * (glassesImage.height / glassesImage.width);
+        
+        const angle = Math.atan2(
+          (rightEyeInner.y - leftEyeInner.y) * tempCanvas.height,
+          (rightEyeInner.x - leftEyeInner.x) * tempCanvas.width
+        );
+        
+        tempCtx.save();
+        tempCtx.translate(centerX, centerY);
+        tempCtx.rotate(angle);
+        tempCtx.globalAlpha = 0.9;
+        tempCtx.drawImage(
+          glassesImage,
+          -glassesWidth / 2,
+          -glassesHeight / 2,
+          glassesWidth,
+          glassesHeight
+        );
+        tempCtx.restore();
+      }
+      
+      // 下载图片
+      tempCanvas.toBlob(blob => {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `splurge-vision-try-on-${Date.now()}.jpg`;
+        a.click();
+        URL.revokeObjectURL(url);
+        statusMessage.textContent = '✓ 照片已保存！';
+      });
+    }
+    
+    // 事件监听
+    startBtn.addEventListener('click', () => {
+      if (stream) {
+        stopCamera();
+      } else {
+        startCamera();
+      }
+    });
+    
+    captureBtn.addEventListener('click', capturePhoto);
+    
+    // 初始化
+    initFaceMesh();
+    renderGlassesList();
+  </script>
+</body>
+</html>

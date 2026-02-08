@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>虚拟试戴 - Splurge Vision</title>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <style>
+    :root {
+      --primary: #8f9f91;
+      --text-main: #4e544f;
+      --text-muted: #7a807b;
+      --bg-card: #f4f2ee;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: linear-gradient(135deg, #d6d1c9, #c8cec6, #bfc5bc);
+      min-height: 100vh;
+      padding: 20px;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    .header {
+      background: var(--bg-card);
+      border-radius: 20px;
+      padding: 25px 40px;
+      margin-bottom: 30px;
+      box-shadow: 0 2px 12px rgba(107, 123, 109, 0.08);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .header h1 {
+      font-size: 2rem;
+      color: var(--text-main);
+      font-weight: 600;
+    }
+    
+    .back-btn {
+      padding: 10px 20px;
+      background: var(--primary);
+      color: white;
+      text-decoration: none;
+      border-radius: 10px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+    
+    .back-btn:hover {
+      background: #7e8e80;
+      transform: translateY(-1px);
+    }
+    
+    .main-content {
+      display: grid;
+      grid-template-columns: 1fr 300px;
+      gap: 30px;
+      margin-bottom: 30px;
+    }
+    
+    .video-section {
+      background: var(--bg-card);
+      border-radius: 20px;
+      padding: 30px;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.06);
+    }
+    
+    .video-wrapper {
+      position: relative;
+      width: 100%;
+      max-width: 640px;
+      margin: 0 auto;
+      border-radius: 12px;
+      overflow: hidden;
+      background: #000;
+    }
+    
+    #video {
+      width: 100%;
+      display: block;
+      transform: scaleX(-1);
+    }
+    
+    #canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      transform: scaleX(-1);
+    }
+    
+    .controls {
+      margin-top: 20px;
+      text-align: center;
+    }
+    
+    .control-btn {
+      padding: 12px 24px;
+      margin: 0 10px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .control-btn:hover {
+      background: #7e8e80;
+      transform: translateY(-1px);
+    }
+    
+    .control-btn:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+    
+    .glasses-selector {
+      background: var(--bg-card);
+      border-radius: 20px;
+      padding: 25px;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.06);
+    }
+    
+    .glasses-selector h2 {
+      font-size: 1.2rem;
+      color: var(--text-main);
+      margin-bottom: 20px;
+      font-weight: 600;
+    }
+    
+    .glasses-list {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+    
+    .glasses-item {
+      display: flex;
+      align-items: center;
+      padding: 15px;
+      background: rgba(237, 230, 225, 0.3);
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: 2px solid transparent;
+    }
+    
+    .glasses-item:hover {
+      background: rgba(237, 230, 225, 0.5);
+      transform: translateX(5px);
+    }
+    
+    .glasses-item.active {
+      border-color: var(--primary);
+      background: rgba(143, 159, 145, 0.15);
+    }
+    
+    .glasses-item img {
+      width: 60px;
+      height: 40px;
+      object-fit: contain;
+      margin-right: 15px;
+      background: white;
+      border-radius: 8px;
+      padding: 5px;
+    }
+    
+    .glasses-info {
+      flex: 1;
+    }
+    
+    .glasses-name {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-main);
+      margin-bottom: 3px;
+    }
+    
+    .glasses-price {
+      font-size: 0.85rem;
+      color: var(--primary);
+    }
+    
+    .status-message {
+      text-align: center;
+      padding: 20px;
+      background: rgba(237, 230, 225, 0.4);
+      border-radius: 12px;
+      margin-bottom: 20px;
+      color: var(--text-main);
+    }
+    
+    @media (max-width: 768px) {
+      .main-content {
+        grid-template-columns: 1fr;
+      }
+      
+      .glasses-selector {
+        order: -1;
+      }
+      
+      .glasses-list {
+        flex-direction: row;
+        overflow-x: auto;
+      }
+      
+      .glasses-item {
+        flex-direction: column;
+        min-width: 120px;
+      }
+      
+      .glasses-item img {
+        margin-right: 0;
+        margin-bottom: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>虚拟试戴（面部识别）</h1>
+      <a href="index.html" class="back-btn">返回首页</a>
+    </div>
+    
+    <div class="status-message" id="statusMessage">
+      点击下方按钮开启摄像头，系统将自动检测您的面部并精准贴合眼镜
+    </div>
+    
+    <div class="main-content">
+      <div class="video-section">
+        <div class="video-wrapper">
+          <video id="video" autoplay playsinline></video>
+          <canvas id="canvas"></canvas>
+        </div>
+        <div class="controls">
+          <button class="control-btn" id="startBtn">开启摄像头</button>
+          <button class="control-btn" id="captureBtn" disabled>拍照保存</button>
+        </div>
+      </div>
+      
+      <div class="glasses-selector">
+        <h2>选择眼镜款式</h2>
+        <div class="glasses-list" id="glassesList"></div>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    const glassesProducts = [
+      { id: 1, name: 'SPLURGE VISION NO.1', image: '1号.png', price: 258 },
+      { id: 2, name: 'SPLURGE VISION NO.2', image: '2号.png', price: 249 },
+      { id: 3, name: 'SPLURGE VISION NO.3', image: '3号.png', price: 219 },
+      { id: 4, name: 'SPLURGE VISION NO.4', image: '4号.png', price: 219 },
+      { id: 5, name: 'SPLURGE VISION NO.5', image: '5号.png', price: 489 },
+      { id: 6, name: 'SPLURGE VISION NO.6', image: '6号.png', price: 249 },
+      { id: 7, name: 'SPLURGE VISION NO.7', image: '7号.png', price: 358 }
+    ];
+    
+    const video = document.getElementById('video');
+    const canvas = document.getElementById('canvas');
+    // canvas 用于 Three.js, 不需要 getContext('2d')
+    const startBtn = document.getElementById('startBtn');
+    const captureBtn = document.getElementById('captureBtn');
+    const statusMessage = document.getElementById('statusMessage');
+    const glassesList = document.getElementById('glassesList');
+    
+    let stream = null;
+    let selectedGlasses = null;
+    let selectedGlassesId = null; 
+    let faceMesh = null;
+    let camera = null;
+    let lastFaceLandmarks = null;
+    let isCameraRunning = false;
+
+    // Three.js 变量
+    let scene, threeCamera, renderer, glassesMesh, glassesGroup;
+    let textureLoader = new THREE.TextureLoader();
+
+    // 初始化 Three.js 环境
+    function initThreeJS() {
+        const width = canvas.clientWidth;
+        const height = canvas.clientHeight; // 使用容器的实际尺寸
+        
+        // 场景
+        scene = new THREE.Scene();
+
+        // 相机 - 使用正交相机更容易对齐2D视频，透视相机效果更真实。这里为了贴合3D效果，尝试透视相机。
+        // FOV 设为 63 度（常见 webcam 视角），宽高比匹配 canvas
+        threeCamera = new THREE.PerspectiveCamera(63, 640/480, 0.1, 1000);
+        threeCamera.position.z = 600; // 初始位置
+        threeCamera.lookAt(0, 0, 0);
+
+        // 渲染器
+        renderer = new THREE.WebGLRenderer({
+            canvas: canvas,
+            alpha: true, // 背景透明
+            antialias: true // 抗锯齿
+        });
+        renderer.setSize(640, 480); // 内部渲染分辨率
+        renderer.setPixelRatio(window.devicePixelRatio);
+        
+        // 光照 (虽然图片纹理可能是 unlit 的，加点光看起来更好)
+        const ambientLight = new THREE.AmbientLight(0xffffff, 1.2);
+        scene.add(ambientLight);
+        
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
+        directionalLight.position.set(0, 1, 1);
+        scene.add(directionalLight);
+
+        // 创建眼镜组
+        glassesGroup = new THREE.Group();
+        glassesGroup.visible = false; // 初始隐藏
+        scene.add(glassesGroup);
+
+        // 创建默认眼镜模型 (弯曲平面)
+        createCurvedGlassesMesh();
+        
+        // 开始渲染循环
+        animate();
+    }
+
+    // 创建弯曲眼镜网格
+    function createCurvedGlassesMesh() {
+        // 创建一个弯曲的几何体
+        // CylinderGeometry(radiusTop, radiusBottom, height, radialSegments, heightSegments, openEnded, thetaStart, thetaLength)
+        // 使用圆柱体的一部分来模拟弯曲的面
+        // 半径设为 80 (大约半个脸宽)，高度 80 (根据图片比例调整)，弧度 120度
+        const radius = 90; 
+        const height = 90; // 稍后会根据纹理重新缩放
+        const segments = 32;
+        const thetaLength = Math.PI * 0.7; // 约126度弯曲
+        const widthGeom = new THREE.CylinderGeometry(
+            radius, radius, height, 
+            segments, 1, true, 
+            Math.PI + Math.PI/2 - thetaLength/2, // 让开口朝后，面向相机的是凸面? 不，圆柱外面是凸面，我们需要眼镜凸向外
+            // Cylinder 默认是立着的，我们需要它躺平贴在脸上。
+            thetaLength
+        );
+        
+        // Three.js 的 Cylinder 是 Y 轴朝上的。我们需要让它适合眼镜的形状。
+        // 眼镜是横着的。
+        // 默认 UV 映射可能需要调整，但 Cylinder 的侧面 UV 通常是直接展开的，适合我们。
+        
+        // 创建材质
+        const material = new THREE.MeshBasicMaterial({
+            map: null, // 稍后加载
+            transparent: true,
+            side: THREE.DoubleSide,
+            depthTest: false // 保证始终渲染在最前? 或者依赖 z-order
+        });
+
+        glassesMesh = new THREE.Mesh(widthGeom, material);
+        
+        // 调整 Mesh 的初始旋转，使其“躺平”并且弯曲面朝前
+        // Cylinder默认竖直，我们需要旋转它
+        glassesMesh.rotation.x = 0; 
+        glassesMesh.rotation.y = Math.PI; // 旋转180度，让外表面朝向相机(Z正方向)
+        glassesMesh.rotation.z = 0;
+        
+        // 把 Mesh 放入 Group
+        glassesGroup.add(glassesMesh);
+    }
+
+    // 更新眼镜贴图
+    function updateGlassesTexture(url) {
+        textureLoader.load(url, (texture) => {
+            if (glassesMesh) {
+                glassesMesh.material.map = texture;
+                glassesMesh.material.needsUpdate = true;
+                
+                // 根据图片宽高比调整 Mesh 的高度 (保持宽度/半径不变)
+                const imageAspect = texture.image.height / texture.image.width;
+                // 我们之前设定的 Cylinder 半径是90，展开宽度大约是 radius * thetaLength
+                // 弧长 arc = 90 * (PI * 0.7) ≈ 198
+                // 实际显示高度应该基于这个展开宽度
+                
+                const visibleWidth = 90 * (Math.PI * 0.7); // 粗略估计
+                const newHeight = visibleWidth * imageAspect * 0.8; // 0.8是微调系数
+                
+                glassesMesh.scale.set(1, newHeight / 90, 1); // 仅缩放Y轴
+                
+                glassesGroup.visible = true;
+            }
+        });
+    }
+
+    function animate() {
+        requestAnimationFrame(animate);
+        if (renderer && scene && threeCamera) {
+            renderer.render(scene, threeCamera);
+        }
+    }
+    
+    // 初始化MediaPipe Face Mesh (保持不变)
+    function initFaceMesh() {
+      faceMesh = new FaceMesh({
+        locateFile: (file) => {
+          return `https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/${file}`;
+        }
+      });
+      
+      faceMesh.setOptions({
+        maxNumFaces: 1,
+        refineLandmarks: true,
+        minDetectionConfidence: 0.5,
+        minTrackingConfidence: 0.5
+      });
+      
+      faceMesh.onResults(onFaceDetectionResults);
+    }
+    
+    // 面部检测结果回调 (需要大幅修改以对接 Three.js)
+    function onFaceDetectionResults(results) {
+      if (results.multiFaceLandmarks && results.multiFaceLandmarks.length > 0) {
+        const landmarks = results.multiFaceLandmarks[0];
+        lastFaceLandmarks = landmarks;
+        
+        if (selectedGlasses && glassesGroup) {
+          updateGlassesPose(landmarks);
+          glassesGroup.visible = true;
+        }
+        
+        if (!statusMessage.textContent.includes('已选择') && !statusMessage.textContent.includes('检测到面部')) {
+          statusMessage.textContent = '✓ 检测到面部，请选择眼镜款式';
+        }
+      } else {
+        if (glassesGroup) glassesGroup.visible = false;
+        
+        if (isCameraRunning && !statusMessage.textContent.includes('未检测到')) {
+          statusMessage.textContent = '未检测到面部，请调整位置';
+        }
+      }
+    }
+
+    // ⭐ 核心：根据 Landmark 更新 3D 眼镜位置
+    function updateGlassesPose(landmarks) {
+        // MediaPipe coords: x, y [0, 1], z (relative scale)
+        // Three.js coords: x[-w/2, w/2], y[h/2, -h/2]
+        
+        const videoW = 640;
+        const videoH = 480;
+
+        // 关键点
+        const p1 = landmarks[168]; // 眉心 (作为中心锚点)
+        const nose = landmarks[168]; 
+        
+        // 计算位置 (Three.js 坐标系，原点在屏幕中心)
+        // Video 和 Canvas 均设置了 transform: scaleX(-1) 镜像翻转
+        // 原始视频中：人脸在右 (x > 0.5) -> 镜像后显示在左
+        // Three.js Canvas中：我们需要在右侧绘制 (x > 0)，这样镜像后才会出现在左侧
+        // 所以 x 坐标应该与原始 x 正相关
+        
+        const px = (nose.x - 0.5) * videoW; 
+        const py = -(nose.y - 0.5) * videoH; // Y轴反转不用变
+        
+        glassesGroup.position.set(px, py, 0);
+
+        // 计算缩放 (脸宽)
+        const leftTemple = landmarks[234];
+        const rightTemple = landmarks[454];
+        const faceWidth = Math.sqrt(
+            Math.pow((rightTemple.x - leftTemple.x) * videoW, 2) +
+            Math.pow((rightTemple.y - leftTemple.y) * videoH, 2)
+        );
+        
+        // 缩放系数调整
+        const scale = faceWidth / 170; 
+        glassesGroup.scale.set(scale, scale, scale);
+
+        // 计算旋转 (Pitch, Yaw, Roll)
+        // Z Roll:
+        const eyeL = landmarks[33];
+        const eyeR = landmarks[263];
+        const dZx = (eyeR.x - eyeL.x) * videoW;
+        const dZy = (eyeR.y - eyeL.y) * videoH;
+        const roll = Math.atan2(dZy, dZx);
+        
+        // Y Yaw:
+        // 通过左右脸颊深度差判断转向
+        // MP Z: smaller close. Right Close -> R.z < L.z -> R.z - L.z < 0
+        // We want Turn Right: Negative RotY.
+        const faceEz = (rightTemple.z - leftTemple.z); 
+        const yaw = Math.atan2(faceEz, (rightTemple.x - leftTemple.x)); 
+        
+        // X Pitch:
+        const top = landmarks[10];
+        const bottom = landmarks[152];
+        const pitch = Math.atan2((top.z - bottom.z), (top.y - bottom.y));
+        
+        glassesGroup.rotation.z = -roll; 
+        glassesGroup.rotation.y = yaw * 1.5; // 增强一点旋转幅度
+        glassesGroup.rotation.x = -pitch + 0.1;
+    }
+
+    
+    // 渲染眼镜列表
+    function renderGlassesList() {
+      glassesList.innerHTML = glassesProducts.map(item => `
+        <div class="glasses-item" data-id="${item.id}" data-image="${item.image}">
+          <img src="${item.image}" alt="${item.name}">
+          <div class="glasses-info">
+            <div class="glasses-name">${item.name}</div>
+            <div class="glasses-price">¥${item.price}</div>
+          </div>
+        </div>
+      `).join('');
+      
+      document.querySelectorAll('.glasses-item').forEach(item => {
+        item.addEventListener('click', function() {
+          document.querySelectorAll('.glasses-item').forEach(i => i.classList.remove('active'));
+          this.classList.add('active');
+          
+          const imageSrc = this.dataset.image;
+          const glassesId = parseInt(this.dataset.id); // 获取眼镜ID
+          selectedGlasses = imageSrc;
+          selectedGlassesId = glassesId;
+          
+          // 更新 Three.js 贴图
+          updateGlassesTexture(imageSrc);
+          
+          statusMessage.textContent = `✓ 已选择：${this.querySelector('.glasses-name').textContent}`;
+        });
+      });
+    }
+    
+    // 开启摄像头
+    async function startCamera() {
+      try {
+        stream = await navigator.mediaDevices.getUserMedia({ 
+          video: { 
+            width: 640, 
+            height: 480,
+            facingMode: 'user'
+          } 
+        });
+        video.srcObject = stream;
+        isCameraRunning = true;
+        
+        video.addEventListener('loadedmetadata', () => {
+          canvas.width = video.videoWidth;
+          canvas.height = video.videoHeight;
+          startBtn.textContent = '关闭摄像头';
+          captureBtn.disabled = false;
+          statusMessage.textContent = '正在初始化面部检测...';
+          
+          // 初始化 Three.js (如果还没初始化)
+          if (!renderer) {
+             initThreeJS();
+          }
+          
+          // 启动MediaPipe面部检测
+          if (!camera) {
+            camera = new Camera(video, {
+              onFrame: async () => {
+                await faceMesh.send({image: video});
+              },
+              width: 640,
+              height: 480
+            });
+            camera.start();
+          }
+        });
+      } catch (err) {
+        console.error('无法访问摄像头:', err);
+        statusMessage.textContent = '无法访问摄像头，请检查权限设置';
+      }
+    }
+    
+    // 关闭摄像头
+    function stopCamera() {
+      if (stream) {
+        stream.getTracks().forEach(track => track.stop());
+        video.srcObject = null;
+        stream = null;
+        if (camera) {
+          camera.stop();
+          camera = null; // 重置
+        }
+        startBtn.textContent = '开启摄像头';
+        captureBtn.disabled = true;
+        statusMessage.textContent = '摄像头已关闭';
+        isCameraRunning = false;
+        
+        // 隐藏眼镜
+        if(glassesGroup) glassesGroup.visible = false;
+        if(renderer) {
+            renderer.clear();
+        }
+      }
+    }
+    
+    // 拍照保存
+    function capturePhoto() {
+      const tempCanvas = document.createElement('canvas');
+      tempCanvas.width = video.videoWidth;
+      tempCanvas.height = video.videoHeight;
+      const tempCtx = tempCanvas.getContext('2d');
+      
+      // 1. 绘制视频帧 (镜像翻转)
+      tempCtx.save();
+      tempCtx.scale(-1, 1);
+      tempCtx.drawImage(video, -tempCanvas.width, 0, tempCanvas.width, tempCanvas.height);
+      tempCtx.restore();
+      
+      // 2. 绘制 Three.js 的内容 (WebGL canvas)
+      // WebGL canvas 可以直接 drawImage 过去，它是透明背景的
+      // 注意：Three.js canvas 已经是 scaleX(-1) 了吗？
+      // 在 CSS 里 #canvas { transform: scaleX(-1); }
+      // 但是 drawImage 是画 element 的内容，CSS transform 不会被画进去。
+      // 所以画出来的 Three.js 内容是未翻转的（正常的）。
+      // 但是我们在计算位置时，使用了 `px = -(nose.x - 0.5) * videoW`，这其实是适应了 Three.js 的非镜像坐标系？
+      // 让我们在屏幕上看起来是对的就对了。
+      // 如果屏幕上 Three.js Canvas 被 CSS 翻转了，那我们看到的“左”其实是Canvas的“右”。
+      
+      // 这里只需要把 canvas 画上去，并且也镜像翻转一下，以匹配视频
+      // 因为它们在屏幕上都是 CSS scaleX(-1) 的。
+      tempCtx.save();
+      tempCtx.scale(-1, 1);
+      tempCtx.drawImage(canvas, -tempCanvas.width, 0); // 直接画 canvas 元素
+      tempCtx.restore();
+      
+      // 下载图片
+      tempCanvas.toBlob(blob => {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `splurge-vision-try-on-${Date.now()}.jpg`;
+        a.click();
+        URL.revokeObjectURL(url);
+        statusMessage.textContent = '✓ 照片已保存！';
+      });
+    }
+    
+    // 事件监听
+    startBtn.addEventListener('click', () => {
+      if (stream) {
+        stopCamera();
+      } else {
+        startCamera();
+      }
+    });
+    
+    captureBtn.addEventListener('click', capturePhoto);
+    
+    // 初始化
+    initFaceMesh();
+    renderGlassesList();
+  </script>
+</body>
+</html>

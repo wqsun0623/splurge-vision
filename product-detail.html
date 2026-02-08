@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <title>商品详情 - Splurge Vision</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: linear-gradient(135deg, #C9A9A8 0%, #9BA89C 50%, #B5A69B 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+    
+    /* ===== 页面容器 ===== */
+    .detail-container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    /* ===== 返回按钮 ===== */
+    .back-nav {
+      margin-bottom: 20px;
+    }
+    
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      background: rgba(255,255,255,0.9);
+      color: #6B7B6D;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+    
+    .back-btn:hover {
+      background: white;
+      transform: translateX(-3px);
+    }
+    
+    /* ===== 详情主容器 ===== */
+    .detail-content {
+      background: white;
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 50px;
+    }
+    
+    /* ===== 左侧：图片展示区 ===== */
+    .detail-images {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    
+    .main-image-container {
+      width: 100%;
+      height: 500px;
+      background: linear-gradient(135deg, #f8f8f8 0%, #f0f0f0 100%);
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px;
+      overflow: hidden;
+    }
+    
+    .main-image {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      transition: transform 0.3s;
+    }
+    
+    .main-image:hover {
+      transform: scale(1.05);
+    }
+    
+    /* ===== 缩略图画廊 ===== */
+    .thumbnail-gallery {
+      display: flex;
+      gap: 12px;
+      overflow-x: auto;
+      padding: 5px 0;
+    }
+    
+    .thumbnail {
+      width: 100px;
+      height: 100px;
+      background: #f5f5f5;
+      border-radius: 12px;
+      padding: 10px;
+      cursor: pointer;
+      border: 3px solid transparent;
+      transition: all 0.2s;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .thumbnail img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+    
+    .thumbnail:hover {
+      border-color: #9BA89C;
+    }
+    
+    .thumbnail.active {
+      border-color: #6B7B6D;
+      background: #f0f0f0;
+    }
+    
+    /* ===== 右侧：商品信息区 ===== */
+    .detail-info {
+      display: flex;
+      flex-direction: column;
+      gap: 25px;
+    }
+    
+    .detail-name {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #333;
+      line-height: 1.3;
+    }
+    
+    .detail-desc {
+      font-size: 1.05rem;
+      color: #666;
+      line-height: 1.7;
+    }
+    
+    .detail-price {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #9BA89C;
+    }
+    
+    /* ===== 颜色选择区 ===== */
+    .color-selector {
+      padding-top: 20px;
+      border-top: 2px solid #f0f0f0;
+    }
+    
+    .color-label {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 15px;
+      display: block;
+    }
+    
+    .color-options {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    
+    .color-option {
+      padding: 12px 24px;
+      border: 2px solid #e0e0e0;
+      border-radius: 10px;
+      background: white;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-weight: 600;
+      color: #555;
+    }
+    
+    .color-option:hover {
+      border-color: #9BA89C;
+      background: rgba(155, 168, 156, 0.05);
+    }
+    
+    .color-option.active {
+      border-color: #6B7B6D;
+      background: linear-gradient(135deg, rgba(155, 168, 156, 0.15) 0%, rgba(107, 123, 109, 0.1) 100%);
+      color: #6B7B6D;
+    }
+    
+    /* ===== 规格信息 ===== */
+    .specs-section {
+      padding: 20px;
+      background: #f9f9f9;
+      border-radius: 12px;
+    }
+    
+    .specs-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #333;
+      margin-bottom: 15px;
+    }
+    
+    .spec-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid #e0e0e0;
+    }
+    
+    .spec-item:last-child {
+      border-bottom: none;
+    }
+    
+    .spec-label {
+      color: #888;
+      font-weight: 600;
+    }
+    
+    .spec-value {
+      color: #333;
+      font-weight: 600;
+    }
+    
+    /* ===== 操作按钮区 ===== */
+    .action-buttons {
+      display: flex;
+      gap: 15px;
+      padding-top: 20px;
+    }
+    
+    .action-btn {
+      flex: 1;
+      padding: 18px;
+      border: none;
+      border-radius: 12px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .btn-buy-now {
+      background: linear-gradient(135deg, #9BA89C 0%, #8B9A8C 100%);
+      color: white;
+    }
+    
+    .btn-buy-now:hover {
+      background: linear-gradient(135deg, #8B9A8C 0%, #7A8A7C 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(107, 123, 109, 0.3);
+    }
+    
+    .btn-add-cart {
+      background: white;
+      color: #9BA89C;
+      border: 2px solid #9BA89C;
+    }
+    
+    .btn-add-cart:hover {
+      background: rgba(155, 168, 156, 0.1);
+      transform: translateY(-2px);
+    }
+    
+    /* ===== 响应式设计 ===== */
+    @media (max-width: 968px) {
+      .detail-content {
+        grid-template-columns: 1fr;
+        gap: 30px;
+      }
+      
+      .main-image-container {
+        height: 400px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="detail-container">
+    <!-- 返回按钮 -->
+    <nav class="back-nav">
+      <a href="products.html" class="back-btn">
+        ← 返回商品列表
+      </a>
+    </nav>
+    
+    <!-- 详情内容 -->
+    <div class="detail-content">
+      <!-- 左侧：图片展示 -->
+      <div class="detail-images">
+        <div class="main-image-container">
+          <img id="mainImage" src="" alt="" class="main-image">
+        </div>
+        
+        <div class="thumbnail-gallery" id="thumbnailGallery">
+          <!-- 缩略图由 JavaScript 生成 -->
+        </div>
+      </div>
+      
+      <!-- 右侧：商品信息 -->
+      <div class="detail-info">
+        <h1 class="detail-name" id="productName">商品名称</h1>
+        <p class="detail-desc" id="productDesc">商品描述</p>
+        <div class="detail-price" id="productPrice">¥899</div>
+        
+        <!-- 颜色选择 -->
+        <div class="color-selector">
+          <label class="color-label">选择颜色</label>
+          <div class="color-options" id="colorOptions">
+            <!-- 颜色选项由 JavaScript 生成 -->
+          </div>
+        </div>
+        
+        <!-- 规格信息 -->
+        <div class="specs-section">
+          <h3 class="specs-title">产品规格</h3>
+          <div class="spec-item">
+            <span class="spec-label">材质</span>
+            <span class="spec-value">优质醋酸纤维</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">镜框宽度</span>
+            <span class="spec-value">140mm</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">镜腿长度</span>
+            <span class="spec-value">145mm</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">鼻梁宽度</span>
+            <span class="spec-value">18mm</span>
+          </div>
+        </div>
+        
+        <!-- 操作按钮 -->
+        <div class="action-buttons">
+          <button class="action-btn btn-buy-now" onclick="buyNow()">立即购买</button>
+          <button class="action-btn btn-add-cart" onclick="addToCart()">加入购物车</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    // ===== 商品数据（与列表页保持一致的数据结构）=====
+    const productsData = {
+      "sv-product-a": {
+        name: "SPLURGE VISION NO.1",
+        desc: "一件用于日常佩戴的物件<br>更接近一件被长期保留的作品",
+        price: 258,
+        defaultVariant: "default",
+        variants: [
+          {
+            color: "default",
+            label: "标准款",
+            images: ["1号.jpg", "1号b.jpg", "1号c.jpg", "1号d.jpg"]
+          }
+        ]
+      },
+      "sv-product-b": {
+        name: "SPLURGE VISION NO.2",
+        desc: "不打断视线<br>也不打断你正在做的事情",
+        price: 249,
+        defaultVariant: "default",
+        variants: [
+          {
+            color: "default",
+            label: "标准款",
+            images: ["2号.jpg", "2号a.jpg"]
+          }
+        ]
+      },
+      "sv-product-c": {
+        name: "SPLURGE VISION NO.3",
+        desc: "靠比例成立<br>而不是靠风格取胜",
+        price: 219,
+        defaultVariant: "default",
+        variants: [
+          {
+            color: "default",
+            label: "标准款",
+            images: ["3号.jpg", "3号a.jpg", "3号b.jpg", "3号c.jpg", "3号e.jpg", "3号f.jpg", "3号g.jpg"]
+          }
+        ]
+      },
+      "sv-product-d": {
+        name: "SPLURGE VISION NO.4",
+        desc: "不追求好看<br>只追求被长期使用",
+        price: 219,
+        defaultVariant: "default",
+        variants: [
+          {
+            color: "default",
+            label: "标准款",
+            images: ["4号.jpg", "4号a.jpg", "4号b.jpg", "4号c.jpg", "4号d.jpg", "4号e.jpg"]
+          }
+        ]
+      },
+      "sv-product-e": {
+        name: "SPLURGE VISION NO.5",
+        desc: "为近距离生活准备<br>适合书页与灯光之间",
+        price: 489,
+        defaultVariant: "default",
+        variants: [
+          {
+            color: "default",
+            label: "标准款",
+            images: ["5号.jpg", "5号a.jpg", "5号b.jpg", "5号c.jpg", "5号d.jpg", "5号e.jpg"]
+          }
+        ]
+      },
+      "sv-product-f": {
+        name: "SPLURGE VISION NO.6",
+        desc: "在存在感与消失之间<br>找到一个刚好的位置",
+        price: 249,
+        defaultVariant: "default",
+        variants: [
+          {
+            color: "default",
+            label: "标准款",
+            images: ["6号.jpg", "6号cc.jpg", "8号.jpg", "8号a.jpg", "8号b.jpg", "8号c.jpg"]
+          }
+        ]
+      },
+      "sv-product-g": {
+        name: "SPLURGE VISION NO.7",
+        desc: "不是为展示设计<br>而是为陪伴存在",
+        price: 358,
+        defaultVariant: "default",
+        variants: [
+          {
+            color: "default",
+            label: "标准款",
+            images: ["7号.jpg", "7号b.jpg", "7号c.jpg", "7号ccc.jpg", "7号d.jpg", "7号e.jpg", "7号f.jpg"]
+          }
+        ]
+      }
+    };
+    
+    // ===== 当前商品信息 =====
+    let currentProduct = null;
+    let currentVariantIndex = 0;
+    let currentImageIndex = 0;
+    
+    // ===== 初始化页面 =====
+    function initPage() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const productId = urlParams.get('id') || 'sv-product-a';
+      
+      currentProduct = productsData[productId];
+      
+      if (!currentProduct) {
+        alert('商品不存在');
+        window.location.href = 'products.html';
+        return;
+      }
+      
+      // 渲染商品基本信息
+      document.getElementById('productName').textContent = currentProduct.name;
+      document.getElementById('productDesc').textContent = currentProduct.desc;
+      document.getElementById('productPrice').textContent = `¥${currentProduct.price}`;
+      
+      // 查找默认 variant 的索引
+      const defaultIndex = currentProduct.variants.findIndex(v => v.color === currentProduct.defaultVariant);
+      currentVariantIndex = defaultIndex >= 0 ? defaultIndex : 0;
+      
+      // 渲染颜色选项
+      renderVariants();
+      
+      // 渲染当前 variant 的图片
+      renderImagesForVariant(currentVariantIndex);
+    }
+    
+    // ===== 渲染 variant 选项 =====
+    function renderVariants() {
+      const colorContainer = document.getElementById('colorOptions');
+      colorContainer.innerHTML = '';
+      
+      currentProduct.variants.forEach((variant, index) => {
+        const option = document.createElement('div');
+        option.className = `color-option ${index === currentVariantIndex ? 'active' : ''}`;
+        option.textContent = variant.label;
+        option.onclick = () => selectVariant(index);
+        colorContainer.appendChild(option);
+      });
+    }
+    
+    // ===== 选择 variant =====
+    function selectVariant(variantIndex) {
+      currentVariantIndex = variantIndex;
+      
+      // 更新选项高亮
+      const options = document.querySelectorAll('.color-option');
+      options.forEach((opt, i) => {
+        opt.classList.toggle('active', i === variantIndex);
+      });
+      
+      // 渲染该 variant 的所有图片
+      renderImagesForVariant(variantIndex);
+    }
+    
+    // ===== 渲染指定 variant 的所有图片 =====
+    function renderImagesForVariant(variantIndex) {
+      const variant = currentProduct.variants[variantIndex];
+      const images = variant.images;
+      
+      // 更新主图
+      updateMainImage(images[0]);
+      
+      // 渲染缩略图
+      renderThumbnails(images);
+    }
+    
+    // ===== 更新主图 =====
+    function updateMainImage(imageSrc) {
+      const mainImg = document.getElementById('mainImage');
+      mainImg.src = imageSrc;
+      mainImg.alt = currentProduct.name;
+    }
+    
+    // ===== 渲染缩略图 =====
+    function renderThumbnails(images) {
+      const gallery = document.getElementById('thumbnailGallery');
+      gallery.innerHTML = '';
+      
+      images.forEach((img, index) => {
+        const thumb = document.createElement('div');
+        thumb.className = `thumbnail ${index === 0 ? 'active' : ''}`;
+        thumb.onclick = () => selectThumbnail(img, index);
+        thumb.innerHTML = `<img src="${img}" alt="视图 ${index + 1}">`;
+        gallery.appendChild(thumb);
+      });
+    }
+    
+    // ===== 选择缩略图 =====
+    function selectThumbnail(imageSrc, index) {
+      updateMainImage(imageSrc);
+      currentImageIndex = index;
+      
+      // 更新缩略图高亮
+      const thumbnails = document.querySelectorAll('.thumbnail');
+      thumbnails.forEach((thumb, i) => {
+        thumb.classList.toggle('active', i === index);
+      });
+    }
+    
+    // ===== 立即购买 =====
+    function buyNow() {
+      alert(`正在购买 ${currentProduct.name}\n价格：¥${currentProduct.price}`);
+      // 这里可以跳转到结账页面
+    }
+    
+    // ===== 加入购物车 =====
+    function addToCart() {
+      alert(`已将 ${currentProduct.name} 加入购物车！`);
+    }
+    
+    // ===== 页面加载时初始化 =====
+    initPage();
+  </script>
+</body>
+</html>

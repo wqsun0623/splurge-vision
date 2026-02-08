@@ -1,0 +1,1638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Splurge Vision</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Montserrat', sans-serif;
+      background: 
+        radial-gradient(ellipse 800px 600px at 20% 30%, rgba(165, 170, 158, 0.3) 0%, transparent 70%),
+        radial-gradient(ellipse 700px 500px at 85% 75%, rgba(185, 178, 165, 0.25) 0%, transparent 65%),
+        radial-gradient(ellipse 900px 400px at 50% 100%, rgba(195, 190, 180, 0.2) 0%, transparent 70%),
+        radial-gradient(ellipse 600px 700px at 8% 85%, rgba(175, 180, 185, 0.18) 0%, transparent 75%),
+        linear-gradient(135deg, #EDE8E2 0%, #E5DDD5 25%, #DDD6CE 50%, #D2C9C0 75%, #C8BFB5 100%);
+      background-attachment: fixed;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      overflow-x: hidden;
+    }
+    
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: 
+        repeating-linear-gradient(
+          0deg,
+          rgba(255, 255, 255, 0.03) 0px,
+          rgba(255, 255, 255, 0.03) 2px,
+          transparent 2px,
+          transparent 4px
+        ),
+        repeating-linear-gradient(
+          90deg,
+          rgba(107, 123, 109, 0.02) 0px,
+          rgba(107, 123, 109, 0.02) 2px,
+          transparent 2px,
+          transparent 4px
+        );
+      pointer-events: none;
+      z-index: 1;
+    }
+    
+    header, main, footer {
+      position: relative;
+      z-index: 2;
+    }
+    
+    .bg-decor {
+      position: fixed;
+      z-index: 0;
+      pointer-events: none;
+      border-radius: 50%;
+      opacity: 0.15;
+      filter: blur(1px);
+    }
+    .bg-decor-1 {
+      width: 300px; height: 300px;
+      bottom: -50px; right: -30px;
+      background: radial-gradient(circle, rgba(200, 180, 160, 0.6) 0%, transparent 70%);
+      animation: floatDecor1 12s ease-in-out infinite;
+    }
+    .bg-decor-2 {
+      width: 200px; height: 200px;
+      top: 20%; left: -40px;
+      background: radial-gradient(circle, rgba(180, 170, 155, 0.5) 0%, transparent 70%);
+      animation: floatDecor2 15s ease-in-out infinite;
+    }
+    .bg-decor-3 {
+      width: 150px; height: 150px;
+      top: 50%; right: 8%;
+      background: radial-gradient(circle, rgba(190, 175, 160, 0.4) 0%, transparent 70%);
+      animation: floatDecor3 10s ease-in-out infinite;
+    }
+    .bg-decor-4 {
+      width: 100px; height: 100px;
+      bottom: 30%; left: 10%;
+      background: radial-gradient(circle, rgba(210, 195, 175, 0.5) 0%, transparent 70%);
+      animation: floatDecor2 18s ease-in-out infinite reverse;
+    }
+    @keyframes floatDecor1 {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(-20px, -30px) scale(1.1); }
+    }
+    @keyframes floatDecor2 {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(15px, -25px) scale(1.05); }
+    }
+    @keyframes floatDecor3 {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(-10px, 20px) scale(1.08); }
+    }
+    header {
+      width: 100%;
+      padding: 32px 0;
+      background: rgba(155, 168, 156, 0.35);
+      box-shadow: 0 8px 32px 0 rgba(107, 107, 104, 0.08);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid rgba(155, 168, 156, 0.3);
+      text-align: center;
+      position: relative;
+    }
+    .header-right {
+      position: absolute;
+      right: 30px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    
+    .login-btn {
+      background: rgba(255,255,255,0.4);
+      border: 2px solid rgba(107, 123, 109, 0.4);
+      color: #6B7B6D;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    
+    .login-btn:hover {
+      background: #6B7B6D;
+      color: white;
+      border-color: #6B7B6D;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(107, 123, 109, 0.3);
+    }
+    
+    .login-icon {
+      width: 18px;
+      height: 18px;
+    }
+    
+    .lang-switcher {
+      display: flex;
+      gap: 8px;
+    }
+    .lang-btn {
+      background: rgba(255,255,255,0.3);
+      border: 2px solid rgba(107, 123, 109, 0.3);
+      color: #6B7B6D;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .lang-btn.active {
+      background: #6B7B6D;
+      color: white;
+      border-color: #6B7B6D;
+    }
+    .lang-btn:hover {
+      border-color: #6B7B6D;
+    }
+    
+    /* 登录模态框样式 */
+    .login-modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(5px);
+    }
+    
+    .login-modal-content {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(255, 255, 255, 0.95);
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+      width: 90%;
+      max-width: 400px;
+    }
+    
+    .login-close {
+      position: absolute;
+      right: 20px;
+      top: 20px;
+      font-size: 28px;
+      font-weight: bold;
+      color: #999;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+    
+    .login-close:hover {
+      color: #333;
+    }
+    
+    .login-title {
+      text-align: center;
+      font-size: 1.8rem;
+      color: #6B7B6D;
+      margin-bottom: 30px;
+      font-weight: 700;
+    }
+    
+    .login-form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    
+    .login-input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    
+    .verify-code-wrapper {
+      display: flex;
+      gap: 10px;
+    }
+    
+    .verify-code-wrapper .login-input {
+      flex: 1;
+    }
+    
+    .send-code-btn {
+      padding: 12px 20px;
+      background: linear-gradient(135deg, #9BA89C 0%, #6B7B6D 100%);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      white-space: nowrap;
+      min-width: 110px;
+    }
+    
+    .send-code-btn:hover:not(:disabled) {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 15px rgba(107, 123, 109, 0.4);
+    }
+    
+    .send-code-btn:disabled {
+      background: linear-gradient(135deg, #ccc 0%, #999 100%);
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+    
+    .login-label {
+      color: #6B7B6D;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+    
+    .login-input {
+      padding: 12px 15px;
+      border: 2px solid rgba(107, 123, 109, 0.3);
+      border-radius: 10px;
+      font-size: 1rem;
+      transition: all 0.3s;
+      background: rgba(255, 255, 255, 0.8);
+    }
+    
+    .login-input:focus {
+      outline: none;
+      border-color: #6B7B6D;
+      background: white;
+    }
+    
+    .login-submit {
+      padding: 14px;
+      background: linear-gradient(135deg, #9BA89C 0%, #6B7B6D 100%);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s;
+      margin-top: 10px;
+    }
+    
+    .login-submit:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 20px rgba(107, 123, 109, 0.4);
+    }
+    
+    .login-footer {
+      text-align: center;
+      margin-top: 20px;
+      color: #888;
+      font-size: 0.85rem;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 2.5rem;
+      color: #6B7B6D;
+      letter-spacing: 2px;
+      font-weight: 700;
+      text-shadow: 0 2px 12px rgba(255,255,255,0.5);
+    }
+    .social-links {
+      margin-top: 10px;
+    }
+    .social-links a {
+      margin: 0 12px;
+      color: #B5A69B;
+      font-size: 1.5rem;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .social-links a:hover {
+      color: #C9A9A8;
+    }
+    main {
+      width: 90%;
+      max-width: 1100px;
+      margin: 40px auto 0;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 32px;
+    }
+    .product-card {
+      background: rgba(201, 169, 168, 0.3);
+      border-radius: 16px;
+      box-shadow: 0 8px 32px 0 rgba(107, 107, 104, 0.1);
+      backdrop-filter: blur(9px);
+      border: 1px solid rgba(201, 169, 168, 0.25);
+      padding: 24px 18px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: transform 0.15s;
+    }
+    .product-card:hover {
+      transform: translateY(-8px) scale(1.03);
+    }
+    .product-card img {
+      width: 140px;
+      height: 110px;
+      object-fit: contain;
+      background: linear-gradient(135deg, rgba(255,255,255,0.5) 0%, rgba(240,235,230,0.6) 100%);
+      border-radius: 16px;
+      margin-bottom: 20px;
+      padding: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.6);
+      border: 1px solid rgba(255,255,255,0.4);
+    }
+    .product-card h2 {
+      margin: 0 0 6px;
+      font-size: 1.4rem;
+      color: #6B7B6D;
+      font-weight: 800;
+      font-family: 'Poppins', 'Montserrat', sans-serif;
+      letter-spacing: 1.5px;
+      text-transform: capitalize;
+    }
+    .product-card .subtitle {
+      margin: 0 0 12px;
+      font-size: 0.85rem;
+      color: #C9A9A8;
+      font-weight: 600;
+      font-family: 'Montserrat', sans-serif;
+      letter-spacing: 0.5px;
+      opacity: 0.95;
+    }
+    .product-card p {
+      color: #8B9B8D;
+      font-size: 1rem;
+      margin: 0 0 16px;
+      text-align: center;
+    }
+    .product-card button {
+      background: linear-gradient(135deg, #C9A9A8 0%, #B5A69B 100%);
+      border: none;
+      border-radius: 20px;
+      color: white;
+      padding: 8px 24px;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      box-shadow: 0 2px 8px #C9A9A833;
+      transition: background 0.2s;
+    }
+    .product-card button:hover {
+      background: linear-gradient(135deg, #9BA89C 0%, #C9A9A8 100%);
+    }
+    
+    /* ===== 模态窗口样式（品牌故事）===== */
+    /* 遮罩层 */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(3px);
+    }
+    
+    /* 弹窗本体 */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 10000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(3px);
+      overflow: auto;
+    }
+    
+    .modal-content {
+      position: relative;
+      margin: 3% auto;
+      width: 85%;
+      max-width: 700px;
+      background: rgba(230, 215, 185, 0.98);
+      border-radius: 16px;
+      padding: 30px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+      max-height: 80vh;
+      overflow-y: auto;
+      font-size: 14px;
+    }
+    
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid rgba(155, 168, 156, 0.3);
+    }
+    
+    .modal-header h2 {
+      color: #6B7B6D;
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin: 0;
+    }
+    
+    /* ❌ 关闭按钮 */
+    .close {
+      color: #999;
+      font-size: 32px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: color 0.2s;
+      line-height: 1;
+    }
+    
+    .close:hover {
+      color: #333;
+    }
+    
+    /* 三个板块 */
+    .modal-section {
+      margin-bottom: 28px;
+      font-size: 15px;
+      line-height: 1.8;
+      color: #333;
+    }
+    
+    /* 联系方式稍微弱一点 */
+    .modal-section.contact {
+      font-size: 14px;
+      color: #666;
+    }
+    
+    /* 旧版模态窗口样式（保留用于其他模态窗口）*/
+    .modal-legacy {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      overflow-y: auto;
+      backdrop-filter: blur(3px);
+    }
+    .modal-content {
+      background: rgba(230, 215, 185, 0.98);
+      margin: 3% auto;
+      padding: 30px;
+      border: 1px solid rgba(200, 185, 155, 0.5);
+      border-radius: 16px;
+      width: 85%;
+      max-width: 700px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+      color: #5a4a3a;
+      line-height: 1.6;
+      font-size: 14px;
+      max-height: 80vh;
+      overflow-y: auto;
+    }
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+      border-bottom: 2px solid rgba(107, 123, 109, 0.2);
+      padding-bottom: 20px;
+    }
+    .modal-header h2 {
+      margin: 0;
+      font-size: 1.6rem;
+      color: #6B7B6D;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+    }
+    .close {
+      color: #6B7B6D;
+      font-size: 2rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+    .close:hover {
+      color: #C9A9A8;
+    }
+    .modal-content p {
+      margin: 15px 0;
+      text-align: justify;
+      word-spacing: 2px;
+    }
+    .product-form {
+      margin: 30px 0;
+      padding: 20px;
+      background: rgba(255,255,255,0.2);
+      border-radius: 12px;
+    }
+    .form-group {
+      margin-bottom: 16px;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 600;
+      color: #6B7B6D;
+      font-size: 0.9rem;
+    }
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid rgba(107, 123, 109, 0.3);
+      border-radius: 8px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.9rem;
+      box-sizing: border-box;
+      color: #6B7B6D;
+    }
+    .form-group input:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: #C9A9A8;
+      background: rgba(255,255,255,0.3);
+    }
+    .product-actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 20px;
+    }
+    .btn-cart,
+    .btn-buy {
+      flex: 1;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-family: 'Montserrat', sans-serif;
+    }
+    .btn-cart {
+      background: rgba(201, 169, 168, 0.5);
+      color: #6B7B6D;
+      border: 2px solid #C9A9A8;
+    }
+    .btn-cart:hover {
+      background: #C9A9A8;
+      color: white;
+    }
+    .btn-buy {
+      background: linear-gradient(135deg, #C9A9A8 0%, #B5A69B 100%);
+      color: white;
+      box-shadow: 0 4px 12px rgba(201, 169, 168, 0.4);
+    }
+    .btn-buy:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(201, 169, 168, 0.5);
+    }
+    footer {
+      margin-top: 60px;
+      color: #6B7B6D;
+      opacity: 0.85;
+      font-size: 1rem;
+      padding: 24px 0 10px;
+    }
+  </style>
+  <!-- Font Awesome for icons -->
+  <script src="https://kit.fontawesome.com/40e8c4b4b1.js" crossorigin="anonymous"></script>
+</head>
+<body>
+  <!-- 背景浮动装饰 -->
+  <div class="bg-decor bg-decor-1"></div>
+  <div class="bg-decor bg-decor-2"></div>
+  <div class="bg-decor bg-decor-3"></div>
+  <div class="bg-decor bg-decor-4"></div>
+  <header>
+    <h1>Splurge Vision</h1>
+    <div class="social-links">
+      <a href="https://instagram.com/" target="_blank"><i class="fab fa-instagram"></i></a>
+      <a href="https://facebook.com/" target="_blank"><i class="fab fa-facebook"></i></a>
+      <a href="https://twitter.com/" target="_blank"><i class="fab fa-twitter"></i></a>
+    </div>
+    <div class="header-right">
+      <button class="login-btn" onclick="openLoginModal()">
+        <svg class="login-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+          <circle cx="12" cy="7" r="4"></circle>
+        </svg>
+        登录
+      </button>
+      <div class="lang-switcher">
+        <button class="lang-btn active" id="langZhS" onclick="switchSiteLanguage('zh-s')">中文</button>
+        <button class="lang-btn" id="langZhT" onclick="switchSiteLanguage('zh-t')">繁體</button>
+        <button class="lang-btn" id="langEn" onclick="switchSiteLanguage('en')">English</button>
+      </div>
+    </div>
+  </header>
+  
+  <!-- 登录模态框 -->
+  <div id="loginModal" class="login-modal">
+    <div class="login-modal-content">
+      <span class="login-close" onclick="closeLoginModal()">&times;</span>
+      <h2 class="login-title">欢迎登录</h2>
+      <form class="login-form" onsubmit="handleLogin(event)">
+        <div class="login-input-group">
+          <label class="login-label">手机号</label>
+          <input type="tel" class="login-input" id="phoneNumber" placeholder="请输入手机号" pattern="[0-9]{11}" required>
+        </div>
+        <div class="login-input-group">
+          <label class="login-label">验证码</label>
+          <div class="verify-code-wrapper">
+            <input type="text" class="login-input" id="verifyCode" placeholder="请输入验证码" maxlength="6" required>
+            <button type="button" class="send-code-btn" id="sendCodeBtn" onclick="sendVerifyCode()">发送验证码</button>
+          </div>
+        </div>
+        <button type="submit" class="login-submit">登录</button>
+      </form>
+      <div class="login-footer">
+        登录即表示同意用户协议和隐私政策
+      </div>
+      <div class="login-footer" style="text-align: center; margin-top: 15px;">
+        还没有账号？<a href="#" onclick="switchToRegister(); return false;" style="color: #6B7B6D; font-weight: 600; text-decoration: underline;">立即注册</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- 注册模态框 -->
+  <div id="registerModal" class="login-modal">
+    <div class="login-modal-content" style="max-width: 500px;">
+      <span class="login-close" onclick="closeRegisterModal()">&times;</span>
+      <h2 class="login-title">欢迎注册</h2>
+      <form class="login-form" onsubmit="handleRegister(event)">
+        <div class="login-input-group">
+          <label class="login-label">手机号</label>
+          <input type="tel" class="login-input" id="regPhoneNumber" placeholder="请输入手机号" pattern="[0-9]{11}" required>
+        </div>
+        <div class="login-input-group">
+          <label class="login-label">验证码</label>
+          <div class="verify-code-wrapper">
+            <input type="text" class="login-input" id="regVerifyCode" placeholder="请输入验证码" maxlength="6" required>
+            <button type="button" class="send-code-btn" id="regSendCodeBtn" onclick="sendRegisterCode()">发送验证码</button>
+          </div>
+        </div>
+        <div class="login-input-group">
+          <label class="login-label">希望我们称呼您为</label>
+          <input type="text" class="login-input" id="regNickname" placeholder="请输入昵称" required>
+        </div>
+        <div class="login-input-group">
+          <label class="login-label">生日</label>
+          <input type="date" class="login-input" id="regBirthday" required>
+        </div>
+        <div class="login-input-group">
+          <label class="login-label">收货地址</label>
+          <select class="login-input" id="regCountry" onchange="updateRegProvinces()" required>
+            <option value="">选择国家/地区</option>
+            <option value="中国大陆">中国大陆</option>
+            <option value="香港">香港</option>
+            <option value="澳门">澳门</option>
+            <option value="台湾">台湾</option>
+            <option value="日本">日本</option>
+            <option value="韩国">韩国</option>
+            <option value="英国">英国</option>
+          </select>
+        </div>
+        <div class="login-input-group">
+          <label class="login-label">省份/州</label>
+          <select class="login-input" id="regProvince" onchange="updateRegCities()" required>
+            <option value="">请先选择国家</option>
+          </select>
+        </div>
+        <div class="login-input-group">
+          <label class="login-label">城市</label>
+          <select class="login-input" id="regCity" required>
+            <option value="">请先选择省份</option>
+          </select>
+        </div>
+        <div class="login-input-group">
+          <label class="login-label">详细地址</label>
+          <input type="text" class="login-input" id="regDetailAddress" placeholder="街道、门牌号等" required>
+        </div>
+        <button type="submit" class="login-submit">注册</button>
+      </form>
+      <div class="login-footer">
+        注册即表示同意用户协议和隐私政策
+      </div>
+      <div class="login-footer" style="text-align: center; margin-top: 15px;">
+        已有账号？<a href="#" onclick="switchToLogin(); return false;" style="color: #6B7B6D; font-weight: 600; text-decoration: underline;">立即登录</a>
+      </div>
+    </div>
+  </div>
+  <main>
+    <div class="product-card">
+      <img src="tortoiseshell-glasses.png" alt="Classic Tortoiseshell Acetate Glasses">
+      <h2>经典系列</h2>
+      <div class="subtitle">Classic Collection</div>
+      <p>经典不必张扬，它只是在时间里站得住。<br>Classic never shouts, it simply stands the test of time.</p>
+      <button id="classicBtn" onclick="window.location.href='products.html'">Buy Now</button>
+    </div>
+    <div class="product-card">
+      <img src="tortoiseshell-rose-glasses.png" alt="Rose Tinted Tortoiseshell Glasses">
+      <h2>量身定制</h2>
+      <div class="subtitle">Custom Fit</div>
+      <p>清晰，从合适开始。<br>Clarity begins with the right choice.</p>
+      <button onclick="window.location.href='customize.html'">Buy Now</button>
+    </div>
+    <div class="product-card">
+      <img src="tortoiseshell-sage-glasses.png" alt="Sage Green Tortoiseshell Glasses">
+      <h2>品牌故事</h2>
+      <div class="subtitle">Brand Story</div>
+      <p>留下来的，才值得被反复使用。<br>Only what remains deserves to be used repeatedly.</p>
+      <button id="brandStoryBtn">Learn More</button>
+    </div>
+    <div class="product-card" style="background: linear-gradient(135deg, rgba(155, 168, 156, 0.4) 0%, rgba(181, 166, 155, 0.3) 100%);">
+      <div style="font-size: 3rem; margin-bottom: 15px;">✨</div>
+      <h2>虚拟试戴</h2>
+      <div class="subtitle">Virtual Try-On</div>
+      <p>实时预览眼镜效果<br>See how you look in our styles.</p>
+      <button onclick="window.location.href='virtual-try-on.html'" style="background: linear-gradient(135deg, #9BA89C 0%, #8B9A8C 100%); color: white;">Try Now</button>
+    </div>
+  </main>
+  <footer>
+    &copy; 2026 Splurge Vision. Follow us for more updates!
+  </footer>
+</body>
+<div id="classicModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>经典系列</h2>
+      <span class="close close-classic">&times;</span>
+    </div>
+    <img src="classic-detail.jpg" alt="Classic Tortoiseshell Glasses" style="width: 100%; border-radius: 12px; margin: 20px 0;">
+    <p style="text-align: center; font-size: 0.95rem; margin-top: 20px;">经典的魯执和考量<br>高端预订未来上架
+    </p>
+    
+    <div class="product-form">
+      <h3 style="margin-top: 0; color: #6B7B6D; font-size: 1.1rem;">填写订单信息</h3>
+      
+      <div class="form-group">
+        <label>姓名</label>
+        <input type="text" id="customerName" placeholder="请输入姓名" required>
+      </div>
+      
+      <div class="form-group">
+        <label>电話</label>
+        <input type="tel" id="customerPhone" placeholder="请输入电話号码" required>
+      </div>
+      
+      <div class="form-group">
+        <label>国家</label>
+        <select id="customerCountry" onchange="updateProvinces()" required>
+          <option value="">-- 选择国家 --</option>
+          <option value="China">中国</option>
+        </select>
+      </div>
+      
+      <div class="form-group">
+        <label>省份</label>
+        <select id="customerProvince" onchange="updateCities()" required>
+          <option value="">-- 请先选择国家 --</option>
+        </select>
+      </div>
+      
+      <div class="form-group">
+        <label>城市</label>
+        <select id="customerCity" onchange="updateDistricts()" required>
+          <option value="">-- 请先选择省份 --</option>
+        </select>
+      </div>
+      
+      <div class="form-group">
+        <label>区县</label>
+        <select id="customerDistrict" required>
+          <option value="">-- 请先选择城市 --</option>
+        </select>
+      </div>
+      
+      <div class="form-group">
+        <label>街道地址</label>
+        <input type="text" id="customerStreet" placeholder="请输入详细街道地址" required>
+      </div>
+      
+      <div class="form-group">
+        <label>邮编</label>
+        <input type="text" id="customerPostal" placeholder="请输入邮编代码">
+      </div>
+      
+      <div class="product-actions">
+        <button class="btn-cart" onclick="addToCart()">♥ 加入购物车</button>
+        <button class="btn-buy" onclick="checkout()">立即购买</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 品牌故事模态窗口 -->
+<div class="modal-overlay" id="brandStoryModal">
+  <div class="modal" style="position:relative; display:block; width:85%; max-width:700px; height:auto; background:rgba(235, 220, 200, 0.98); border-radius:16px; padding:30px; box-shadow:0 8px 32px rgba(0,0,0,0.2); max-height:80vh; overflow-y:auto;">
+    <button class="modal-close" id="brandStoryClose" aria-label="Close">×</button>
+
+    <!-- 板块一 -->
+    <section class="modal-section">
+      <p>被长期保留的日常物件。</p>
+      <p>通过比例、重量与留白，让佩戴本身显得自然。</p>
+    </section>
+
+    <!-- 板块二 -->
+    <section class="modal-section">
+      <p>每一副眼镜，都被设计成可以陪伴很久的存在。</p>
+    </section>
+
+    <!-- 板块三：联系方式 -->
+    <section class="modal-section contact">
+      <p>Contact</p>
+      <p>Email: SplurgeVision@163.com</p>
+      <p>Instagram: Splurge Vision</p>
+    </section>
+  </div>
+</div>
+
+<!-- 帮助与支持页脚 -->
+<footer style="background: rgba(155, 168, 156, 0.2); padding: 50px 20px 30px; margin-top: 60px; border-top: 2px solid rgba(107, 123, 109, 0.15);">
+  <div style="max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 40px;">
+    
+    <!-- 需要帮助 -->
+    <div>
+      <h3 style="color: #6B7B6D; font-size: 1.2rem; margin-bottom: 20px; font-weight: 700;">📞 需要帮助？</h3>
+      <div style="line-height: 2;">
+        <p style="margin: 10px 0; color: #6B7B6D;">
+          <strong style="color: #9BA89C;">致电我们：</strong><br>
+          <a href="tel:+447549875477" style="color: #6B7B6D; text-decoration: none; font-size: 1.05rem; font-weight: 600;">+44 7549 875477</a><br>
+          <span style="font-size: 0.85rem; color: #8B9B8D;">周一至周六 9:00-18:00</span>
+        </p>
+        <p style="margin: 18px 0; color: #6B7B6D;">
+          <strong style="color: #9BA89C;">Email我们：</strong><br>
+          <a href="mailto:SplurgeVision@163.com" style="color: #6B7B6D; text-decoration: none; font-weight: 600;">SplurgeVision@163.com</a><br>
+          <span style="font-size: 0.85rem; color: #8B9B8D;">24小时内回复</span>
+        </p>
+        <p style="margin: 18px 0; color: #6B7B6D;">
+          <strong style="color: #9BA89C;">关注我们：</strong><br>
+          <span style="font-size: 0.9rem; color: #6B7B6D;">🔴 小红书：Splurge Vision眼镜店</span><br>
+          <span style="font-size: 0.9rem; color: #6B7B6D;">📷 Instagram：Splurge Vision</span>
+        </p>
+      </div>
+    </div>
+    
+    <!-- 常见问题 -->
+    <div>
+      <h3 style="color: #6B7B6D; font-size: 1.2rem; margin-bottom: 20px; font-weight: 700;">❓ 常见问题</h3>
+      <div style="line-height: 2.2;">
+        <a href="#" onclick="showFAQ('return'); return false;" style="display: block; color: #6B7B6D; text-decoration: none; font-weight: 600; transition: color 0.2s; margin-bottom: 8px;">🔄 如何退换货</a>
+        <a href="#" onclick="showFAQ('customize'); return false;" style="display: block; color: #6B7B6D; text-decoration: none; font-weight: 600; transition: color 0.2s; margin-bottom: 8px;">👓 如何定制镜片</a>
+      </div>
+    </div>
+    
+    <!-- 配送与退换货 -->
+    <div>
+      <h3 style="color: #6B7B6D; font-size: 1.2rem; margin-bottom: 20px; font-weight: 700;">📦 配送与退换货</h3>
+      <div style="line-height: 2.2;">
+        <a href="#" onclick="showFAQ('premium-shipping'); return false;" style="display: block; color: #6B7B6D; text-decoration: none; font-weight: 600; transition: color 0.2s; margin-bottom: 8px;">✨ 尊享配送</a>
+        <a href="#" onclick="showFAQ('standard-shipping'); return false;" style="display: block; color: #6B7B6D; text-decoration: none; font-weight: 600; transition: color 0.2s; margin-bottom: 8px;">📮 标准配送</a>
+      </div>
+    </div>
+    
+    <!-- 保养与维修 -->
+    <div>
+      <h3 style="color: #6B7B6D; font-size: 1.2rem; margin-bottom: 20px; font-weight: 700;">🛠️ 保养与维修</h3>
+      <div style="line-height: 1.8;">
+        <p style="color: #6B7B6D; margin-bottom: 15px;">欢迎联系我们，我们的专员乐意为您提供协助与建议。</p>
+        <a href="#" onclick="showFAQ('care'); return false;" style="display: inline-block; padding: 10px 20px; background: linear-gradient(135deg, #9BA89C 0%, #8B9A8C 100%); color: white; text-decoration: none; border-radius: 8px; font-weight: 600; transition: transform 0.2s; box-shadow: 0 4px 12px rgba(155, 168, 156, 0.3);" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">了解保养维修</a>
+      </div>
+    </div>
+    
+  </div>
+  
+  <!-- 版权信息 -->
+  <div style="text-align: center; margin-top: 40px; padding-top: 20px; border-top: 1px solid rgba(107, 123, 109, 0.15); color: #8B9B8D; font-size: 0.85rem;">
+    <p>© 2026 Splurge Vision. All Rights Reserved.</p>
+    <p style="margin-top: 8px;">由英伦设计师团队精心打造 | 传承经典·探索未来</p>
+  </div>
+</footer>
+
+<!-- 常见问题模态窗口 -->
+<div id="faqModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2 id="faqTitle">常见问题</h2>
+      <span class="close" onclick="document.getElementById('faqModal').style.display='none'">&times;</span>
+    </div>
+    <div id="faqContent" style="line-height: 1.8;">
+      <!-- 内容由JavaScript动态填充 -->
+    </div>
+  </div>
+</div>
+
+<script>
+  // 地址数据库
+  const addressData = {
+    China: {
+      '北京': {
+        '北京市': ['东城区', '西城区', '朝阳区', '丰台区', '石景山区', '海淀区', '门头沟区', '房山区', '通州区']
+      },
+      '上海': {
+        '上海市': ['黄浦区', '徐汇区', '长宁区', '静安区', '普陀区', '虹口区', '杨浦区', '浦东新区', '闵行区', '宝山区', '嘉定区']
+      },
+      '广东': {
+        '广州': ['越秀区', '荔湾区', '海珠区', '天河区', '白云区', '黄埔区', '花都区', '增城区', '从化区'],
+        '深圳': ['罗湖区', '福田区', '南山区', '宝安区', '龙岗区', '龙华区', '坪山区', '光明区', '大鹏新区'],
+        '佛山': ['禅城区', '南海区', '顺德区', '三水区', '高明区']
+      },
+      '浙江': {
+        '杭州': ['上城区', '下城区', '江干区', '拱墅区', '西湖区', '滨江区', '萧山区', '余杭区'],
+        '宁波': ['海曙区', '江东区', '江北区', '镇海区', '北仑区', '鄞州区']
+      },
+      '江苏': {
+        '南京': ['玄武区', '秦淮区', '建邺区', '鼓楼区', '浦口区', '栖霞区', '雨花台区', '江宁区'],
+        '苏州': ['姑苏区', '吴中区', '相城区', '工业园区', '高新区']
+      }
+    }
+  };
+
+  // 更新省份
+  function updateProvinces() {
+    const country = document.getElementById('customerCountry').value;
+    const provinceSelect = document.getElementById('customerProvince');
+    
+    provinceSelect.innerHTML = '<option value="">-- 选择省份 --</option>';
+    
+    if (country && addressData[country]) {
+      Object.keys(addressData[country]).forEach(province => {
+        const option = document.createElement('option');
+        option.value = province;
+        option.textContent = province;
+        provinceSelect.appendChild(option);
+      });
+    }
+    
+    document.getElementById('customerCity').innerHTML = '<option value="">-- 请先选择省份 --</option>';
+    document.getElementById('customerDistrict').innerHTML = '<option value="">-- 请先选择城市 --</option>';
+  }
+
+  // 更新城市
+  function updateCities() {
+    const country = document.getElementById('customerCountry').value;
+    const province = document.getElementById('customerProvince').value;
+    const citySelect = document.getElementById('customerCity');
+    
+    citySelect.innerHTML = '<option value="">-- 选择城市 --</option>';
+    
+    if (country && province && addressData[country][province]) {
+      Object.keys(addressData[country][province]).forEach(city => {
+        const option = document.createElement('option');
+        option.value = city;
+        option.textContent = city;
+        citySelect.appendChild(option);
+      });
+    }
+    
+    document.getElementById('customerDistrict').innerHTML = '<option value="">-- 请先选择城市 --</option>';
+  }
+
+  // 更新区县
+  function updateDistricts() {
+    const country = document.getElementById('customerCountry').value;
+    const province = document.getElementById('customerProvince').value;
+    const city = document.getElementById('customerCity').value;
+    const districtSelect = document.getElementById('customerDistrict');
+    
+    districtSelect.innerHTML = '<option value="">-- 选择区县 --</option>';
+    
+    if (country && province && city && addressData[country][province][city]) {
+      addressData[country][province][city].forEach(district => {
+        const option = document.createElement('option');
+        option.value = district;
+        option.textContent = district;
+        districtSelect.appendChild(option);
+      });
+    }
+  }
+
+  // 获取完整地址
+  function getFullAddress() {
+    const country = document.getElementById('customerCountry').value;
+    const province = document.getElementById('customerProvince').value;
+    const city = document.getElementById('customerCity').value;
+    const district = document.getElementById('customerDistrict').value;
+    const street = document.getElementById('customerStreet').value;
+    
+    return `${country} ${province} ${city} ${district} ${street}`;
+  }
+
+  // 获取表单数据
+  function getFormData() {
+    return {
+      name: document.getElementById('customerName').value,
+      phone: document.getElementById('customerPhone').value,
+      address: getFullAddress(),
+      postal: document.getElementById('customerPostal').value
+    };
+  }
+  
+  // 验证表单
+  function validateForm() {
+    const country = document.getElementById('customerCountry').value;
+    const province = document.getElementById('customerProvince').value;
+    const city = document.getElementById('customerCity').value;
+    const district = document.getElementById('customerDistrict').value;
+    const street = document.getElementById('customerStreet').value;
+    const data = getFormData();
+    
+    if (!data.name || !data.phone || !country || !province || !city || !district || !street) {
+      alert('请填写完整的订单信息');
+      return false;
+    }
+    return true;
+  }
+  
+  // 加入购物车
+  function addToCart() {
+    if (validateForm()) {
+      const data = getFormData();
+      alert(`✓ 已加入购物车\n\n姓名: ${data.name}\n电话: ${data.phone}\n地址: ${data.address}\n邮编: ${data.postal || '未填写'}\n\n您可以继续购物或前往购物车结算`);
+    }
+  }
+  
+  // 立即购买
+  function checkout() {
+    if (validateForm()) {
+      const data = getFormData();
+      alert(`✓ 订单确认\n\n姓名: ${data.name}\n电话: ${data.phone}\n地址: ${data.address}\n邮编: ${data.postal || '未填写'}\n\n商品: 经典系列眼镜\n价格: ¥999\n\n即将跳转到支付页面...`);
+    }
+  }
+  
+  // 网站多语言翻译
+  const siteLangs = {
+    'zh-s': {
+      'classic': '经典系列',
+      'custom': '量身定制',
+      'brand': '品牌故事',
+      'classicSubtitle': 'Classic Collection',
+      'customSubtitle': 'Custom Fit',
+      'brandSubtitle': 'Brand Story',
+      'classicDesc': '经典不必张扬，它只是在时间里站得住。<br>Classic never shouts, it simply stands the test of time.',
+      'customDesc': '清晰，从合适开始。<br>Clarity begins with the right choice.',
+      'brandDesc': '留下来的，才值得被反复使用。<br>Only what remains deserves to be used repeatedly.',
+      'buyBtn': 'Buy Now',
+      'learnMore': 'Learn More',
+      'footer': '© 2026 Splurge Vision. Follow us for more updates!'
+    },
+    'zh-t': {
+      'classic': '經典系列',
+      'custom': '量身訂製',
+      'brand': '品牌故事',
+      'classicSubtitle': 'Classic Collection',
+      'customSubtitle': 'Custom Fit',
+      'brandSubtitle': 'Brand Story',
+      'classicDesc': '經典不必張揚，它只是在時間裡站得住。<br>Classic never shouts, it simply stands the test of time.',
+      'customDesc': '清晰，從合適開始。<br>Clarity begins with the right choice.',
+      'brandDesc': '留下來的，才值得被反復使用。<br>Only what remains deserves to be used repeatedly.',
+      'buyBtn': 'Buy Now',
+      'learnMore': 'Learn More',
+      'footer': '© 2026 Splurge Vision. Follow us for more updates!'
+    },
+    'en': {
+      'classic': 'Classic Collection',
+      'custom': 'Custom Fit',
+      'brand': 'Brand Story',
+      'classicSubtitle': 'Classic Collection',
+      'customSubtitle': 'Custom Fit',
+      'brandSubtitle': 'Brand Story',
+      'classicDesc': 'Classic never shouts, it simply stands the test of time.',
+      'customDesc': 'Clarity begins with the right choice.',
+      'brandDesc': 'Only what remains deserves to be used repeatedly.',
+      'buyBtn': 'Buy Now',
+      'learnMore': 'Learn More',
+      'footer': '© 2026 Splurge Vision. Follow us for more updates!'
+    }
+  };
+  
+  function switchSiteLanguage(lang) {
+    // 保存语言选择
+    localStorage.setItem('siteLang', lang);
+    document.body.setAttribute('data-lang', lang);
+    
+    // 更新按钮状态
+    document.getElementById('langZhS').classList.toggle('active', lang === 'zh-s');
+    document.getElementById('langZhT').classList.toggle('active', lang === 'zh-t');
+    document.getElementById('langEn').classList.toggle('active', lang === 'en');
+    
+    // 获取当前语言的翻译
+    const t = siteLangs[lang];
+    
+    // 更新所有产品卡片文本
+    const cards = document.querySelectorAll('.product-card');
+    const titles = ['classic', 'custom', 'brand'];
+    const subtitles = ['classicSubtitle', 'customSubtitle', 'brandSubtitle'];
+    const descs = ['classicDesc', 'customDesc', 'brandDesc'];
+    
+    cards.forEach((card, index) => {
+      if (index < 3) {
+        card.querySelector('h2').textContent = t[titles[index]];
+        card.querySelector('.subtitle').textContent = t[subtitles[index]];
+        card.querySelector('p').innerHTML = t[descs[index]];
+        card.querySelector('button').textContent = index === 2 ? t.learnMore : t.buyBtn;
+      }
+    });
+    
+    // 更新页脚
+    document.querySelector('footer').textContent = t.footer;
+  }
+  
+  // 页面加载时恢复语言选择
+  window.addEventListener('DOMContentLoaded', function() {
+    const savedLang = localStorage.getItem('siteLang') || 'zh-s';
+    switchSiteLanguage(savedLang);
+  });
+  
+  // 经典系列模态窗口功能
+  const classicModal = document.getElementById('classicModal');
+  const classicBtn = document.getElementById('classicBtn');
+  const closeClassicBtn = document.querySelector('.close-classic');
+  
+  classicBtn.addEventListener('click', function() {
+    classicModal.style.display = 'block';
+  });
+  
+  closeClassicBtn.addEventListener('click', function() {
+    classicModal.style.display = 'none';
+  });
+  
+  // 品牌故事模态窗口功能
+  const brandStoryModal = document.getElementById('brandStoryModal');
+  const brandStoryBtn = document.getElementById('brandStoryBtn');
+  const brandStoryClose = document.getElementById('brandStoryClose');
+  
+  brandStoryBtn.addEventListener('click', function() {
+    brandStoryModal.style.display = 'flex';
+  });
+  
+  brandStoryClose.addEventListener('click', function() {
+    brandStoryModal.style.display = 'none';
+  });
+  
+  // 关闭Modal - 点击背景区域
+  window.addEventListener('click', function(event) {
+    if (event.target === brandStoryModal) {
+      brandStoryModal.style.display = 'none';
+    }
+    if (event.target == classicModal) {
+      classicModal.style.display = 'none';
+    }
+    const faqModal = document.getElementById('faqModal');
+    if (event.target == faqModal) {
+      faqModal.style.display = 'none';
+    }
+  });
+  
+  // 常见问题内容
+  const faqContent = {
+    return: {
+      title: '🔄 如何退换货',
+      content: `
+        <h3 style="color: #9BA89C; margin: 20px 0 10px;">退换货条件</h3>
+        <p>• 收到商品后<strong>7天内</strong>可申请无理由退换货</p>
+        <p>• 商品需保持<strong>全新未使用状态</strong>，包装完好，配件齐全</p>
+        <p>• 需提供<strong>订单号</strong>和商品照片</p>
+        <p>• 定制镜片恕不支持退换（特殊质量问题除外）</p>
+        
+        <h3 style="color: #9BA89C; margin: 20px 0 10px;">退换货流程</h3>
+        <p><strong>步骤1：</strong> 联系客服（电话/邮件/微信）</p>
+        <p><strong>步骤3：</strong> 寄回商品</p>
+        <p><strong>步骤4：</strong> 我们收到商品后会尽快处理</p>
+        
+        <h3 style="color: #9BA89C; margin: 20px 0 10px;">退款说明</h3>
+        <p>• 退款将原路返回至您的账户</p>
+        
+        <h3 style="color: #9BA89C; margin: 20px 0 10px;">换货说明</h3>
+        <p>• 换货运费由我们承担（质量问题）</p>
+        <p>• 收到退货后尽快发出新品</p>
+        <p>• 可更换颜色、款式（需补差价）</p>
+      `
+    },
+    customize: {
+      title: '👓 如何定制镜片',
+      content: `
+        <h3 style="color: #9BA89C; margin: 20px 0 10px;">定制流程</h3>
+        <p><strong>步骤1：</strong> 选择心仪的镜框款式</p>
+        <p>• 上传验光处方（需包含度数、瞳距等信息）</p>
+        <p>• 选择镜片类型（详见下方）</p>
+        <p>• 确认订单并完成支付</p>
+        <p>• 7-15个工作日制作完成并发货</p>
+        
+        <h3 style="color: #9BA89C; margin: 20px 0 10px;">镜片类型选择</h3>
+        <p><strong>防蓝光镜片：</strong> 适合长时间使用电子设备人群</p>
+        <p><strong>变色镜片：</strong> 室内室外自动调节，防紫外线</p>
+        <p><strong>超薄镜片：</strong> 1.67折射率，轻薄舒适</p>
+        <p><strong>渐进多焦镜片：</strong> 适合老花眼，远近自如</p>
+        
+        <h3 style="color: #9BA89C; margin: 20px 0 10px;">验光处方要求</h3>
+        <p>• 须包含：度数（SPH）、散光（CYL）、轴位（AXIS）、瞳距（PD）</p>
+        <p>• 建议在专业眼科医院或眼镜店验光</p>
+      `
+    },
+    'premium-shipping': {
+      title: '✨ 尊享配送',
+      content: `
+        <h3 style="color: #9BA89C; margin: 20px 0 10px;">服务特权</h3>
+        <p>• <strong>次日达服务：</strong> 指定城市下单后24小时内送达</p>
+        <p>• <strong>预约配送：</strong> 可选择具体日期和2小时时间段</p>
+        <p>• <strong>专人配送：</strong> 顺丰专员白手套服务</p>
+        <p>• <strong>免费开箱验货：</strong> 配送员等待您检查商品</p>
+        <p>• <strong>免费退换：</strong> 如有问题当场退换，运费全免</p>
+        
+        <h3 style="color: #9BA89C; margin: 20px 0 10px;">覆盖区域</h3>
+        <p>北京、上海、广州、深圳、杭州、南京、成都、重庆、武汉、西安等主要城市核心区域。</p>
+        
+        <h3 style="color: #9BA89C; margin: 20px 0 10px;">费用说明</h3>
+        <p>• 订单满<strong>¥999</strong>免费享受尊享配送</p>
+        <p>• 不满¥999需支付¥50尊享配送费</p>
+        <p>• 定制镜片订单自动享受免费尊享配送</p>
+        
+        <h3 style="color: #9BA89C; margin: 20px 0 10px;">豪华包装</h3>
+        <p>• 精美礼盒包装，适合送礼</p>
+        <p>• 附赠品牌专属眼镜盒、眼镜布、保养手册</p>
+        <p>• 可免费附带祝福贺卡</p>
+      `
+    },
+    'standard-shipping': {
+      title: '📮 标准配送',
+      content: `
+        <h3 style="color: #9BA89C; margin: 20px 0 10px;">配送时效</h3>
+        <p>• <strong>国内快递：</strong> 下单后2-5个工作日送达</p>
+        <p>• <strong>港澳台地区：</strong> 下单后5-10个工作日送达</p>
+        <p>• <strong>国际配送：</strong> 根据目的地国家，7-15个工作日送达</p>
+        <p>• 偏远地区可能需要额外1-3个工作日</p>
+        
+        <h3 style="color: #9BA89C; margin: 20px 0 10px;">运费政策</h3>
+        <p>• <strong>国内订单包邮</strong></p>
+        <p>• 国际、港澳台地区订单根据实际重量和目的地计算运费</p>
+        
+        <h3 style="color: #9BA89C; margin: 20px 0 10px;">物流追踪</h3>
+        <p>• 发货后您将收到包含<strong>物流单号</strong>的短信/邮件通知</p>
+        <p>• 可在"我的订单"页面实时追踪包裹状态</p>
+        <p>• 支持顺丰、圆通、中通、韵达等主流快递</p>
+        <p>• 国际订单使用DHL、FedEx、EMS等国际物流</p>
+        
+        <h3 style="color: #9BA89C; margin: 20px 0 10px;">签收注意事项</h3>
+        <p>• 请务必当面验货，检查包装是否完好</p>
+        <p>• 如有破损请拒收并立即联系客服</p>
+        <p>• 签收后如发现质量问题，请在24小时内联系我们</p>
+      `
+    },
+    care: {
+      title: '🛠️ 保养与维修',
+      content: `
+        <h3 style="color: #9BA89C; margin: 20px 0 10px;">免费保养服务</h3>
+        <p>• <strong>终身免费调整镜架：</strong> 松紧度、鼻托位置等</p>
+        <p>• <strong>免费更换配件：</strong> 螺丝、鼻托、脚套等小配件</p>
+        <p>• <strong>免费专业清洁：</strong> 超声波清洗，深层除污</p>
+        <p>• <strong>免费检测服务：</strong> 镜片度数、镜架形变检测</p>
+        <p>• 建议每3-6个月到店免费保养一次</p>
+        
+        <h3 style="color: #9BA89C; margin: 20px 0 10px;">维修服务</h3>
+        <p><strong>镜架维修：</strong></p>
+        <p>• 断裂焊接：¥50-200（视材质而定）</p>
+        <p>• 镜腿更换：¥100-300</p>
+        <p>• 质保期内非人为损坏免费维修</p>
+        
+        <p style="margin-top: 15px;"><strong>镜片更换：</strong></p>
+        <p>• 单片更换：按镜片类型定价</p>
+        <p>• 刮花抛光：¥50/片（轻微刮痕）</p>
+        <p>• 度数调整：免费（定制镜片购买后30天内）</p>
+        
+        <h3 style="color: #9BA89C; margin: 20px 0 10px;">日常保养建议</h3>
+        <p>• 使用专用眼镜清洁液和超细纤维布</p>
+        <p>• 避免用衣服、纸巾擦拭镜片</p>
+        <p>• 不佩戴时放入眼镜盒，避免刮花</p>
+        <p>• 双手摘戴眼镜，避免镜架变形</p>
+        <p>• 避免接触化妆品、香水等化学物质</p>
+        <p>• 避免高温暴晒（如车内仪表台）</p>
+        
+        <h3 style="color: #9BA89C; margin: 20px 0 10px;">联系我们</h3>
+        <p>如需保养维修服务，欢迎联系我们：</p>
+        <p>• 📞 致电：+44 7549 875477</p>
+        <p>• 📧 邮件：SplurgeVision@163.com</p>
+        <p>• 💬 微信：SplurgeVision_Service</p>
+        <p style="margin-top: 15px; padding: 15px; background: rgba(155, 168, 156, 0.15); border-radius: 8px; border-left: 3px solid #9BA89C;">
+          <strong>温馨提示：</strong>我们的专业团队随时为您提供协助与建议，让您的眼镜持久如新！
+        </p>
+      `
+    }
+  };
+  
+  // 显示常见问题
+  function showFAQ(type) {
+    const faqModal = document.getElementById('faqModal');
+    const faqTitle = document.getElementById('faqTitle');
+    const faqContentDiv = document.getElementById('faqContent');
+    
+    if (faqContent[type]) {
+      faqTitle.textContent = faqContent[type].title;
+      faqContentDiv.innerHTML = faqContent[type].content;
+      faqModal.style.display = 'block';
+    }
+  }
+  
+  // 登录相关功能
+  function openLoginModal() {
+    document.getElementById('loginModal').style.display = 'block';
+  }
+  
+  function closeLoginModal() {
+    document.getElementById('loginModal').style.display = 'none';
+    // 关闭时重置表单
+    document.getElementById('phoneNumber').value = '';
+    document.getElementById('verifyCode').value = '';
+    // 重置验证码按钮状态
+    const sendBtn = document.getElementById('sendCodeBtn');
+    sendBtn.disabled = false;
+    sendBtn.textContent = '发送验证码';
+  }
+  
+  // 发送验证码功能
+  let countdownTimer = null;
+  function sendVerifyCode() {
+    const phoneNumber = document.getElementById('phoneNumber').value;
+    const sendBtn = document.getElementById('sendCodeBtn');
+    
+    // 验证手机号
+    if (!phoneNumber) {
+      alert('请先输入手机号');
+      return;
+    }
+    
+    if (!/^1[3-9]\d{9}$/.test(phoneNumber)) {
+      alert('请输入正确的手机号');
+      return;
+    }
+    
+    // 禁用按钮
+    sendBtn.disabled = true;
+    
+    // 这里可以添加实际的发送验证码逻辑
+    console.log('发送验证码到：', phoneNumber);
+    alert(`验证码已发送至 ${phoneNumber}`);
+    
+    // 倒计时60秒
+    let countdown = 60;
+    sendBtn.textContent = `${countdown}秒后重发`;
+    
+    countdownTimer = setInterval(() => {
+      countdown--;
+      if (countdown > 0) {
+        sendBtn.textContent = `${countdown}秒后重发`;
+      } else {
+        clearInterval(countdownTimer);
+        sendBtn.disabled = false;
+        sendBtn.textContent = '重新发送';
+      }
+    }, 1000);
+  }
+  
+  function handleLogin(event) {
+    event.preventDefault();
+    const phoneNumber = document.getElementById('phoneNumber').value;
+    const verifyCode = document.getElementById('verifyCode').value;
+    
+    // 这里可以添加实际的登录逻辑
+    console.log('登录信息：', { phoneNumber, verifyCode });
+    
+    // 模拟登录成功
+    alert('登录成功！欢迎来到 Splurge Vision');
+    closeLoginModal();
+    
+    // 可以在这里更新UI，显示用户信息
+    document.querySelector('.login-btn').innerHTML = `
+      <svg class="login-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+        <circle cx="12" cy="7" r="4"></circle>
+      </svg>
+      ${phoneNumber.substring(0, 3)}****${phoneNumber.substring(7)}
+    `;
+  }
+  
+  // 注册相关功能
+  function openRegisterModal() {
+    document.getElementById('registerModal').style.display = 'block';
+  }
+  
+  function closeRegisterModal() {
+    document.getElementById('registerModal').style.display = 'none';
+    // 关闭时重置表单
+    document.getElementById('regPhoneNumber').value = '';
+    document.getElementById('regVerifyCode').value = '';
+    document.getElementById('regNickname').value = '';
+    document.getElementById('regBirthday').value = '';
+    document.getElementById('regCountry').value = '';
+    document.getElementById('regProvince').innerHTML = '<option value="">请先选择国家</option>';
+    document.getElementById('regCity').innerHTML = '<option value="">请先选择省份</option>';
+    document.getElementById('regDetailAddress').value = '';
+    // 重置验证码按钮状态
+    const sendBtn = document.getElementById('regSendCodeBtn');
+    sendBtn.disabled = false;
+    sendBtn.textContent = '发送验证码';
+  }
+  
+  function switchToRegister() {
+    closeLoginModal();
+    openRegisterModal();
+  }
+  
+  function switchToLogin() {
+    closeRegisterModal();
+    openLoginModal();
+  }
+  
+  // 注册发送验证码功能
+  let regCountdownTimer = null;
+  function sendRegisterCode() {
+    const phoneNumber = document.getElementById('regPhoneNumber').value;
+    const sendBtn = document.getElementById('regSendCodeBtn');
+    
+    // 验证手机号
+    if (!phoneNumber) {
+      alert('请先输入手机号');
+      return;
+    }
+    
+    if (!/^1[3-9]\d{9}$/.test(phoneNumber)) {
+      alert('请输入正确的手机号');
+      return;
+    }
+    
+    // 禁用按钮
+    sendBtn.disabled = true;
+    
+    // 这里可以添加实际的发送验证码逻辑
+    console.log('发送注册验证码到：', phoneNumber);
+    alert(`验证码已发送至 ${phoneNumber}`);
+    
+    // 倒计时60秒
+    let countdown = 60;
+    sendBtn.textContent = `${countdown}秒后重发`;
+    
+    regCountdownTimer = setInterval(() => {
+      countdown--;
+      if (countdown > 0) {
+        sendBtn.textContent = `${countdown}秒后重发`;
+      } else {
+        clearInterval(regCountdownTimer);
+        sendBtn.disabled = false;
+        sendBtn.textContent = '重新发送';
+      }
+    }, 1000);
+  }
+  
+  // 地址数据
+  const regAddressData = {
+    '中国大陆': {
+      '北京市': ['东城区', '西城区', '朝阳区', '海淀区', '丰台区', '石景山区'],
+      '上海市': ['黄浦区', '徐汇区', '长宁区', '静安区', '普陀区', '虹口区'],
+      '广东省': ['广州市', '深圳市', '珠海市', '东莞市', '佛山市', '中山市'],
+      '浙江省': ['杭州市', '宁波市', '温州市', '嘉兴市', '湖州市', '绍兴市'],
+      '江苏省': ['南京市', '苏州市', '无锡市', '常州市', '南通市', '扬州市']
+    },
+    '香港': {
+      '香港岛': ['中西区', '湾仔区', '东区', '南区'],
+      '九龙': ['油尖旺区', '深水埗区', '九龙城区', '黄大仙区', '观塘区'],
+      '新界': ['荃湾区', '屯门区', '元朗区', '北区', '大埔区', '沙田区']
+    },
+    '澳门': {
+      '澳门半岛': ['花地玛堂区', '圣安多尼堂区', '大堂区', '望德堂区', '风顺堂区'],
+      '离岛': ['嘉模堂区', '圣方济各堂区']
+    },
+    '台湾': {
+      '台北市': ['中正区', '大同区', '中山区', '松山区', '大安区', '万华区'],
+      '新北市': ['板桥区', '三重区', '中和区', '永和区', '新庄区', '新店区'],
+      '台中市': ['中区', '东区', '南区', '西区', '北区', '西屯区']
+    },
+    '日本': {
+      '东京都': ['千代田区', '中央区', '港区', '新宿区', '涩谷区', '品川区'],
+      '大阪府': ['大阪市', '堺市', '东大阪市', '丰中市'],
+      '京都府': ['京都市', '宇治市', '亀岡市']
+    },
+    '韩国': {
+      '首尔特别市': ['江南区', '江北区', '麻浦区', '钟路区', '中区'],
+      '釜山广域市': ['海云台区', '南区', '东区', '西区', '中区'],
+      '仁川广域市': ['中区', '东区', '南区', '延寿区']
+    },
+    '英国': {
+      '英格兰': ['伦敦', '曼彻斯特', '伯明翰', '利兹', '利物浦'],
+      '苏格兰': ['爱丁堡', '格拉斯哥', '阿伯丁'],
+      '威尔士': ['加迪夫', '斯旺西']
+    }
+  };
+  
+  function updateRegProvinces() {
+    const country = document.getElementById('regCountry').value;
+    const provinceSelect = document.getElementById('regProvince');
+    const citySelect = document.getElementById('regCity');
+    
+    provinceSelect.innerHTML = '<option value="">选择省份/州</option>';
+    citySelect.innerHTML = '<option value="">请先选择省份</option>';
+    
+    if (country && regAddressData[country]) {
+      const provinces = Object.keys(regAddressData[country]);
+      provinces.forEach(province => {
+        const option = document.createElement('option');
+        option.value = province;
+        option.textContent = province;
+        provinceSelect.appendChild(option);
+      });
+    }
+  }
+  
+  function updateRegCities() {
+    const country = document.getElementById('regCountry').value;
+    const province = document.getElementById('regProvince').value;
+    const citySelect = document.getElementById('regCity');
+    
+    citySelect.innerHTML = '<option value="">选择城市</option>';
+    
+    if (country && province && regAddressData[country] && regAddressData[country][province]) {
+      const cities = regAddressData[country][province];
+      cities.forEach(city => {
+        const option = document.createElement('option');
+        option.value = city;
+        option.textContent = city;
+        citySelect.appendChild(option);
+      });
+    }
+  }
+  
+  function handleRegister(event) {
+    event.preventDefault();
+    const phoneNumber = document.getElementById('regPhoneNumber').value;
+    const verifyCode = document.getElementById('regVerifyCode').value;
+    const nickname = document.getElementById('regNickname').value;
+    const birthday = document.getElementById('regBirthday').value;
+    const country = document.getElementById('regCountry').value;
+    const province = document.getElementById('regProvince').value;
+    const city = document.getElementById('regCity').value;
+    const detailAddress = document.getElementById('regDetailAddress').value;
+    
+    const fullAddress = `${country} ${province} ${city} ${detailAddress}`;
+    
+    // 这里可以添加实际的注册逻辑
+    console.log('注册信息：', { phoneNumber, verifyCode, nickname, birthday, fullAddress });
+    
+    // 模拟注册成功
+    alert(`注册成功！欢迎您，${nickname}！`);
+    closeRegisterModal();
+    
+    // 注册成功后自动登录
+    document.querySelector('.login-btn').innerHTML = `
+      <svg class="login-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+        <circle cx="12" cy="7" r="4"></circle>
+      </svg>
+      ${nickname}
+    `;
+  }
+  
+  // 点击模态框外部关闭
+  window.onclick = function(event) {
+    const loginModal = document.getElementById('loginModal');
+    const registerModal = document.getElementById('registerModal');
+    if (event.target === loginModal) {
+      closeLoginModal();
+    }
+    if (event.target === registerModal) {
+      closeRegisterModal();
+    }
+  };
+</script>
+</html>
