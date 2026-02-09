@@ -5,7 +5,7 @@
   <title>Splurge Vision</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
   <style>
     body {
       margin: 0;
@@ -1028,11 +1028,8 @@
           <input type="email" class="login-input" id="loginEmail" placeholder="请输入邮箱地址" required>
         </div>
         <div class="login-input-group">
-          <label class="login-label">验证码</label>
-          <div class="verify-code-wrapper">
-            <input type="text" class="login-input" id="verifyCode" placeholder="请输入验证码" maxlength="6" required>
-            <button type="button" class="send-code-btn" id="sendCodeBtn" onclick="sendVerifyCode()">发送验证码</button>
-          </div>
+          <label class="login-label">密码</label>
+          <input type="password" class="login-input" id="loginPassword" placeholder="请输入密码" required>
         </div>
         <button type="submit" class="login-submit">登录</button>
       </form>
@@ -1056,11 +1053,12 @@
           <input type="email" class="login-input" id="regEmail" placeholder="请输入邮箱地址" required>
         </div>
         <div class="login-input-group">
-          <label class="login-label">验证码</label>
-          <div class="verify-code-wrapper">
-            <input type="text" class="login-input" id="regVerifyCode" placeholder="请输入验证码" maxlength="6" required>
-            <button type="button" class="send-code-btn" id="regSendCodeBtn" onclick="sendRegisterCode()">发送验证码</button>
-          </div>
+          <label class="login-label">密码</label>
+          <input type="password" class="login-input" id="regPassword" placeholder="请设置密码（至少6位）" minlength="6" required>
+        </div>
+        <div class="login-input-group">
+          <label class="login-label">确认密码</label>
+          <input type="password" class="login-input" id="regConfirmPassword" placeholder="请再次输入密码" minlength="6" required>
         </div>
         <div class="login-input-group">
           <label class="login-label">希望我们称呼您为</label>
@@ -1680,13 +1678,13 @@
         
         <h3 class="faq-heading">维修服务</h3>
         <p><strong>镜架维修：</strong></p>
-        <p>• 断裂焊接：¥50-200（视材质而定）</p>
-        <p>• 镜腿更换：¥100-300</p>
+        <p>• 断裂焊接（视材质而定）</p>
+        <p>• 镜腿更换</p>
         <p>• 质保期内非人为损坏免费维修</p>
         
         <p class="faq-gap"><strong>镜片更换：</strong></p>
         <p>• 单片更换：按镜片类型定价</p>
-        <p>• 刮花抛光：¥50/片（轻微刮痕）</p>
+        <p>• 刮花抛光（轻微刮痕）</p>
         <p>• 度数调整：免费（定制镜片购买后30天内）</p>
         
         <h3 class="faq-heading">日常保养建议</h3>
@@ -1722,16 +1720,16 @@
     }
   }
   
-  // ===== EmailJS 初始化 =====
-  emailjs.init('YOUR_PUBLIC_KEY'); // 需要替换为您的EmailJS公钥
+  // ===== 登录注册系统 =====
   
-  // 存储验证码
-  let loginVerifyCode = '';
-  let regVerifyCodeValue = '';
+  // 获取所有已注册用户
+  function getUsers() {
+    return JSON.parse(localStorage.getItem('splurgeVisionUsers') || '{}');
+  }
   
-  // 生成6位随机验证码
-  function generateCode() {
-    return Math.floor(100000 + Math.random() * 900000).toString();
+  // 保存用户数据
+  function saveUsers(users) {
+    localStorage.setItem('splurgeVisionUsers', JSON.stringify(users));
   }
   
   // 登录相关功能
@@ -1742,78 +1740,35 @@
   function closeLoginModal() {
     document.getElementById('loginModal').style.display = 'none';
     document.getElementById('loginEmail').value = '';
-    document.getElementById('verifyCode').value = '';
-    const sendBtn = document.getElementById('sendCodeBtn');
-    sendBtn.disabled = false;
-    sendBtn.textContent = '发送验证码';
-  }
-  
-  // 发送登录验证码
-  let countdownTimer = null;
-  function sendVerifyCode() {
-    const email = document.getElementById('loginEmail').value;
-    const sendBtn = document.getElementById('sendCodeBtn');
-    
-    if (!email) {
-      alert('请先输入邮箱地址');
-      return;
-    }
-    
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      alert('请输入正确的邮箱地址');
-      return;
-    }
-    
-    sendBtn.disabled = true;
-    loginVerifyCode = generateCode();
-    
-    // 通过EmailJS发送验证码
-    emailjs.send('service_splurge', 'template_verify', {
-      to_email: email,
-      verify_code: loginVerifyCode,
-      subject: 'Splurge Vision 登录验证码'
-    }).then(function() {
-      alert(`验证码已发送至 ${email}，请查收邮件`);
-    }).catch(function(err) {
-      console.error('发送失败:', err);
-      alert(`验证码已发送至 ${email}`);
-    });
-    
-    // 倒计时60秒
-    let countdown = 60;
-    sendBtn.textContent = `${countdown}秒后重发`;
-    countdownTimer = setInterval(() => {
-      countdown--;
-      if (countdown > 0) {
-        sendBtn.textContent = `${countdown}秒后重发`;
-      } else {
-        clearInterval(countdownTimer);
-        sendBtn.disabled = false;
-        sendBtn.textContent = '重新发送';
-      }
-    }, 1000);
+    document.getElementById('loginPassword').value = '';
   }
   
   function handleLogin(event) {
     event.preventDefault();
     const email = document.getElementById('loginEmail').value;
-    const code = document.getElementById('verifyCode').value;
+    const password = document.getElementById('loginPassword').value;
     
-    if (loginVerifyCode && code !== loginVerifyCode) {
-      alert('验证码错误，请重新输入');
+    const users = getUsers();
+    const user = users[email];
+    
+    if (!user) {
+      alert('该邮箱尚未注册，请先注册');
       return;
     }
     
-    // 保存登录信息
-    const userData = JSON.parse(localStorage.getItem('splurgeVisionUser') || '{}');
-    userData.email = email;
-    userData.isLoggedIn = true;
-    localStorage.setItem('splurgeVisionUser', JSON.stringify(userData));
+    if (user.password !== password) {
+      alert('密码错误，请重新输入');
+      return;
+    }
+    
+    // 保存登录状态
+    user.isLoggedIn = true;
+    localStorage.setItem('splurgeVisionUser', JSON.stringify(user));
     
     alert('登录成功！欢迎来到 Splurge Vision');
     closeLoginModal();
     
-    const displayName = userData.nickname || email.split('@')[0];
+    const displayName = user.nickname || email.split('@')[0];
     document.querySelector('.login-btn').innerHTML = `
       <svg class="login-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
@@ -1831,16 +1786,14 @@
   function closeRegisterModal() {
     document.getElementById('registerModal').style.display = 'none';
     document.getElementById('regEmail').value = '';
-    document.getElementById('regVerifyCode').value = '';
+    document.getElementById('regPassword').value = '';
+    document.getElementById('regConfirmPassword').value = '';
     document.getElementById('regNickname').value = '';
     document.getElementById('regBirthday').value = '';
     document.getElementById('regCountry').value = '';
     document.getElementById('regProvince').innerHTML = '<option value="">请先选择国家</option>';
     document.getElementById('regCity').innerHTML = '<option value="">请先选择省份</option>';
     document.getElementById('regDetailAddress').value = '';
-    const sendBtn = document.getElementById('regSendCodeBtn');
-    sendBtn.disabled = false;
-    sendBtn.textContent = '发送验证码';
   }
   
   function switchToRegister() {
@@ -1851,53 +1804,6 @@
   function switchToLogin() {
     closeRegisterModal();
     openLoginModal();
-  }
-  
-  // 注册发送验证码功能
-  let regCountdownTimer = null;
-  function sendRegisterCode() {
-    const email = document.getElementById('regEmail').value;
-    const sendBtn = document.getElementById('regSendCodeBtn');
-    
-    if (!email) {
-      alert('请先输入邮箱地址');
-      return;
-    }
-    
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      alert('请输入正确的邮箱地址');
-      return;
-    }
-    
-    sendBtn.disabled = true;
-    regVerifyCodeValue = generateCode();
-    
-    // 通过EmailJS发送验证码
-    emailjs.send('service_splurge', 'template_verify', {
-      to_email: email,
-      verify_code: regVerifyCodeValue,
-      subject: 'Splurge Vision 注册验证码'
-    }).then(function() {
-      alert(`验证码已发送至 ${email}，请查收邮件`);
-    }).catch(function(err) {
-      console.error('发送失败:', err);
-      alert(`验证码已发送至 ${email}`);
-    });
-    
-    // 倒计时60秒
-    let countdown = 60;
-    sendBtn.textContent = `${countdown}秒后重发`;
-    
-    regCountdownTimer = setInterval(() => {
-      countdown--;
-      if (countdown > 0) {
-        sendBtn.textContent = `${countdown}秒后重发`;
-      } else {
-        clearInterval(regCountdownTimer);
-        sendBtn.disabled = false;
-        sendBtn.textContent = '重新发送';
-      }
-    }, 1000);
   }
   
   // 地址数据
@@ -1980,7 +1886,8 @@
   function handleRegister(event) {
     event.preventDefault();
     const email = document.getElementById('regEmail').value;
-    const code = document.getElementById('regVerifyCode').value;
+    const password = document.getElementById('regPassword').value;
+    const confirmPassword = document.getElementById('regConfirmPassword').value;
     const nickname = document.getElementById('regNickname').value;
     const birthday = document.getElementById('regBirthday').value;
     const country = document.getElementById('regCountry').value;
@@ -1988,22 +1895,42 @@
     const city = document.getElementById('regCity').value;
     const detailAddress = document.getElementById('regDetailAddress').value;
     
-    if (regVerifyCodeValue && code !== regVerifyCodeValue) {
-      alert('验证码错误，请重新输入');
+    // 验证密码
+    if (password.length < 6) {
+      alert('密码至少需要6位');
+      return;
+    }
+    
+    if (password !== confirmPassword) {
+      alert('两次输入的密码不一致');
+      return;
+    }
+    
+    // 检查邮箱是否已注册
+    const users = getUsers();
+    if (users[email]) {
+      alert('该邮箱已被注册，请直接登录');
       return;
     }
     
     const fullAddress = `${country} ${province} ${city} ${detailAddress}`;
     
-    // 保存用户信息到localStorage
+    // 保存用户信息
     const userData = {
       email: email,
+      password: password,
       nickname: nickname,
       birthday: birthday,
       address: fullAddress,
       points: 0,
       isLoggedIn: true
     };
+    
+    // 保存到用户列表
+    users[email] = userData;
+    saveUsers(users);
+    
+    // 保存当前登录用户
     localStorage.setItem('splurgeVisionUser', JSON.stringify(userData));
     
     alert(`注册成功！欢迎您，${nickname}！`);
