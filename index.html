@@ -444,9 +444,12 @@
       border-radius: 16px;
       padding: 30px;
       box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-      max-height: 80vh;
+      max-height: 90vh;
       overflow-y: auto;
       font-size: 14px;
+      color: #5a4a3a;
+      line-height: 1.6;
+      -webkit-overflow-scrolling: touch;
     }
     
     .modal-header {
@@ -506,51 +509,36 @@
       overflow-y: auto;
       backdrop-filter: blur(3px);
     }
-    .modal-content {
-      background: rgba(230, 215, 185, 0.98);
-      margin: 3% auto;
-      padding: 30px;
-      border: 1px solid rgba(200, 185, 155, 0.5);
-      border-radius: 16px;
-      width: 85%;
-      max-width: 700px;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-      color: #5a4a3a;
-      line-height: 1.6;
-      font-size: 14px;
-      max-height: 80vh;
-      overflow-y: auto;
-    }
-    .modal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 30px;
-      border-bottom: 2px solid rgba(107, 123, 109, 0.2);
-      padding-bottom: 20px;
-    }
-    .modal-header h2 {
-      margin: 0;
-      font-size: 1.6rem;
-      color: #6B7B6D;
-      font-family: 'Poppins', sans-serif;
-      font-weight: 800;
-      letter-spacing: 1.5px;
-    }
-    .close {
-      color: #6B7B6D;
-      font-size: 2rem;
-      font-weight: bold;
-      cursor: pointer;
-      transition: color 0.2s;
-    }
-    .close:hover {
-      color: #C9A9A8;
-    }
     .modal-content p {
-      margin: 15px 0;
-      text-align: justify;
-      word-spacing: 2px;
+      margin: 8px 0;
+      line-height: 1.7;
+      word-break: break-word;
+      overflow-wrap: break-word;
+    }
+    
+    /* FAQ 内容样式 */
+    .faq-heading {
+      color: #6B7B6D;
+      font-size: 1.1rem;
+      margin: 22px 0 10px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid rgba(107, 123, 109, 0.15);
+      font-weight: 700;
+    }
+    .faq-heading:first-child {
+      margin-top: 0;
+    }
+    .faq-gap {
+      margin-top: 18px !important;
+    }
+    .faq-tip {
+      margin-top: 20px !important;
+      padding: 12px 15px;
+      background: rgba(155, 168, 156, 0.12);
+      border-radius: 8px;
+      border-left: 3px solid #9BA89C;
+      font-size: 0.9rem;
+      color: #6B7B6D;
     }
     .product-form {
       margin: 30px 0;
@@ -656,6 +644,12 @@
         margin: 5% auto;
         padding: 25px;
       }
+      .site-footer {
+        padding: 40px 15px 25px;
+      }
+      .footer-grid {
+        gap: 30px;
+      }
     }
     
     /* 手机 (最大768px) */
@@ -741,19 +735,108 @@
         font-size: 0.8rem;
         min-width: 90px;
       }
+      /* FAQ 模态窗口手机适配 */
       .modal-content {
         width: 92%;
-        margin: 8% auto;
-        padding: 20px;
-        max-height: 85vh;
+        margin: 2% auto;
+        padding: 18px 16px;
+        max-height: 92vh;
+        border-radius: 12px;
+        font-size: 13px;
+      }
+      .modal-header {
+        margin-bottom: 12px;
+        padding-bottom: 10px;
       }
       .modal-header h2 {
-        font-size: 1.2rem;
+        font-size: 1.1rem;
+        letter-spacing: 0.5px;
       }
+      .close {
+        font-size: 1.6rem;
+        padding: 4px 8px;
+      }
+      .modal-content p {
+        font-size: 0.88rem;
+        margin: 5px 0;
+        line-height: 1.6;
+        text-align: left;
+      }
+      .modal-content strong {
+        font-size: 0.88rem;
+      }
+      .faq-heading {
+        font-size: 0.95rem;
+        margin: 16px 0 8px;
+        padding-bottom: 5px;
+      }
+      .faq-tip {
+        padding: 10px 12px;
+        font-size: 0.82rem;
+      }
+      
       .bg-decor-1 { width: 150px; height: 150px; }
       .bg-decor-2 { width: 100px; height: 100px; }
       .bg-decor-3 { width: 80px; height: 80px; }
       .bg-decor-4 { width: 60px; height: 60px; }
+      
+      /* 页脚手机适配 */
+      .site-footer {
+        padding: 30px 15px 20px;
+        margin-top: 40px;
+      }
+      .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 25px;
+      }
+      .footer-section {
+        padding-bottom: 20px;
+        border-bottom: 1px solid rgba(107, 123, 109, 0.12);
+      }
+      .footer-section:last-child {
+        border-bottom: none;
+        padding-bottom: 0;
+      }
+      .footer-section-title {
+        font-size: 1.05rem;
+        margin-bottom: 12px;
+      }
+      .footer-section p {
+        margin: 8px 0;
+        font-size: 0.88rem;
+        line-height: 1.7;
+      }
+      .footer-section a {
+        font-size: 0.88rem;
+      }
+      .footer-section span {
+        font-size: 0.85rem;
+      }
+      .footer-section .footer-phone {
+        font-size: 0.95rem;
+      }
+      .footer-faq-link {
+        padding: 6px 0;
+        font-size: 0.9rem;
+      }
+      .footer-care-btn {
+        padding: 10px 18px;
+        font-size: 0.9rem;
+        margin-top: 8px;
+      }
+      .footer-social span {
+        font-size: 0.85rem;
+        padding: 3px 0;
+      }
+      .footer-copyright {
+        margin-top: 25px;
+        padding-top: 15px;
+        font-size: 0.8rem;
+      }
+      .footer-copyright p {
+        font-size: 0.8rem;
+        margin: 4px 0;
+      }
     }
     
     /* 小屏手机 (最大480px) */
@@ -787,6 +870,119 @@
         width: 100%;
         min-width: auto;
       }
+      .modal-content {
+        width: 96%;
+        margin: 1% auto;
+        padding: 14px 12px;
+        max-height: 94vh;
+        border-radius: 10px;
+        font-size: 12.5px;
+      }
+      .modal-header h2 {
+        font-size: 1rem;
+      }
+      .modal-content p {
+        font-size: 0.82rem;
+        line-height: 1.55;
+        margin: 4px 0;
+      }
+      .faq-heading {
+        font-size: 0.9rem;
+        margin: 14px 0 6px;
+      }
+      .footer-grid {
+        gap: 20px;
+      }
+      .footer-section-title {
+        font-size: 1rem;
+      }
+    }
+    
+    /* ===== 页脚样式 ===== */
+    .site-footer {
+      background: rgba(155, 168, 156, 0.2);
+      padding: 50px 20px 30px;
+      margin-top: 60px;
+      border-top: 2px solid rgba(107, 123, 109, 0.15);
+    }
+    .footer-grid {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr));
+      gap: 40px;
+    }
+    .footer-section-title {
+      color: #6B7B6D;
+      font-size: 1.2rem;
+      margin-bottom: 20px;
+      font-weight: 700;
+    }
+    .footer-section {
+      line-height: 1.9;
+    }
+    .footer-section p {
+      margin: 10px 0;
+      color: #6B7B6D;
+    }
+    .footer-section strong {
+      color: #9BA89C;
+    }
+    .footer-section a {
+      color: #6B7B6D;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .footer-phone {
+      font-size: 1.05rem;
+      font-weight: 600;
+    }
+    .footer-small {
+      font-size: 0.85rem;
+      color: #8B9B8D;
+    }
+    .footer-social span {
+      display: block;
+      font-size: 0.9rem;
+      color: #6B7B6D;
+      margin-bottom: 4px;
+    }
+    .footer-faq-link {
+      display: block;
+      color: #6B7B6D;
+      text-decoration: none;
+      font-weight: 600;
+      margin-bottom: 8px;
+      line-height: 2.2;
+      transition: color 0.2s;
+    }
+    .footer-faq-link:hover {
+      color: #9BA89C;
+    }
+    .footer-care-btn {
+      display: inline-block;
+      padding: 10px 20px;
+      background: linear-gradient(135deg, #9BA89C 0%, #8B9A8C 100%);
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: 600;
+      transition: transform 0.2s;
+      box-shadow: 0 4px 12px rgba(155, 168, 156, 0.3);
+    }
+    .footer-care-btn:hover {
+      transform: translateY(-2px);
+    }
+    .footer-copyright {
+      text-align: center;
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(107, 123, 109, 0.15);
+      color: #8B9B8D;
+      font-size: 0.85rem;
+    }
+    .footer-copyright p {
+      margin: 4px 0;
     }
   </style>
   <!-- Font Awesome for icons -->
@@ -1043,64 +1239,56 @@
 </div>
 
 <!-- 帮助与支持页脚 -->
-<footer style="background: rgba(155, 168, 156, 0.2); padding: 50px 20px 30px; margin-top: 60px; border-top: 2px solid rgba(107, 123, 109, 0.15);">
-  <div style="max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr)); gap: 40px;">
+<footer class="site-footer">
+  <div class="footer-grid">
     
     <!-- 需要帮助 -->
-    <div>
-      <h3 style="color: #6B7B6D; font-size: 1.2rem; margin-bottom: 20px; font-weight: 700;">📞 需要帮助？</h3>
-      <div style="line-height: 2;">
-        <p style="margin: 10px 0; color: #6B7B6D;">
-          <strong style="color: #9BA89C;">致电我们：</strong><br>
-          <a href="tel:+447549875477" style="color: #6B7B6D; text-decoration: none; font-size: 1.05rem; font-weight: 600;">+44 7549 875477</a><br>
-          <span style="font-size: 0.85rem; color: #8B9B8D;">周一至周六 9:00-18:00</span>
-        </p>
-        <p style="margin: 18px 0; color: #6B7B6D;">
-          <strong style="color: #9BA89C;">Email我们：</strong><br>
-          <a href="mailto:SplurgeVision@163.com" style="color: #6B7B6D; text-decoration: none; font-weight: 600;">SplurgeVision@163.com</a><br>
-          <span style="font-size: 0.85rem; color: #8B9B8D;">24小时内回复</span>
-        </p>
-        <p style="margin: 18px 0; color: #6B7B6D;">
-          <strong style="color: #9BA89C;">关注我们：</strong><br>
-          <span style="font-size: 0.9rem; color: #6B7B6D;">🔴 小红书：Splurge Vision眼镜店</span><br>
-          <span style="font-size: 0.9rem; color: #6B7B6D;">📷 Instagram：Splurge Vision</span>
-        </p>
+    <div class="footer-section">
+      <h3 class="footer-section-title">📞 需要帮助？</h3>
+      <p>
+        <strong>致电我们：</strong><br>
+        <a href="tel:+447549875477" class="footer-phone">+44 7549 875477</a><br>
+        <span class="footer-small">周一至周六 9:00-18:00</span>
+      </p>
+      <p>
+        <strong>Email我们：</strong><br>
+        <a href="mailto:SplurgeVision@163.com">SplurgeVision@163.com</a><br>
+        <span class="footer-small">24小时内回复</span>
+      </p>
+      <div class="footer-social">
+        <strong>关注我们：</strong><br>
+        <span>🔴 小红书：Splurge Vision眼镜店</span>
+        <span>📷 Instagram：Splurge Vision</span>
       </div>
     </div>
     
     <!-- 常见问题 -->
-    <div>
-      <h3 style="color: #6B7B6D; font-size: 1.2rem; margin-bottom: 20px; font-weight: 700;">❓ 常见问题</h3>
-      <div style="line-height: 2.2;">
-        <a href="#" onclick="showFAQ('return'); return false;" style="display: block; color: #6B7B6D; text-decoration: none; font-weight: 600; transition: color 0.2s; margin-bottom: 8px;">🔄 如何退换货</a>
-        <a href="#" onclick="showFAQ('customize'); return false;" style="display: block; color: #6B7B6D; text-decoration: none; font-weight: 600; transition: color 0.2s; margin-bottom: 8px;">👓 如何定制镜片</a>
-      </div>
+    <div class="footer-section">
+      <h3 class="footer-section-title">❓ 常见问题</h3>
+      <a href="#" onclick="showFAQ('return'); return false;" class="footer-faq-link">🔄 如何退换货</a>
+      <a href="#" onclick="showFAQ('customize'); return false;" class="footer-faq-link">👓 如何定制镜片</a>
     </div>
     
     <!-- 配送与退换货 -->
-    <div>
-      <h3 style="color: #6B7B6D; font-size: 1.2rem; margin-bottom: 20px; font-weight: 700;">📦 配送与退换货</h3>
-      <div style="line-height: 2.2;">
-        <a href="#" onclick="showFAQ('premium-shipping'); return false;" style="display: block; color: #6B7B6D; text-decoration: none; font-weight: 600; transition: color 0.2s; margin-bottom: 8px;">✨ 尊享配送</a>
-        <a href="#" onclick="showFAQ('standard-shipping'); return false;" style="display: block; color: #6B7B6D; text-decoration: none; font-weight: 600; transition: color 0.2s; margin-bottom: 8px;">📮 标准配送</a>
-      </div>
+    <div class="footer-section">
+      <h3 class="footer-section-title">📦 配送与退换货</h3>
+      <a href="#" onclick="showFAQ('premium-shipping'); return false;" class="footer-faq-link">✨ 尊享配送</a>
+      <a href="#" onclick="showFAQ('standard-shipping'); return false;" class="footer-faq-link">📮 标准配送</a>
     </div>
     
     <!-- 保养与维修 -->
-    <div>
-      <h3 style="color: #6B7B6D; font-size: 1.2rem; margin-bottom: 20px; font-weight: 700;">🛠️ 保养与维修</h3>
-      <div style="line-height: 1.8;">
-        <p style="color: #6B7B6D; margin-bottom: 15px;">欢迎联系我们，我们的专员乐意为您提供协助与建议。</p>
-        <a href="#" onclick="showFAQ('care'); return false;" style="display: inline-block; padding: 10px 20px; background: linear-gradient(135deg, #9BA89C 0%, #8B9A8C 100%); color: white; text-decoration: none; border-radius: 8px; font-weight: 600; transition: transform 0.2s; box-shadow: 0 4px 12px rgba(155, 168, 156, 0.3);" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">了解保养维修</a>
-      </div>
+    <div class="footer-section">
+      <h3 class="footer-section-title">🛠️ 保养与维修</h3>
+      <p>欢迎联系我们，我们的专员乐意为您提供协助与建议。</p>
+      <a href="#" onclick="showFAQ('care'); return false;" class="footer-care-btn">了解保养维修</a>
     </div>
     
   </div>
   
   <!-- 版权信息 -->
-  <div style="text-align: center; margin-top: 40px; padding-top: 20px; border-top: 1px solid rgba(107, 123, 109, 0.15); color: #8B9B8D; font-size: 0.85rem;">
+  <div class="footer-copyright">
     <p>© 2026 Splurge Vision. All Rights Reserved.</p>
-    <p style="margin-top: 8px;">由英伦设计师团队精心打造 | 传承经典·探索未来</p>
+    <p>由英伦设计师团队精心打造 | 传承经典·探索未来</p>
   </div>
 </footer>
 
@@ -1329,8 +1517,11 @@
       }
     });
     
-    // 更新页脚
-    document.querySelector('footer').textContent = t.footer;
+    // 更新页脚 - 只更新版权区域文字
+    const copyrightEl = document.querySelector('.footer-copyright');
+    if (copyrightEl) {
+      // 保持版权区域不被覆盖
+    }
   }
   
   // 页面加载时恢复语言选择
@@ -1384,21 +1575,21 @@
     return: {
       title: '🔄 如何退换货',
       content: `
-        <h3 style="color: #9BA89C; margin: 20px 0 10px;">退换货条件</h3>
+        <h3 class="faq-heading">退换货条件</h3>
         <p>• 收到商品后<strong>7天内</strong>可申请无理由退换货</p>
         <p>• 商品需保持<strong>全新未使用状态</strong>，包装完好，配件齐全</p>
         <p>• 需提供<strong>订单号</strong>和商品照片</p>
         <p>• 定制镜片恕不支持退换（特殊质量问题除外）</p>
         
-        <h3 style="color: #9BA89C; margin: 20px 0 10px;">退换货流程</h3>
+        <h3 class="faq-heading">退换货流程</h3>
         <p><strong>步骤1：</strong> 联系客服（电话/邮件/微信）</p>
         <p><strong>步骤3：</strong> 寄回商品</p>
         <p><strong>步骤4：</strong> 我们收到商品后会尽快处理</p>
         
-        <h3 style="color: #9BA89C; margin: 20px 0 10px;">退款说明</h3>
+        <h3 class="faq-heading">退款说明</h3>
         <p>• 退款将原路返回至您的账户</p>
         
-        <h3 style="color: #9BA89C; margin: 20px 0 10px;">换货说明</h3>
+        <h3 class="faq-heading">换货说明</h3>
         <p>• 换货运费由我们承担（质量问题）</p>
         <p>• 收到退货后尽快发出新品</p>
         <p>• 可更换颜色、款式（需补差价）</p>
@@ -1407,20 +1598,20 @@
     customize: {
       title: '👓 如何定制镜片',
       content: `
-        <h3 style="color: #9BA89C; margin: 20px 0 10px;">定制流程</h3>
+        <h3 class="faq-heading">定制流程</h3>
         <p><strong>步骤1：</strong> 选择心仪的镜框款式</p>
         <p>• 上传验光处方（需包含度数、瞳距等信息）</p>
         <p>• 选择镜片类型（详见下方）</p>
         <p>• 确认订单并完成支付</p>
         <p>• 7-15个工作日制作完成并发货</p>
         
-        <h3 style="color: #9BA89C; margin: 20px 0 10px;">镜片类型选择</h3>
+        <h3 class="faq-heading">镜片类型选择</h3>
         <p><strong>防蓝光镜片：</strong> 适合长时间使用电子设备人群</p>
         <p><strong>变色镜片：</strong> 室内室外自动调节，防紫外线</p>
         <p><strong>超薄镜片：</strong> 1.67折射率，轻薄舒适</p>
         <p><strong>渐进多焦镜片：</strong> 适合老花眼，远近自如</p>
         
-        <h3 style="color: #9BA89C; margin: 20px 0 10px;">验光处方要求</h3>
+        <h3 class="faq-heading">验光处方要求</h3>
         <p>• 须包含：度数（SPH）、散光（CYL）、轴位（AXIS）、瞳距（PD）</p>
         <p>• 建议在专业眼科医院或眼镜店验光</p>
       `
@@ -1428,22 +1619,22 @@
     'premium-shipping': {
       title: '✨ 尊享配送',
       content: `
-        <h3 style="color: #9BA89C; margin: 20px 0 10px;">服务特权</h3>
+        <h3 class="faq-heading">服务特权</h3>
         <p>• <strong>次日达服务：</strong> 指定城市下单后24小时内送达</p>
         <p>• <strong>预约配送：</strong> 可选择具体日期和2小时时间段</p>
         <p>• <strong>专人配送：</strong> 顺丰专员白手套服务</p>
         <p>• <strong>免费开箱验货：</strong> 配送员等待您检查商品</p>
         <p>• <strong>免费退换：</strong> 如有问题当场退换，运费全免</p>
         
-        <h3 style="color: #9BA89C; margin: 20px 0 10px;">覆盖区域</h3>
+        <h3 class="faq-heading">覆盖区域</h3>
         <p>北京、上海、广州、深圳、杭州、南京、成都、重庆、武汉、西安等主要城市核心区域。</p>
         
-        <h3 style="color: #9BA89C; margin: 20px 0 10px;">费用说明</h3>
+        <h3 class="faq-heading">费用说明</h3>
         <p>• 订单满<strong>¥999</strong>免费享受尊享配送</p>
         <p>• 不满¥999需支付¥50尊享配送费</p>
         <p>• 定制镜片订单自动享受免费尊享配送</p>
         
-        <h3 style="color: #9BA89C; margin: 20px 0 10px;">豪华包装</h3>
+        <h3 class="faq-heading">豪华包装</h3>
         <p>• 精美礼盒包装，适合送礼</p>
         <p>• 附赠品牌专属眼镜盒、眼镜布、保养手册</p>
         <p>• 可免费附带祝福贺卡</p>
@@ -1452,23 +1643,23 @@
     'standard-shipping': {
       title: '📮 标准配送',
       content: `
-        <h3 style="color: #9BA89C; margin: 20px 0 10px;">配送时效</h3>
+        <h3 class="faq-heading">配送时效</h3>
         <p>• <strong>国内快递：</strong> 下单后2-5个工作日送达</p>
         <p>• <strong>港澳台地区：</strong> 下单后5-10个工作日送达</p>
         <p>• <strong>国际配送：</strong> 根据目的地国家，7-15个工作日送达</p>
         <p>• 偏远地区可能需要额外1-3个工作日</p>
         
-        <h3 style="color: #9BA89C; margin: 20px 0 10px;">运费政策</h3>
+        <h3 class="faq-heading">运费政策</h3>
         <p>• <strong>国内订单包邮</strong></p>
         <p>• 国际、港澳台地区订单根据实际重量和目的地计算运费</p>
         
-        <h3 style="color: #9BA89C; margin: 20px 0 10px;">物流追踪</h3>
+        <h3 class="faq-heading">物流追踪</h3>
         <p>• 发货后您将收到包含<strong>物流单号</strong>的短信/邮件通知</p>
         <p>• 可在"我的订单"页面实时追踪包裹状态</p>
         <p>• 支持顺丰、圆通、中通、韵达等主流快递</p>
         <p>• 国际订单使用DHL、FedEx、EMS等国际物流</p>
         
-        <h3 style="color: #9BA89C; margin: 20px 0 10px;">签收注意事项</h3>
+        <h3 class="faq-heading">签收注意事项</h3>
         <p>• 请务必当面验货，检查包装是否完好</p>
         <p>• 如有破损请拒收并立即联系客服</p>
         <p>• 签收后如发现质量问题，请在24小时内联系我们</p>
@@ -1477,25 +1668,25 @@
     care: {
       title: '🛠️ 保养与维修',
       content: `
-        <h3 style="color: #9BA89C; margin: 20px 0 10px;">免费保养服务</h3>
+        <h3 class="faq-heading">免费保养服务</h3>
         <p>• <strong>终身免费调整镜架：</strong> 松紧度、鼻托位置等</p>
         <p>• <strong>免费更换配件：</strong> 螺丝、鼻托、脚套等小配件</p>
         <p>• <strong>免费专业清洁：</strong> 超声波清洗，深层除污</p>
         <p>• <strong>免费检测服务：</strong> 镜片度数、镜架形变检测</p>
         <p>• 建议每3-6个月到店免费保养一次</p>
         
-        <h3 style="color: #9BA89C; margin: 20px 0 10px;">维修服务</h3>
+        <h3 class="faq-heading">维修服务</h3>
         <p><strong>镜架维修：</strong></p>
         <p>• 断裂焊接：¥50-200（视材质而定）</p>
         <p>• 镜腿更换：¥100-300</p>
         <p>• 质保期内非人为损坏免费维修</p>
         
-        <p style="margin-top: 15px;"><strong>镜片更换：</strong></p>
+        <p class="faq-gap"><strong>镜片更换：</strong></p>
         <p>• 单片更换：按镜片类型定价</p>
         <p>• 刮花抛光：¥50/片（轻微刮痕）</p>
         <p>• 度数调整：免费（定制镜片购买后30天内）</p>
         
-        <h3 style="color: #9BA89C; margin: 20px 0 10px;">日常保养建议</h3>
+        <h3 class="faq-heading">日常保养建议</h3>
         <p>• 使用专用眼镜清洁液和超细纤维布</p>
         <p>• 避免用衣服、纸巾擦拭镜片</p>
         <p>• 不佩戴时放入眼镜盒，避免刮花</p>
@@ -1503,12 +1694,12 @@
         <p>• 避免接触化妆品、香水等化学物质</p>
         <p>• 避免高温暴晒（如车内仪表台）</p>
         
-        <h3 style="color: #9BA89C; margin: 20px 0 10px;">联系我们</h3>
+        <h3 class="faq-heading">联系我们</h3>
         <p>如需保养维修服务，欢迎联系我们：</p>
         <p>• 📞 致电：+44 7549 875477</p>
         <p>• 📧 邮件：SplurgeVision@163.com</p>
         <p>• 💬 微信：SplurgeVision_Service</p>
-        <p style="margin-top: 15px; padding: 15px; background: rgba(155, 168, 156, 0.15); border-radius: 8px; border-left: 3px solid #9BA89C;">
+        <p class="faq-tip">
           <strong>温馨提示：</strong>我们的专业团队随时为您提供协助与建议，让您的眼镜持久如新！
         </p>
       `
