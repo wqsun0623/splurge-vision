@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <title>我的购物车 - Splurge Vision</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #8f9f91;
+      --text-main: #4e544f;
+      --text-muted: #7a807b;
+      --bg-card: #f4f2ee;
+      --bg-image: #edeae5;
+      --danger: #c0392b;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: linear-gradient(135deg, #d6d1c9, #c8cec6, #bfc5bc);
+      min-height: 100vh;
+      padding: 20px;
+      position: relative;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background-image:
+        repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.015) 2px, rgba(0,0,0,0.015) 4px),
+        repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(0,0,0,0.015) 2px, rgba(0,0,0,0.015) 4px);
+      pointer-events: none;
+      opacity: 0.3;
+    }
+
+    .page-container {
+      max-width: 900px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* 页头 */
+    .page-header {
+      text-align: center;
+      margin-bottom: 40px;
+      padding: 30px 20px;
+      background: rgba(255,255,255,0.25);
+      border-radius: 16px;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.3);
+    }
+    .page-header h1 {
+      font-size: 1.6rem;
+      color: var(--text-main);
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+    .header-nav {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 15px;
+      flex-wrap: wrap;
+    }
+    .nav-link {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: 20px;
+      transition: all 0.3s;
+      border: 1px solid transparent;
+    }
+    .nav-link:hover {
+      color: var(--text-main);
+      background: rgba(255,255,255,0.4);
+      border-color: rgba(143,159,145,0.3);
+    }
+
+    /* 空购物车 */
+    .cart-empty {
+      text-align: center;
+      padding: 80px 20px;
+      background: rgba(255,255,255,0.3);
+      border-radius: 16px;
+      backdrop-filter: blur(8px);
+    }
+    .cart-empty-icon {
+      font-size: 4rem;
+      margin-bottom: 20px;
+      opacity: 0.5;
+    }
+    .cart-empty h2 {
+      color: var(--text-main);
+      font-size: 1.3rem;
+      margin-bottom: 10px;
+    }
+    .cart-empty p {
+      color: var(--text-muted);
+      margin-bottom: 25px;
+    }
+    .cart-empty-btn {
+      display: inline-block;
+      padding: 12px 30px;
+      background: var(--primary);
+      color: white;
+      text-decoration: none;
+      border-radius: 25px;
+      font-weight: 600;
+      transition: all 0.3s;
+    }
+    .cart-empty-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(143,159,145,0.4);
+    }
+
+    /* 购物车列表 */
+    .cart-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .cart-item {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      background: rgba(255,255,255,0.4);
+      border-radius: 14px;
+      padding: 18px;
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,0.3);
+      transition: all 0.3s;
+    }
+    .cart-item:hover {
+      background: rgba(255,255,255,0.55);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+    }
+
+    .cart-item-image {
+      width: 100px;
+      height: 100px;
+      border-radius: 10px;
+      overflow: hidden;
+      background: var(--bg-image);
+      flex-shrink: 0;
+    }
+    .cart-item-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .cart-item-info {
+      flex: 1;
+      min-width: 0;
+    }
+    .cart-item-name {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 6px;
+    }
+    .cart-item-desc {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+      line-height: 1.4;
+    }
+    .cart-item-price {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    /* 数量控制 */
+    .cart-item-qty {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+    .qty-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 2px solid var(--primary);
+      background: transparent;
+      color: var(--primary);
+      font-size: 1.1rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+    .qty-btn:hover {
+      background: var(--primary);
+      color: white;
+    }
+    .qty-value {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text-main);
+      min-width: 24px;
+      text-align: center;
+    }
+
+    /* 删除按钮 */
+    .cart-item-remove {
+      flex-shrink: 0;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: none;
+      background: rgba(192, 57, 43, 0.1);
+      color: var(--danger);
+      font-size: 1.2rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+    .cart-item-remove:hover {
+      background: var(--danger);
+      color: white;
+    }
+
+    /* 结算栏 */
+    .cart-summary {
+      background: rgba(255,255,255,0.45);
+      border-radius: 16px;
+      padding: 24px;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.3);
+    }
+    .cart-summary-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      font-size: 0.95rem;
+      color: var(--text-muted);
+    }
+    .cart-summary-row.total {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 2px solid rgba(143,159,145,0.2);
+      margin-bottom: 20px;
+    }
+    .cart-summary-total-price {
+      color: var(--primary);
+      font-size: 1.4rem;
+    }
+
+    .cart-actions {
+      display: flex;
+      gap: 12px;
+    }
+    .btn-continue {
+      flex: 1;
+      padding: 14px;
+      border: 2px solid var(--primary);
+      background: transparent;
+      color: var(--primary);
+      font-size: 0.95rem;
+      font-weight: 700;
+      border-radius: 25px;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-decoration: none;
+      text-align: center;
+    }
+    .btn-continue:hover {
+      background: rgba(143,159,145,0.1);
+    }
+    .btn-checkout {
+      flex: 1;
+      padding: 14px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      font-size: 0.95rem;
+      font-weight: 700;
+      border-radius: 25px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .btn-checkout:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(143,159,145,0.4);
+    }
+    .btn-clear {
+      width: 100%;
+      padding: 10px;
+      background: transparent;
+      border: 1px solid rgba(192,57,43,0.3);
+      color: var(--danger);
+      font-size: 0.85rem;
+      font-weight: 600;
+      border-radius: 20px;
+      cursor: pointer;
+      margin-top: 12px;
+      transition: all 0.2s;
+    }
+    .btn-clear:hover {
+      background: rgba(192,57,43,0.08);
+    }
+
+    /* 底部 */
+    .page-footer-info {
+      text-align: center;
+      margin-top: 40px;
+      padding: 20px;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+
+    /* ===== 响应式 ===== */
+    @media (max-width: 768px) {
+      .page-header h1 { font-size: 1.3rem; }
+      .cart-item {
+        flex-wrap: wrap;
+        gap: 14px;
+        padding: 14px;
+      }
+      .cart-item-image {
+        width: 80px;
+        height: 80px;
+      }
+      .cart-item-info {
+        flex: 1 1 calc(100% - 110px);
+      }
+      .cart-item-qty {
+        margin-left: auto;
+      }
+      .cart-actions {
+        flex-direction: column;
+      }
+    }
+
+    @media (max-width: 480px) {
+      body { padding: 12px; }
+      .page-header { padding: 20px 14px; margin-bottom: 24px; }
+      .page-header h1 { font-size: 1.1rem; }
+      .cart-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+      }
+      .cart-item-image {
+        width: 100%;
+        height: 160px;
+      }
+      .cart-item-bottom {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+      }
+      .cart-summary { padding: 18px; }
+      .cart-empty { padding: 50px 16px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-container">
+    <!-- 页面头部 -->
+    <header class="page-header">
+      <h1>🛒 我的购物车</h1>
+      <nav class="header-nav">
+        <a href="index.html" class="nav-link">首页</a>
+        <a href="products.html" class="nav-link">全部产品</a>
+        <a href="customize.html" class="nav-link">镜片定制</a>
+      </nav>
+    </header>
+
+    <!-- 购物车内容 -->
+    <div id="cartContent"></div>
+
+    <!-- 底部 -->
+    <footer class="page-footer-info">
+      <p>Splurge Vision — 为您甄选每一副眼镜</p>
+    </footer>
+  </div>
+
+  <script>
+    // ===== 购物车数据管理 =====
+    function getCart() {
+      return JSON.parse(localStorage.getItem('splurgeVisionCart') || '[]');
+    }
+
+    function saveCart(cart) {
+      localStorage.setItem('splurgeVisionCart', JSON.stringify(cart));
+    }
+
+    // ===== 渲染购物车 =====
+    function renderCart() {
+      const cart = getCart();
+      const container = document.getElementById('cartContent');
+
+      if (cart.length === 0) {
+        container.innerHTML = `
+          <div class="cart-empty">
+            <div class="cart-empty-icon">🛒</div>
+            <h2>购物车是空的</h2>
+            <p>快去挑选心仪的眼镜吧！</p>
+            <a href="products.html" class="cart-empty-btn">去逛逛</a>
+          </div>
+        `;
+        return;
+      }
+
+      // 计算总价和总数量
+      let totalPrice = 0;
+      let totalQty = 0;
+      cart.forEach(item => {
+        totalPrice += item.price * item.qty;
+        totalQty += item.qty;
+      });
+
+      let html = '<div class="cart-list">';
+      cart.forEach((item, index) => {
+        html += `
+          <div class="cart-item">
+            <div class="cart-item-image">
+              <img src="${item.image}" alt="${item.name}">
+            </div>
+            <div class="cart-item-info">
+              <div class="cart-item-name">${item.name}</div>
+              <div class="cart-item-desc">${item.desc || ''}</div>
+              <div class="cart-item-price">¥${item.price}</div>
+            </div>
+            <div class="cart-item-qty">
+              <button class="qty-btn" onclick="changeQty(${index}, -1)">−</button>
+              <span class="qty-value">${item.qty}</span>
+              <button class="qty-btn" onclick="changeQty(${index}, 1)">+</button>
+            </div>
+            <button class="cart-item-remove" onclick="removeItem(${index})" title="删除">✕</button>
+          </div>
+        `;
+      });
+      html += '</div>';
+
+      html += `
+        <div class="cart-summary">
+          <div class="cart-summary-row">
+            <span>商品数量</span>
+            <span>${totalQty} 件</span>
+          </div>
+          <div class="cart-summary-row total">
+            <span>合计</span>
+            <span class="cart-summary-total-price">¥${totalPrice}</span>
+          </div>
+          <div class="cart-actions">
+            <a href="products.html" class="btn-continue">继续购物</a>
+            <button class="btn-checkout" onclick="doCheckout()">去结算</button>
+          </div>
+          <button class="btn-clear" onclick="clearCart()">清空购物车</button>
+        </div>
+      `;
+
+      container.innerHTML = html;
+    }
+
+    // ===== 修改数量 =====
+    function changeQty(index, delta) {
+      const cart = getCart();
+      cart[index].qty += delta;
+      if (cart[index].qty <= 0) {
+        cart.splice(index, 1);
+      }
+      saveCart(cart);
+      renderCart();
+    }
+
+    // ===== 删除商品 =====
+    function removeItem(index) {
+      const cart = getCart();
+      const name = cart[index].name;
+      if (confirm(`确定要删除 ${name} 吗？`)) {
+        cart.splice(index, 1);
+        saveCart(cart);
+        renderCart();
+      }
+    }
+
+    // ===== 清空购物车 =====
+    function clearCart() {
+      if (confirm('确定要清空购物车吗？')) {
+        saveCart([]);
+        renderCart();
+      }
+    }
+
+    // ===== 结算 =====
+    function doCheckout() {
+      const cart = getCart();
+      let totalPrice = 0;
+      cart.forEach(item => totalPrice += item.price * item.qty);
+
+      const user = JSON.parse(localStorage.getItem('splurgeVisionUser') || '{}');
+      if (!user.isLoggedIn) {
+        alert('请先登录后再结算');
+        window.location.href = 'index.html';
+        return;
+      }
+
+      alert(`订单确认\n\n共 ${cart.length} 种商品\n合计：¥${totalPrice}\n\n收货人：${user.nickname || user.email}\n地址：${user.address || '请前往个人中心完善地址'}\n\n感谢您选择 Splurge Vision！`);
+      saveCart([]);
+      renderCart();
+    }
+
+    // ===== 初始化 =====
+    renderCart();
+  </script>
+</body>
+</html>

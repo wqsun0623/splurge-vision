@@ -546,6 +546,7 @@
         </div>
       </div>
       <div class="header-right">
+        <a href="cart.html" style="color: #6B7B6D; text-decoration: none; font-weight: 600; font-size: 0.9rem; padding: 6px 12px; border-radius: 6px; transition: all 0.2s; border: 1px solid rgba(107,123,109,0.3);">🛒 购物车</a>
         <button class="lang-switch active" id="langZh" onclick="switchLanguage('zh')">中文</button>
         <button class="lang-switch" id="langEn" onclick="switchLanguage('en')">English</button>
         <a href="index.html" class="back-btn" id="backBtn">← 返回</a>
@@ -1056,15 +1057,27 @@
     // 加入购物车
     function addToCart() {
       if (validateForm()) {
-        const data = getFormData();
-        const paymentMap = {
-          'wechat': '微信支付',
-          'alipay': '支付宝',
-          'credit': '信用卡',
-          'debit': '储蓄卡',
-          'paypal': 'PayPal'
-        };
-        alert(`✓ 已加入购物车\n\n姓名: ${data.name}\n电话: ${data.phone}\n地址: ${data.address}\n邮编: ${data.postal || '未填写'}\n付款方式: ${paymentMap[data.payment]}\n\n您可以继续购物或前往购物车结算`);
+        const cart = JSON.parse(localStorage.getItem('splurgeVisionCart') || '[]');
+        const styleNames = { 'brown': '棕色框款式', 'frameless': '无框款式', 'orange': '橙色腿款式' };
+        const currentStyleName = styleNames[currentStyle] || '棕色框款式';
+        const itemId = 'classic-' + currentStyle;
+        const mainImg = document.getElementById('mainImage').src;
+        
+        const existing = cart.find(item => item.id === itemId);
+        if (existing) {
+          existing.qty += 1;
+        } else {
+          cart.push({
+            id: itemId,
+            name: '经典系列眼镜 - ' + currentStyleName,
+            desc: currentStyleName,
+            price: 999,
+            image: mainImg,
+            qty: 1
+          });
+        }
+        localStorage.setItem('splurgeVisionCart', JSON.stringify(cart));
+        alert(`✓ 已将经典系列（${currentStyleName}）加入购物车`);
       }
     }
     
@@ -1281,7 +1294,9 @@
     }
     
     // 切换款式
+    let currentStyle = 'brown';
     function switchStyle(styleName) {
+      currentStyle = styleName;
       // 隐藏所有画廊
       document.getElementById('brownGallery').style.display = 'none';
       document.getElementById('framelessGallery').style.display = 'none';

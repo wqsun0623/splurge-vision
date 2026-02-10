@@ -450,6 +450,7 @@
         <a href="index.html" class="nav-link">首页</a>
         <!-- 虚拟试戴暂时隐藏 -->
         <a href="customize.html" class="nav-link">镜片定制</a>
+        <a href="cart.html" class="nav-link">🛒 购物车</a>
       </nav>
     </header>
     
@@ -566,7 +567,23 @@
     // ===== 加入购物车 =====
     function addToCart(productId) {
       const product = productsData.find(p => p.id === productId);
-      alert(`已将 ${product.name} 加入购物车！`);
+      const defaultVariant = product.variants.find(v => v.color === product.defaultVariant) || product.variants[0];
+      const cart = JSON.parse(localStorage.getItem('splurgeVisionCart') || '[]');
+      const existing = cart.find(item => item.id === product.id);
+      if (existing) {
+        existing.qty += 1;
+      } else {
+        cart.push({
+          id: product.id,
+          name: product.name,
+          desc: product.desc.replace(/<br>/g, ' '),
+          price: product.price,
+          image: defaultVariant.images[0],
+          qty: 1
+        });
+      }
+      localStorage.setItem('splurgeVisionCart', JSON.stringify(cart));
+      alert(`✓ 已将 ${product.name} 加入购物车`);
     }
     
     // ===== 页面加载时渲染 =====

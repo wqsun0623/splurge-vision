@@ -28,6 +28,8 @@
     /* ===== 返回按钮 ===== */
     .back-nav {
       margin-bottom: 20px;
+      display: flex;
+      align-items: center;
     }
     
     .back-btn {
@@ -368,6 +370,9 @@
       <a href="products.html" class="back-btn">
         ← 返回商品列表
       </a>
+      <a href="cart.html" class="back-btn" style="margin-left: auto;">
+        🛒 购物车
+      </a>
     </nav>
     
     <!-- 详情内容 -->
@@ -638,7 +643,23 @@
     
     // ===== 加入购物车 =====
     function addToCart() {
-      alert(`已将 ${currentProduct.name} 加入购物车！`);
+      const cart = JSON.parse(localStorage.getItem('splurgeVisionCart') || '[]');
+      const existing = cart.find(item => item.id === currentProduct.id);
+      if (existing) {
+        existing.qty += 1;
+      } else {
+        const defaultVariant = currentProduct.variants.find(v => v.color === currentProduct.defaultVariant) || currentProduct.variants[0];
+        cart.push({
+          id: currentProduct.id,
+          name: currentProduct.name,
+          desc: currentProduct.desc.replace(/<br>/g, ' '),
+          price: currentProduct.price,
+          image: defaultVariant.images[0],
+          qty: 1
+        });
+      }
+      localStorage.setItem('splurgeVisionCart', JSON.stringify(cart));
+      alert(`✓ 已将 ${currentProduct.name} 加入购物车`);
     }
     
     // ===== 页面加载时初始化 =====
