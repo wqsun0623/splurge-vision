@@ -186,6 +186,8 @@
       backdrop-filter: blur(5px);
       overflow-y: auto;
       -webkit-overflow-scrolling: touch;
+      justify-content: center;
+      align-items: center;
     }
     
     .login-modal-content {
@@ -197,6 +199,7 @@
       box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
       width: 90%;
       max-width: 400px;
+      flex-shrink: 0;
     }
     
     .login-close {
@@ -1764,7 +1767,7 @@
   
   // 登录相关功能
   function openLoginModal() {
-    document.getElementById('loginModal').style.display = 'block';
+    document.getElementById('loginModal').style.display = 'flex';
   }
   
   function closeLoginModal() {
@@ -1810,7 +1813,7 @@
   
   // 注册相关功能
   function openRegisterModal() {
-    document.getElementById('registerModal').style.display = 'block';
+    document.getElementById('registerModal').style.display = 'flex';
   }
   
   function closeRegisterModal() {
