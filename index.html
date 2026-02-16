@@ -1066,6 +1066,10 @@
           <label class="login-label">密码</label>
           <input type="password" class="login-input" id="loginPassword" placeholder="请输入密码" required>
         </div>
+        <div style="display:flex;align-items:center;gap:8px;margin:8px 0 16px;">
+          <input type="checkbox" id="autoLoginCheck" style="width:16px;height:16px;accent-color:#6B7B6D;cursor:pointer;">
+          <label for="autoLoginCheck" style="font-size:0.85rem;color:#8B9B8D;cursor:pointer;​">下次自动登录</label>
+        </div>
         <button type="submit" class="login-submit">登录</button>
       </form>
       <div class="login-footer">
@@ -1808,7 +1812,20 @@
     
     // 保存登录状态
     user.isLoggedIn = true;
+    user.loginEmail = email;
     localStorage.setItem('splurgeVisionUser', JSON.stringify(user));
+    
+    // 检查自动登录
+    const autoLogin = document.getElementById('autoLoginCheck').checked;
+    if (autoLogin) {
+      localStorage.setItem('splurgeVisionAutoLogin', JSON.stringify({
+        email: email,
+        password: password,
+        enabled: true
+      }));
+    } else {
+      localStorage.removeItem('splurgeVisionAutoLogin');
+    }
     
     alert('登录成功！欢迎来到 Splurge Vision');
     closeLoginModal();
@@ -2016,6 +2033,24 @@
       if (user.isLoggedIn) {
         const displayName = user.nickname || user.name || '用户';
         updateUserButton(displayName);
+        return; // 已登录，无需自动登录
+      }
+    }
+
+    // 检查是否有自动登录信息
+    const autoLoginData = localStorage.getItem('splurgeVisionAutoLogin');
+    if (autoLoginData) {
+      const auto = JSON.parse(autoLoginData);
+      if (auto.enabled && auto.email && auto.password) {
+        const users = getUsers();
+        const user = users[auto.email];
+        if (user && user.password === auto.password) {
+          user.isLoggedIn = true;
+          user.loginEmail = auto.email;
+          localStorage.setItem('splurgeVisionUser', JSON.stringify(user));
+          const displayName = user.nickname || auto.email.split('@')[0];
+          updateUserButton(displayName);
+        }
       }
     }
   })();

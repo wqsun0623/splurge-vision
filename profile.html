@@ -68,6 +68,26 @@
       background: linear-gradient(135deg, #C9A9A8 0%, #A88B8A 100%);
     }
 
+    .logout-btn {
+      padding: 12px 24px;
+      background: rgba(200, 100, 100, 0.75);
+      color: white;
+      text-decoration: none;
+      border-radius: 10px;
+      font-weight: 600;
+      transition: all 0.3s;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    .logout-btn:hover {
+      background: rgba(200, 100, 100, 0.95);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(200, 100, 100, 0.3);
+    }
+
     /* ===== Tab 导航 ===== */
     .tab-nav {
       display: flex;
@@ -888,6 +908,7 @@
       <div class="header-actions">
         <a href="cart.html" class="cart-btn">🛒 购物车</a>
         <a href="index.html" class="back-btn">返回首页</a>
+        <button class="logout-btn" onclick="handleLogout()">退出登录</button>
       </div>
     </div>
 
@@ -1285,6 +1306,23 @@
         }
       ]
     };
+
+    // ==================== 退出登录 ====================
+    function handleLogout() {
+      if (confirm('确定要退出登录吗？')) {
+        // 清除登录状态
+        const savedUser = localStorage.getItem('splurgeVisionUser');
+        if (savedUser) {
+          const user = JSON.parse(savedUser);
+          user.isLoggedIn = false;
+          localStorage.setItem('splurgeVisionUser', JSON.stringify(user));
+        }
+        // 清除自动登录
+        localStorage.removeItem('splurgeVisionAutoLogin');
+        alert('已退出登录');
+        window.location.href = 'index.html';
+      }
+    }
 
     // ==================== Tab 切换 ====================
     function switchTab(tab, btn) {
