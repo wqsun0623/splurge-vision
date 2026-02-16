@@ -368,6 +368,47 @@
         gap: 18px;
       }
     }
+
+    /* ===== 定制款说明 ===== */
+    .custom-info-box {
+      background: linear-gradient(135deg, rgba(155, 168, 156, 0.1), rgba(107, 123, 109, 0.05));
+      border: 1px solid rgba(155, 168, 156, 0.3);
+      border-radius: 12px;
+      padding: 20px;
+      margin-top: 15px;
+      animation: fadeIn 0.3s ease;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .custom-info-box p {
+      font-weight: 700;
+      color: #6B7B6D;
+      margin-bottom: 10px;
+      font-size: 1rem;
+    }
+    .custom-info-box ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .custom-info-box ul li {
+      padding: 4px 0;
+      color: #666;
+      font-size: 0.9rem;
+    }
+    .custom-info-box ul li::before {
+      content: "✓ ";
+      color: #9BA89C;
+      font-weight: 700;
+    }
+    .price-note {
+      font-size: 0.85rem;
+      color: #888;
+      margin-top: 5px;
+      font-weight: 400;
+    }
   </style>
 </head>
 <body>
@@ -403,9 +444,21 @@
         
         <!-- 颜色选择 -->
         <div class="color-selector">
-          <label class="color-label">选择颜色</label>
+          <label class="color-label">选择款式</label>
           <div class="color-options" id="colorOptions">
             <!-- 颜色选项由 JavaScript 生成 -->
+          </div>
+          <!-- 定制款说明（默认隐藏） -->
+          <div id="customInfo" style="display:none;">
+            <div class="custom-info-box">
+              <p>🔬 定制款包含专业镜片定制服务</p>
+              <ul>
+                <li>标准 / 防蓝光 / 变色 / 渐进多焦点镜片可选</li>
+                <li>支持近视、散光度数精准配制</li>
+                <li>多种折射率可选（1.56 - 1.74）</li>
+                <li>专业验光师 24 小时内确认</li>
+              </ul>
+            </div>
           </div>
         </div>
         
@@ -573,6 +626,16 @@
         ]
       }
     };
+
+    // ===== 自动为每个商品生成"定制款"variant =====
+    Object.values(productsData).forEach(product => {
+      const standardVariant = product.variants[0];
+      product.variants.push({
+        color: "custom",
+        label: "定制款",
+        images: [...standardVariant.images]
+      });
+    });
     
     // ===== 当前商品信息 =====
     let currentProduct = null;
@@ -604,8 +667,8 @@
       // 渲染颜色选项
       renderVariants();
       
-      // 渲染当前 variant 的图片
-      renderImagesForVariant(currentVariantIndex);
+      // 选择默认款式（触发图片渲染和UI更新）
+      selectVariant(currentVariantIndex);
     }
     
     // ===== 渲染 variant 选项 =====
@@ -625,12 +688,31 @@
     // ===== 选择 variant =====
     function selectVariant(variantIndex) {
       currentVariantIndex = variantIndex;
+      const variant = currentProduct.variants[variantIndex];
       
       // 更新选项高亮
       const options = document.querySelectorAll('.color-option');
       options.forEach((opt, i) => {
         opt.classList.toggle('active', i === variantIndex);
       });
+      
+      // 处理定制款/标准款 UI 切换
+      const customInfo = document.getElementById('customInfo');
+      const buyBtn = document.querySelector('.btn-buy-now');
+      const cartBtn = document.querySelector('.btn-add-cart');
+      
+      if (variant.color === 'custom') {
+        customInfo.style.display = 'block';
+        document.getElementById('productPrice').innerHTML =
+          `¥${currentProduct.price}<div class="price-note">镜框价格，定制镜片 ¥179 起</div>`;
+        buyBtn.textContent = '🔬 前往定制镜片';
+        cartBtn.style.display = 'none';
+      } else {
+        customInfo.style.display = 'none';
+        document.getElementById('productPrice').textContent = `¥${currentProduct.price}`;
+        buyBtn.textContent = '立即购买';
+        cartBtn.style.display = '';
+      }
       
       // 渲染该 variant 的所有图片
       renderImagesForVariant(variantIndex);
@@ -683,6 +765,14 @@
     
     // ===== 立即购买 =====
     function buyNow() {
+      const variant = currentProduct.variants[currentVariantIndex];
+      if (variant.color === 'custom') {
+        // 定制款 → 跳转到镜片定制页面
+        const urlParams = new URLSearchParams(window.location.search);
+        const productId = urlParams.get('id') || 'sv-product-a';
+        window.location.href = `customize.html?id=${productId}`;
+        return;
+      }
       alert(`正在购买 ${currentProduct.name}\n价格：¥${currentProduct.price}`);
       // 这里可以跳转到结账页面
     }

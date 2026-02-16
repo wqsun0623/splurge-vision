@@ -705,7 +705,7 @@
           </div>
           <div class="price-item">
             <span>镜框价格</span>
-            <span>¥899</span>
+            <span id="framePriceDisplay">¥899</span>
           </div>
           <div class="price-total">
             <span>总计</span>
@@ -725,6 +725,44 @@
   </div>
   
   <script>
+    // ===== 读取商品参数 =====
+    const urlParams = new URLSearchParams(window.location.search);
+    const customProductId = urlParams.get('id');
+    
+    const frameData = {
+      'sv-product-a': { name: 'SPLURGE VISION NO.1', price: 258 },
+      'sv-product-b': { name: 'SPLURGE VISION NO.2', price: 328 },
+      'sv-product-c': { name: 'SPLURGE VISION NO.3', price: 219 },
+      'sv-product-d': { name: 'SPLURGE VISION NO.4', price: 219 },
+      'sv-product-e': { name: 'SPLURGE VISION NO.5', price: 489 },
+      'sv-product-f': { name: 'SPLURGE VISION NO.6', price: 249 },
+      'sv-product-g': { name: 'SPLURGE VISION NO.7', price: 358 },
+      'sv-product-h': { name: 'SPLURGE VISION NO.8', price: 329 },
+      'sv-product-i': { name: 'SPLURGE VISION NO.9', price: 399 },
+      'sv-product-j': { name: 'SPLURGE VISION NO.10', price: 328 }
+    };
+    
+    let currentFramePrice = 899;
+    
+    if (customProductId && frameData[customProductId]) {
+      const product = frameData[customProductId];
+      currentFramePrice = product.price;
+      // 更新页面标题和描述
+      document.querySelector('.lens-title').textContent = product.name + ' 镜片定制';
+      document.querySelector('.lens-subtitle').textContent = '为您的 ' + product.name + ' 定制专属镜片';
+      // 更新镜框价格显示
+      document.getElementById('framePriceDisplay').textContent = '¥' + product.price;
+      // 添加返回商品详情链接
+      const navDiv = document.querySelector('.header > div');
+      const backLink = document.createElement('a');
+      backLink.href = 'product-detail.html?id=' + customProductId;
+      backLink.className = 'nav-btn';
+      backLink.textContent = '← 返回商品';
+      navDiv.insertBefore(backLink, navDiv.firstChild);
+      // 立即更新总价
+      setTimeout(updatePrice, 0);
+    }
+
     // 监听"其他度数"选项
     document.getElementById('leftSph').addEventListener('change', function() {
       document.getElementById('leftSphCustom').style.display = 
@@ -765,7 +803,7 @@
       
       const lensPrice = lensTypePrices[lensType];
       const refractivePrice = refractivePrices[refractiveIndex];
-      const framePrice = 899;
+      const framePrice = currentFramePrice;
       const total = lensPrice + refractivePrice + framePrice;
       
       document.getElementById('lensTypePrice').textContent = '¥' + lensPrice;
@@ -800,7 +838,9 @@
         return;
       }
       
-      alert('定制订单已提交！\n\n我们的验光师将在24小时内与您联系确认度数信息。\n感谢您选择 Splurge Vision！');
+      const productInfo = customProductId && frameData[customProductId] ? 
+        '\n商品：' + frameData[customProductId].name : '';
+      alert('定制订单已提交！' + productInfo + '\n\n我们的验光师将在24小时内与您联系确认度数信息。\n感谢您选择 Splurge Vision！');
       
       // 这里可以添加实际的表单提交逻辑
       // 例如：发送到后端API
