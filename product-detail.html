@@ -59,6 +59,7 @@
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 50px;
+      overflow: hidden;
     }
     
     /* ===== 左侧：图片展示区 ===== */
@@ -66,6 +67,8 @@
       display: flex;
       flex-direction: column;
       gap: 20px;
+      min-width: 0;
+      overflow: hidden;
     }
     
     .main-image-container {
@@ -93,25 +96,26 @@
     
     /* ===== 缩略图画廊 ===== */
     .thumbnail-gallery {
-      display: flex;
-      gap: 12px;
-      overflow-x: auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+      gap: 10px;
       padding: 5px 0;
+      max-width: 100%;
     }
     
     .thumbnail {
-      width: 100px;
-      height: 100px;
+      width: 100%;
+      aspect-ratio: 1;
       background: #f5f5f5;
       border-radius: 12px;
-      padding: 10px;
+      padding: 8px;
       cursor: pointer;
       border: 3px solid transparent;
       transition: all 0.2s;
-      flex-shrink: 0;
       display: flex;
       align-items: center;
       justify-content: center;
+      overflow: hidden;
     }
     
     .thumbnail img {
@@ -303,9 +307,11 @@
         height: 300px;
         padding: 20px;
       }
+      .thumbnail-gallery {
+        grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+        gap: 8px;
+      }
       .thumbnail {
-        width: 70px;
-        height: 70px;
         padding: 6px;
       }
       .detail-name {
@@ -345,11 +351,11 @@
         padding: 15px;
       }
       .thumbnail-gallery {
-        gap: 8px;
+        grid-template-columns: repeat(auto-fill, minmax(50px, 1fr));
+        gap: 6px;
       }
       .thumbnail {
-        width: 60px;
-        height: 60px;
+        padding: 5px;
       }
       .detail-name {
         font-size: 1.3rem;
