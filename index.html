@@ -186,19 +186,27 @@
       backdrop-filter: blur(5px);
       overflow-y: auto;
       -webkit-overflow-scrolling: touch;
+      flex-direction: column;
+      align-items: center;
       padding: 20px 0;
+    }
+    
+    .login-modal::after {
+      content: '';
+      min-height: 20px;
+      flex-shrink: 0;
     }
     
     .login-modal-content {
       position: relative;
-      margin: 20px auto;
+      margin: auto;
       background: rgba(255, 255, 255, 0.95);
       padding: 35px;
       border-radius: 20px;
       box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
       width: 90%;
       max-width: 400px;
-      max-height: none;
+      flex-shrink: 0;
     }
     
     .login-close {
