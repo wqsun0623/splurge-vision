@@ -586,36 +586,22 @@
           </div>
         </div>
         
-        <!-- 镜片类型 -->
+        <!-- 镜片类型（蔡司视特耐） -->
         <div class="form-section">
-          <h3 class="section-title">✨ 镜片类型选择</h3>
+          <h3 class="section-title">✨ 蔡司视特耐镜片类型</h3>
           <div class="lens-options">
             <label class="lens-option selected">
-              <input type="radio" name="lensType" value="standard" checked onchange="updatePrice()">
-              <div class="lens-option-title">标准镜片（1.56）</div>
-              <div class="lens-option-desc">基础款，适合日常使用</div>
-              <div style="margin-top:8px; font-weight:700; color:#6B7B6D;">¥179</div>
+              <input type="radio" name="lensType" value="aspherical" checked onchange="updatePrice()">
+              <div class="lens-option-title">非球面镜片</div>
+              <div class="lens-option-desc">蔡司视特耐 · 清晰自然 · 日常佩戴首选</div>
+              <div style="margin-top:8px; font-weight:700; color:#6B7B6D;">¥150 起</div>
             </label>
             
             <label class="lens-option">
               <input type="radio" name="lensType" value="antiblue" onchange="updatePrice()">
-              <div class="lens-option-title">防蓝光镜片（1.56）</div>
-              <div class="lens-option-desc">防护电子屏幕蓝光</div>
-              <div style="margin-top:8px; font-weight:700; color:#6B7B6D;">¥299</div>
-            </label>
-            
-            <label class="lens-option">
-              <input type="radio" name="lensType" value="photochromic" onchange="updatePrice()">
-              <div class="lens-option-title">变色镜片（1.56）</div>
-              <div class="lens-option-desc">室内外自动变色</div>
-              <div style="margin-top:8px; font-weight:700; color:#6B7B6D;">¥499</div>
-            </label>
-            
-            <label class="lens-option">
-              <input type="radio" name="lensType" value="progressive" onchange="updatePrice()">
-              <div class="lens-option-title">渐进多焦点</div>
-              <div class="lens-option-desc">远中近一体，无感切换</div>
-              <div style="margin-top:8px; font-weight:700; color:#6B7B6D;">¥899</div>
+              <div class="lens-option-title">防蓝光镜片</div>
+              <div class="lens-option-desc">蔡司视特耐 · 有效过滤有害蓝光 · 护眼之选</div>
+              <div style="margin-top:8px; font-weight:700; color:#6B7B6D;">¥210 起</div>
             </label>
           </div>
         </div>
@@ -626,30 +612,23 @@
           <div class="lens-options">
             <label class="lens-option selected">
               <input type="radio" name="refractiveIndex" value="1.56" checked onchange="updatePrice()">
-              <div class="lens-option-title">1.56折射率</div>
-              <div class="lens-option-desc">400度以下推荐</div>
-              <div style="margin-top:8px; font-weight:700; color:#6B7B6D;">标准</div>
+              <div class="lens-option-title">1.56 折射率</div>
+              <div class="lens-option-desc">400度以下推荐 · 经济实惠</div>
+              <div style="margin-top:8px; font-weight:700; color:#6B7B6D;" class="ri-price">¥150</div>
             </label>
             
             <label class="lens-option">
-              <input type="radio" name="refractiveIndex" value="1.60" onchange="updatePrice()">
-              <div class="lens-option-title">1.60折射率</div>
-              <div class="lens-option-desc">400-600度推荐</div>
-              <div style="margin-top:8px; font-weight:700; color:#6B7B6D;">+¥80</div>
+              <input type="radio" name="refractiveIndex" value="1.61" onchange="updatePrice()">
+              <div class="lens-option-title">1.61 折射率</div>
+              <div class="lens-option-desc">400-600度推荐 · 轻薄舒适</div>
+              <div style="margin-top:8px; font-weight:700; color:#6B7B6D;" class="ri-price">¥230</div>
             </label>
             
             <label class="lens-option">
               <input type="radio" name="refractiveIndex" value="1.67" onchange="updatePrice()">
-              <div class="lens-option-title">1.67折射率</div>
-              <div class="lens-option-desc">600-800度推荐</div>
-              <div style="margin-top:8px; font-weight:700; color:#6B7B6D;">+¥150</div>
-            </label>
-            
-            <label class="lens-option">
-              <input type="radio" name="refractiveIndex" value="1.74" onchange="updatePrice()">
-              <div class="lens-option-title">1.74超薄</div>
-              <div class="lens-option-desc">800度以上推荐</div>
-              <div style="margin-top:8px; font-weight:700; color:#6B7B6D;">+¥300</div>
+              <div class="lens-option-title">1.67 折射率</div>
+              <div class="lens-option-desc">600度以上推荐 · 超薄美观</div>
+              <div style="margin-top:8px; font-weight:700; color:#6B7B6D;" class="ri-price">¥380</div>
             </label>
           </div>
         </div>
@@ -696,12 +675,8 @@
         <!-- 价格总结 -->
         <div class="price-summary">
           <div class="price-item">
-            <span>镜片类型</span>
-            <span id="lensTypePrice">¥179</span>
-          </div>
-          <div class="price-item">
-            <span>折射率附加</span>
-            <span id="refractivePrice">¥0</span>
+            <span>蔡司视特耐镜片（含加工）</span>
+            <span id="lensPrice">¥150</span>
           </div>
           <div class="price-item">
             <span>镜框价格</span>
@@ -709,7 +684,7 @@
           </div>
           <div class="price-total">
             <span>总计</span>
-            <span id="totalPrice">¥1,078</span>
+            <span id="totalPrice">¥1,049</span>
           </div>
         </div>
         
@@ -782,32 +757,28 @@
       });
     });
     
+    // 蔡司视特耐镜片价格表（含加工价 × 2）
+    const zeissPriceTable = {
+      'aspherical': { '1.56': 150, '1.61': 230, '1.67': 380 },
+      'antiblue':   { '1.56': 210, '1.61': 320, '1.67': 460 }
+    };
+
     // 更新价格
     function updatePrice() {
       const lensType = document.querySelector('input[name="lensType"]:checked').value;
       const refractiveIndex = document.querySelector('input[name="refractiveIndex"]:checked').value;
       
-      const lensTypePrices = {
-        'standard': 179,
-        'antiblue': 299,
-        'photochromic': 499,
-        'progressive': 899
-      };
-      
-      const refractivePrices = {
-        '1.56': 0,
-        '1.60': 80,
-        '1.67': 150,
-        '1.74': 300
-      };
-      
-      const lensPrice = lensTypePrices[lensType];
-      const refractivePrice = refractivePrices[refractiveIndex];
+      const lensPrice = zeissPriceTable[lensType][refractiveIndex];
       const framePrice = currentFramePrice;
-      const total = lensPrice + refractivePrice + framePrice;
+      const total = lensPrice + framePrice;
       
-      document.getElementById('lensTypePrice').textContent = '¥' + lensPrice;
-      document.getElementById('refractivePrice').textContent = '¥' + refractivePrice;
+      // 更新折射率选项卡上的价格显示
+      document.querySelectorAll('.ri-price').forEach(el => {
+        const ri = el.closest('.lens-option').querySelector('input').value;
+        el.textContent = '¥' + zeissPriceTable[lensType][ri];
+      });
+      
+      document.getElementById('lensPrice').textContent = '¥' + lensPrice;
       document.getElementById('totalPrice').textContent = '¥' + total.toLocaleString();
     }
     

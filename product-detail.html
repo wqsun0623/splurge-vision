@@ -619,11 +619,11 @@
           <!-- 定制款说明（默认隐藏） -->
           <div id="customInfo" style="display:none;">
             <div class="custom-info-box">
-              <p>🔬 定制款包含专业镜片定制服务</p>
+              <p>🔬 定制款采用德国蔡司视特耐镜片</p>
               <ul>
-                <li>标准 / 防蓝光 / 变色 / 渐进多焦点镜片可选</li>
+                <li>非球面 / 防蓝光镜片可选</li>
                 <li>支持近视、散光度数精准配制</li>
-                <li>多种折射率可选（1.56 - 1.74）</li>
+                <li>1.56 / 1.61 / 1.67 折射率可选</li>
                 <li>专业验光师 24 小时内确认</li>
               </ul>
             </div>
@@ -949,7 +949,7 @@
       if (variant.color === 'custom') {
         customInfo.style.display = 'block';
         document.getElementById('productPrice').innerHTML =
-          `¥${currentProduct.price}<div class="price-note">镜框价格，定制镜片 ¥179 起</div>`;
+          `¥${currentProduct.price}<div class="price-note">镜框价格，蔡司视特耐镜片 ¥150 起</div>`;
         buyBtn.textContent = '🔬 前往定制镜片';
         cartBtn.style.display = 'none';
       } else {
