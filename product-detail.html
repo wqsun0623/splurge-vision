@@ -603,12 +603,17 @@
         name: "SPLURGE VISION NO.9",
         desc: "不需要第二眼确认 第一眼就知道对了",
         price: 399,
-        defaultVariant: "default",
+        defaultVariant: "gold",
         variants: [
           {
-            color: "default",
-            label: "标准款",
-            images: ["9号ab.jpg", "9号a.jpg", "9号ac.jpg", "9号ad.jpg", "9号ae.jpg", "9号af.jpg", "9号b.jpg", "9号bb.jpg", "9号bc.jpg", "9号bd.jpg", "9号be.jpg", "9号bf.jpg", "9号c.jpg", "9号d.jpg", "9号e.jpg", "9号f.jpg", "9号g.jpg", "9号h.jpg", "9号i.jpg", "9号j.jpg", "9号k.jpg", "9号l.jpg", "9号m.jpg", "9号n.jpg", "9号o.jpg", "9号p.jpg", "9号q.jpg"]
+            color: "gold",
+            label: "流光奢金",
+            images: ["9号ab.jpg", "9号a.jpg", "9号ac.jpg", "9号ad.jpg", "9号ae.jpg", "9号af.jpg", "9号c.jpg", "9号d.jpg", "9号e.jpg", "9号f.jpg", "9号g.jpg", "9号h.jpg", "9号i.jpg", "9号j.jpg", "9号k.jpg", "9号l.jpg", "9号m.jpg", "9号n.jpg", "9号o.jpg", "9号p.jpg", "9号q.jpg"]
+          },
+          {
+            color: "pink-gold",
+            label: "暮光粉金",
+            images: ["9号b.jpg", "9号bb.jpg", "9号bc.jpg", "9号bd.jpg", "9号be.jpg", "9号bf.jpg", "9号c.jpg", "9号d.jpg", "9号e.jpg", "9号f.jpg", "9号g.jpg", "9号h.jpg", "9号i.jpg", "9号j.jpg", "9号k.jpg", "9号l.jpg", "9号m.jpg", "9号n.jpg", "9号o.jpg", "9号p.jpg", "9号q.jpg"]
           }
         ]
       },
@@ -616,12 +621,17 @@
         name: "SPLURGE VISION NO.10",
         desc: "时间会替你选择 而它从不出错",
         price: 328,
-        defaultVariant: "default",
+        defaultVariant: "gold",
         variants: [
           {
-            color: "default",
-            label: "标准款",
-            images: ["10号a.jpg", "10号ab.jpg", "10号ac.jpg", "10号ad.jpg", "10号ae.jpg", "10号af.jpg", "10号b.jpg", "10号bb.jpg", "10号bc.jpg", "10号bd.jpg", "10号be.jpg", "10号c.jpg", "10号d.jpg", "10号e.jpg", "10号f.jpg", "10号g.jpg", "10号h.jpg", "10号i.jpg", "10号j.jpg", "10号k.jpg", "10号l.jpg", "10号m.jpg"]
+            color: "gold",
+            label: "流光奢金",
+            images: ["10号a.jpg", "10号ab.jpg", "10号ac.jpg", "10号ad.jpg", "10号ae.jpg", "10号af.jpg", "10号c.jpg", "10号d.jpg", "10号e.jpg", "10号f.jpg", "10号g.jpg", "10号h.jpg", "10号i.jpg", "10号j.jpg", "10号k.jpg", "10号l.jpg", "10号m.jpg"]
+          },
+          {
+            color: "silver",
+            label: "星芒铂银",
+            images: ["10号b.jpg", "10号bb.jpg", "10号bc.jpg", "10号bd.jpg", "10号be.jpg", "10号c.jpg", "10号d.jpg", "10号e.jpg", "10号f.jpg", "10号g.jpg", "10号h.jpg", "10号i.jpg", "10号j.jpg", "10号k.jpg", "10号l.jpg", "10号m.jpg"]
           }
         ]
       }
@@ -663,6 +673,10 @@
       // 查找默认 variant 的索引
       const defaultIndex = currentProduct.variants.findIndex(v => v.color === currentProduct.defaultVariant);
       currentVariantIndex = defaultIndex >= 0 ? defaultIndex : 0;
+      
+      // 动态设置标签：有颜色变体时显示"选择颜色"，否则显示"选择款式"
+      const hasColorVariants = currentProduct.variants.filter(v => v.color !== 'custom' && v.color !== 'default').length > 1;
+      document.querySelector('.color-label').textContent = hasColorVariants ? '选择颜色' : '选择款式';
       
       // 渲染颜色选项
       renderVariants();
