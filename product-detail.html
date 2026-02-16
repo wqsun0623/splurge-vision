@@ -409,6 +409,174 @@
       margin-top: 5px;
       font-weight: 400;
     }
+
+    /* ===== 联系客服浮动按钮 ===== */
+    .cs-float-btn {
+      position: fixed;
+      right: 24px;
+      bottom: 30px;
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #9BA89C 0%, #6B7B6D 100%);
+      color: white;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(107,123,109,0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      z-index: 999;
+      transition: all 0.3s;
+    }
+    .cs-float-btn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 6px 24px rgba(107,123,109,0.5);
+    }
+    .cs-float-btn .cs-badge {
+      position: absolute;
+      top: -2px;
+      right: -2px;
+      background: #C9A9A8;
+      color: white;
+      font-size: 0.6rem;
+      padding: 2px 5px;
+      border-radius: 10px;
+      font-weight: 700;
+    }
+
+    /* 客服弹窗 */
+    .cs-popup {
+      display: none;
+      position: fixed;
+      right: 24px;
+      bottom: 100px;
+      width: 340px;
+      background: rgba(255,255,255,0.97);
+      border-radius: 20px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.18);
+      z-index: 1000;
+      overflow: hidden;
+      animation: csSlideUp 0.3s ease;
+    }
+    .cs-popup.show {
+      display: block;
+    }
+    @keyframes csSlideUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .cs-popup-header {
+      background: linear-gradient(135deg, #9BA89C 0%, #6B7B6D 100%);
+      color: white;
+      padding: 18px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .cs-popup-header h3 {
+      font-size: 1.05rem;
+      font-weight: 700;
+    }
+    .cs-popup-close {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 1.4rem;
+      cursor: pointer;
+      opacity: 0.8;
+      transition: opacity 0.2s;
+    }
+    .cs-popup-close:hover {
+      opacity: 1;
+    }
+    .cs-popup-body {
+      padding: 20px;
+    }
+    .cs-status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 16px;
+      font-size: 0.85rem;
+      color: #6B7B6D;
+    }
+    .cs-status-dot {
+      width: 8px;
+      height: 8px;
+      background: #7BC67E;
+      border-radius: 50%;
+      box-shadow: 0 0 6px 2px rgba(123,198,126,0.4);
+    }
+    .cs-contact-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 16px;
+      background: rgba(155,168,156,0.06);
+      border-radius: 12px;
+      margin-bottom: 10px;
+      transition: all 0.2s;
+      cursor: pointer;
+      text-decoration: none;
+      color: inherit;
+    }
+    .cs-contact-item:hover {
+      background: rgba(155,168,156,0.14);
+      transform: translateX(4px);
+    }
+    .cs-contact-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+    .cs-contact-info {
+      flex: 1;
+    }
+    .cs-contact-info .cs-label {
+      font-size: 0.82rem;
+      color: #8B9B8D;
+      margin-bottom: 2px;
+    }
+    .cs-contact-info .cs-value {
+      font-size: 0.95rem;
+      color: #6B7B6D;
+      font-weight: 600;
+    }
+    .cs-contact-arrow {
+      color: #BCC8BD;
+      font-size: 0.9rem;
+    }
+    .cs-hours {
+      text-align: center;
+      font-size: 0.78rem;
+      color: #A8B5A0;
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1px solid rgba(107,123,109,0.1);
+    }
+
+    @media (max-width: 480px) {
+      .cs-float-btn {
+        right: 16px;
+        bottom: 20px;
+        width: 50px;
+        height: 50px;
+        font-size: 1.3rem;
+      }
+      .cs-popup {
+        right: 10px;
+        bottom: 80px;
+        width: calc(100vw - 20px);
+        max-width: 340px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -488,6 +656,69 @@
           <button class="action-btn btn-buy-now" onclick="buyNow()">立即购买</button>
           <button class="action-btn btn-add-cart" onclick="addToCart()">加入购物车</button>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 联系客服浮动按钮 -->
+  <button class="cs-float-btn" onclick="toggleCSPopup()" title="联系客服">
+    💬
+    <span class="cs-badge">在线</span>
+  </button>
+
+  <!-- 客服弹窗 -->
+  <div class="cs-popup" id="csPopup">
+    <div class="cs-popup-header">
+      <h3>联系客服</h3>
+      <button class="cs-popup-close" onclick="toggleCSPopup()">&times;</button>
+    </div>
+    <div class="cs-popup-body">
+      <div class="cs-status">
+        <span class="cs-status-dot"></span>
+        客服在线中，随时为您服务
+      </div>
+
+      <a href="tel:+447549875477" class="cs-contact-item">
+        <div class="cs-contact-icon" style="background:rgba(155,168,156,0.15);">📞</div>
+        <div class="cs-contact-info">
+          <div class="cs-label">电话咨询</div>
+          <div class="cs-value">+44 7549 875477</div>
+        </div>
+        <span class="cs-contact-arrow">›</span>
+      </a>
+
+      <a href="mailto:SplurgeVision@163.com" class="cs-contact-item">
+        <div class="cs-contact-icon" style="background:rgba(201,169,168,0.15);">✉️</div>
+        <div class="cs-contact-info">
+          <div class="cs-label">邮件联系</div>
+          <div class="cs-value">SplurgeVision@163.com</div>
+        </div>
+        <span class="cs-contact-arrow">›</span>
+      </a>
+
+      <div class="cs-contact-item" onclick="alert('请在小红书搜索“Splurge Vision眼镜店”联系我们')">
+        <div class="cs-contact-icon" style="background:rgba(212,201,168,0.2);">
+          <span style="display:inline-block;width:10px;height:10px;background:#D4C9A8;border-radius:50%;box-shadow:0 0 5px 2px rgba(212,201,168,0.4);"></span>
+        </div>
+        <div class="cs-contact-info">
+          <div class="cs-label">小红书私信</div>
+          <div class="cs-value">Splurge Vision眼镜店</div>
+        </div>
+        <span class="cs-contact-arrow">›</span>
+      </div>
+
+      <a href="https://instagram.com/" target="_blank" class="cs-contact-item">
+        <div class="cs-contact-icon" style="background:rgba(201,169,168,0.12);">📷</div>
+        <div class="cs-contact-info">
+          <div class="cs-label">Instagram 私信</div>
+          <div class="cs-value">Splurge Vision</div>
+        </div>
+        <span class="cs-contact-arrow">›</span>
+      </a>
+
+      <div class="cs-hours">
+        工作时间：周一至周六 9:00-18:00（英国时间）<br>
+        邮件和小红书 24小时内回复
       </div>
     </div>
   </div>
@@ -814,6 +1045,20 @@
     
     // ===== 页面加载时初始化 =====
     initPage();
+    // ===== 联系客服弹窗 =====
+    function toggleCSPopup() {
+      const popup = document.getElementById('csPopup');
+      popup.classList.toggle('show');
+    }
+
+    // 点击弹窗外部关闭
+    document.addEventListener('click', function(e) {
+      const popup = document.getElementById('csPopup');
+      const btn = document.querySelector('.cs-float-btn');
+      if (popup.classList.contains('show') && !popup.contains(e.target) && !btn.contains(e.target)) {
+        popup.classList.remove('show');
+      }
+    });
   </script>
 </body>
 </html>
