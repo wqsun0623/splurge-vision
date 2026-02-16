@@ -1037,7 +1037,7 @@
       <a href="cart.html" class="login-btn" style="text-decoration: none;">
         🛒
       </a>
-      <button class="login-btn" onclick="openLoginModal()">
+      <button class="login-btn" id="userBtn" onclick="handleUserBtnClick()">
         <svg class="login-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
           <circle cx="12" cy="7" r="4"></circle>
@@ -1814,13 +1814,7 @@
     closeLoginModal();
     
     const displayName = user.nickname || email.split('@')[0];
-    document.querySelector('.login-btn').innerHTML = `
-      <svg class="login-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-        <circle cx="12" cy="7" r="4"></circle>
-      </svg>
-      ${displayName}
-    `;
+    updateUserButton(displayName);
   }
   
   // 注册相关功能
@@ -1986,15 +1980,46 @@
     alert(`注册成功！欢迎您，${nickname}！`);
     closeRegisterModal();
     
-    document.querySelector('.login-btn').innerHTML = `
+    updateUserButton(nickname);
+  }
+  
+  // 用户按钮点击处理
+  function handleUserBtnClick() {
+    const savedUser = localStorage.getItem('splurgeVisionUser');
+    if (savedUser) {
+      const user = JSON.parse(savedUser);
+      if (user.isLoggedIn) {
+        window.location.href = 'profile.html';
+        return;
+      }
+    }
+    openLoginModal();
+  }
+
+  // 更新用户按钮状态
+  function updateUserButton(name) {
+    const btn = document.getElementById('userBtn');
+    btn.innerHTML = `
       <svg class="login-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
         <circle cx="12" cy="7" r="4"></circle>
       </svg>
-      ${nickname}
+      ${name}
     `;
   }
-  
+
+  // 页面加载时检查登录状态
+  (function checkLoginStatus() {
+    const savedUser = localStorage.getItem('splurgeVisionUser');
+    if (savedUser) {
+      const user = JSON.parse(savedUser);
+      if (user.isLoggedIn) {
+        const displayName = user.nickname || user.name || '用户';
+        updateUserButton(displayName);
+      }
+    }
+  })();
+
   // 点击模态框外部关闭
   window.onclick = function(event) {
     const loginModal = document.getElementById('loginModal');
