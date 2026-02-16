@@ -25,6 +25,7 @@
       margin: 0 auto;
     }
 
+    /* ===== 顶部 ===== */
     .header {
       display: flex;
       justify-content: space-between;
@@ -39,7 +40,12 @@
       font-weight: 700;
     }
 
-    .back-btn {
+    .header-actions {
+      display: flex;
+      gap: 12px;
+    }
+
+    .back-btn, .cart-btn {
       padding: 12px 24px;
       background: linear-gradient(135deg, #9BA89C 0%, #6B7B6D 100%);
       color: white;
@@ -47,113 +53,83 @@
       border-radius: 10px;
       font-weight: 600;
       transition: all 0.3s;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+      font-family: 'Montserrat', sans-serif;
     }
 
-    .back-btn:hover {
+    .back-btn:hover, .cart-btn:hover {
       transform: translateY(-2px);
       box-shadow: 0 4px 15px rgba(107, 123, 109, 0.4);
     }
 
-    .profile-grid {
-      display: grid;
-      grid-template-columns: 1fr 2fr;
-      gap: 20px;
-      margin-bottom: 20px;
+    .cart-btn {
+      background: linear-gradient(135deg, #C9A9A8 0%, #A88B8A 100%);
     }
 
+    /* ===== Tab 导航 ===== */
+    .tab-nav {
+      display: flex;
+      gap: 0;
+      margin-bottom: 24px;
+      background: rgba(255,255,255,0.6);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 16px 20px;
+      background: transparent;
+      border: none;
+      font-size: 1rem;
+      font-weight: 600;
+      color: #8B9B8D;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-family: 'Montserrat', sans-serif;
+      position: relative;
+    }
+
+    .tab-btn:hover {
+      color: #6B7B6D;
+      background: rgba(155, 168, 156, 0.1);
+    }
+
+    .tab-btn.active {
+      color: #6B7B6D;
+      background: rgba(255,255,255,0.9);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+
+    .tab-btn.active::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 20%;
+      width: 60%;
+      height: 3px;
+      background: linear-gradient(135deg, #9BA89C 0%, #6B7B6D 100%);
+      border-radius: 3px;
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    /* ===== 通用卡片 ===== */
     .profile-card {
       background: rgba(255, 255, 255, 0.9);
       border-radius: 20px;
       padding: 30px;
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    }
-
-    .user-info {
-      text-align: center;
-    }
-
-    .user-avatar {
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #9BA89C 0%, #6B7B6D 100%);
-      margin: 0 auto 20px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 3rem;
-      color: white;
-    }
-
-    .user-name {
-      font-size: 1.5rem;
-      color: #6B7B6D;
-      font-weight: 700;
-      margin-bottom: 10px;
-    }
-
-    .user-phone {
-      color: #8B9B8D;
-      font-size: 0.9rem;
       margin-bottom: 20px;
-    }
-
-    .points-section {
-      background: linear-gradient(135deg, rgba(155, 168, 156, 0.2) 0%, rgba(107, 123, 109, 0.15) 100%);
-      border-radius: 15px;
-      padding: 20px;
-      margin-top: 20px;
-    }
-
-    .points-display {
-      text-align: center;
-      padding: 20px;
-    }
-
-    .points-number {
-      font-size: 2.5rem;
-      color: #6B7B6D;
-      font-weight: 900;
-      margin-bottom: 5px;
-    }
-
-    .points-label {
-      color: #8B9B8D;
-      font-size: 0.9rem;
-    }
-
-    .points-rules {
-      margin-top: 20px;
-      padding-top: 20px;
-      border-top: 1px solid rgba(107, 123, 109, 0.2);
-    }
-
-    .points-rules h3 {
-      color: #6B7B6D;
-      font-size: 1rem;
-      margin-bottom: 10px;
-      font-weight: 700;
-    }
-
-    .points-rules ul {
-      list-style: none;
-      padding: 0;
-    }
-
-    .points-rules li {
-      color: #6B7B6D;
-      font-size: 0.85rem;
-      padding: 5px 0;
-      padding-left: 20px;
-      position: relative;
-    }
-
-    .points-rules li:before {
-      content: "✓";
-      position: absolute;
-      left: 0;
-      color: #9BA89C;
-      font-weight: bold;
     }
 
     .section-title {
@@ -166,6 +142,421 @@
       gap: 10px;
     }
 
+    .section-dot {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      box-shadow: 0 0 6px 3px rgba(0,0,0,0.08);
+      vertical-align: middle;
+    }
+
+    /* ===== 个人资料 Tab ===== */
+    .profile-top-grid {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+
+    .user-info {
+      text-align: center;
+    }
+
+    .user-avatar {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #9BA89C 0%, #6B7B6D 100%);
+      margin: 0 auto 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+      color: white;
+    }
+
+    .user-name {
+      font-size: 1.4rem;
+      color: #6B7B6D;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .user-phone {
+      color: #8B9B8D;
+      font-size: 0.9rem;
+      margin-bottom: 6px;
+    }
+
+    .points-section {
+      background: linear-gradient(135deg, rgba(155, 168, 156, 0.15) 0%, rgba(107, 123, 109, 0.1) 100%);
+      border-radius: 14px;
+      padding: 16px;
+      margin-top: 16px;
+    }
+
+    .points-display {
+      text-align: center;
+      padding: 10px;
+    }
+
+    .points-number {
+      font-size: 2.2rem;
+      color: #6B7B6D;
+      font-weight: 900;
+      margin-bottom: 4px;
+    }
+
+    .points-label {
+      color: #8B9B8D;
+      font-size: 0.85rem;
+    }
+
+    .points-rules {
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1px solid rgba(107, 123, 109, 0.15);
+    }
+
+    .points-rules h3 {
+      color: #6B7B6D;
+      font-size: 0.95rem;
+      margin-bottom: 8px;
+      font-weight: 700;
+    }
+
+    .points-rules ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .points-rules li {
+      color: #6B7B6D;
+      font-size: 0.82rem;
+      padding: 4px 0;
+      padding-left: 18px;
+      position: relative;
+    }
+
+    .points-rules li:before {
+      content: "✓";
+      position: absolute;
+      left: 0;
+      color: #9BA89C;
+      font-weight: bold;
+    }
+
+    .birthday-reminder {
+      background: linear-gradient(135deg, rgba(255, 200, 150, 0.3) 0%, rgba(255, 180, 120, 0.2) 100%);
+      border-left: 4px solid #FFA500;
+      padding: 12px;
+      border-radius: 8px;
+      margin-top: 12px;
+      font-size: 0.82rem;
+      color: #6B7B6D;
+    }
+
+    .birthday-reminder strong {
+      color: #FF8C00;
+    }
+
+    /* 个人基本信息展示 */
+    .info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .info-item {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .info-item.full-width {
+      grid-column: 1 / -1;
+    }
+
+    .info-label {
+      font-size: 0.85rem;
+      color: #8B9B8D;
+      font-weight: 600;
+    }
+
+    .info-value {
+      font-size: 1rem;
+      color: #6B7B6D;
+      font-weight: 600;
+      padding: 10px 14px;
+      background: rgba(155, 168, 156, 0.08);
+      border-radius: 10px;
+      border: 1.5px solid rgba(107, 123, 109, 0.12);
+    }
+
+    .btn-edit-profile {
+      display: inline-block;
+      margin-top: 16px;
+      padding: 10px 24px;
+      background: linear-gradient(135deg, #9BA89C 0%, #6B7B6D 100%);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    .btn-edit-profile:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(107, 123, 109, 0.4);
+    }
+
+    /* ===== 验光处方 ===== */
+    .prescription-card {
+      margin-top: 0;
+    }
+
+    .prescription-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      overflow: hidden;
+      border-radius: 12px;
+      border: 1.5px solid rgba(107, 123, 109, 0.15);
+    }
+
+    .prescription-table th,
+    .prescription-table td {
+      padding: 12px 16px;
+      text-align: center;
+      font-size: 0.9rem;
+    }
+
+    .prescription-table thead th {
+      background: linear-gradient(135deg, rgba(155, 168, 156, 0.2) 0%, rgba(107, 123, 109, 0.15) 100%);
+      color: #6B7B6D;
+      font-weight: 700;
+      font-size: 0.85rem;
+      border-bottom: 1.5px solid rgba(107, 123, 109, 0.15);
+    }
+
+    .prescription-table tbody td {
+      color: #6B7B6D;
+      font-weight: 600;
+      border-bottom: 1px solid rgba(107, 123, 109, 0.08);
+    }
+
+    .prescription-table tbody tr:last-child td {
+      border-bottom: none;
+    }
+
+    .prescription-table .eye-label {
+      font-weight: 700;
+      color: #6B7B6D;
+      background: rgba(155, 168, 156, 0.06);
+      text-align: left;
+      padding-left: 20px;
+    }
+
+    .prescription-empty {
+      text-align: center;
+      padding: 30px;
+      color: #8B9B8D;
+      font-size: 0.95rem;
+    }
+
+    .prescription-note {
+      margin-top: 14px;
+      padding: 12px 16px;
+      background: rgba(155, 168, 156, 0.08);
+      border-radius: 10px;
+      font-size: 0.82rem;
+      color: #8B9B8D;
+      line-height: 1.7;
+    }
+
+    .prescription-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    /* ===== 购买记录 Tab ===== */
+    .order-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .order-item {
+      background: rgba(255, 255, 255, 0.5);
+      border-radius: 14px;
+      padding: 20px;
+      border: 1.5px solid rgba(107, 123, 109, 0.1);
+      transition: all 0.3s;
+    }
+
+    .order-item:hover {
+      border-color: rgba(107, 123, 109, 0.25);
+      box-shadow: 0 2px 12px rgba(107, 123, 109, 0.1);
+    }
+
+    .order-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid rgba(107, 123, 109, 0.1);
+    }
+
+    .order-id {
+      font-size: 0.85rem;
+      color: #8B9B8D;
+      font-weight: 600;
+    }
+
+    .order-date {
+      font-size: 0.82rem;
+      color: #A8B5A0;
+    }
+
+    .order-status {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.78rem;
+      font-weight: 600;
+    }
+
+    .status-completed {
+      background: rgba(155, 168, 156, 0.2);
+      color: #6B7B6D;
+    }
+
+    .status-shipping {
+      background: rgba(201, 169, 168, 0.2);
+      color: #A88B8A;
+    }
+
+    .status-processing {
+      background: rgba(212, 201, 168, 0.3);
+      color: #8A7E5A;
+    }
+
+    .order-products {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .order-product {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+    }
+
+    .order-product-img {
+      width: 70px;
+      height: 70px;
+      border-radius: 10px;
+      object-fit: cover;
+      background: rgba(155,168,156,0.1);
+    }
+
+    .order-product-info {
+      flex: 1;
+    }
+
+    .order-product-name {
+      font-size: 0.95rem;
+      color: #6B7B6D;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .order-product-spec {
+      font-size: 0.82rem;
+      color: #8B9B8D;
+      margin-bottom: 2px;
+    }
+
+    .order-product-price {
+      font-size: 1rem;
+      color: #6B7B6D;
+      font-weight: 700;
+    }
+
+    .order-product-qty {
+      font-size: 0.85rem;
+      color: #8B9B8D;
+      font-weight: 600;
+    }
+
+    .order-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1px solid rgba(107, 123, 109, 0.1);
+    }
+
+    .order-total {
+      font-size: 1.1rem;
+      color: #6B7B6D;
+      font-weight: 700;
+    }
+
+    .order-total span {
+      font-size: 0.85rem;
+      font-weight: 400;
+      color: #8B9B8D;
+      margin-right: 6px;
+    }
+
+    .order-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .order-empty {
+      text-align: center;
+      padding: 60px 20px;
+      color: #8B9B8D;
+    }
+
+    .order-empty-icon {
+      font-size: 3rem;
+      margin-bottom: 16px;
+      opacity: 0.5;
+    }
+
+    .order-empty p {
+      font-size: 1rem;
+      margin-bottom: 20px;
+    }
+
+    .go-shop-btn {
+      display: inline-block;
+      padding: 12px 30px;
+      background: linear-gradient(135deg, #9BA89C 0%, #6B7B6D 100%);
+      color: white;
+      text-decoration: none;
+      border-radius: 10px;
+      font-weight: 600;
+      transition: all 0.3s;
+    }
+
+    .go-shop-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(107, 123, 109, 0.4);
+    }
+
+    /* ===== 地址管理 Tab ===== */
     .address-list {
       display: flex;
       flex-direction: column;
@@ -234,6 +625,7 @@
       font-weight: 600;
       cursor: pointer;
       transition: all 0.3s;
+      font-family: 'Montserrat', sans-serif;
     }
 
     .btn-edit {
@@ -259,8 +651,8 @@
     .add-address-btn {
       width: 100%;
       padding: 15px;
-      background: rgba(155, 168, 156, 0.3);
-      border: 2px dashed #9BA89C;
+      background: rgba(155, 168, 156, 0.15);
+      border: 2px dashed rgba(155, 168, 156, 0.5);
       border-radius: 12px;
       color: #6B7B6D;
       font-size: 1rem;
@@ -271,34 +663,15 @@
       align-items: center;
       justify-content: center;
       gap: 10px;
+      font-family: 'Montserrat', sans-serif;
     }
 
     .add-address-btn:hover {
-      background: rgba(155, 168, 156, 0.5);
+      background: rgba(155, 168, 156, 0.3);
       border-color: #6B7B6D;
     }
 
-    .birthday-reminder {
-      background: linear-gradient(135deg, rgba(255, 200, 150, 0.3) 0%, rgba(255, 180, 120, 0.2) 100%);
-      border-left: 4px solid #FFA500;
-      padding: 15px;
-      border-radius: 8px;
-      margin-top: 15px;
-      font-size: 0.85rem;
-      color: #6B7B6D;
-    }
-
-    .birthday-reminder strong {
-      color: #FF8C00;
-    }
-
-    @media (max-width: 968px) {
-      .profile-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    /* 模态框样式 */
+    /* ===== 模态框 ===== */
     .modal {
       display: none;
       position: fixed;
@@ -322,7 +695,7 @@
       box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
       width: 90%;
       max-width: 500px;
-      max-height: 80vh;
+      max-height: 85vh;
       overflow-y: auto;
     }
 
@@ -350,32 +723,45 @@
     }
 
     .form-group {
-      margin-bottom: 20px;
+      margin-bottom: 18px;
     }
 
     .form-label {
       display: block;
       color: #6B7B6D;
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       font-weight: 600;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
     }
 
-    .form-input {
+    .form-input, .form-select {
       width: 100%;
-      padding: 12px 15px;
-      border: 2px solid rgba(107, 123, 109, 0.3);
+      padding: 11px 14px;
+      border: 2px solid rgba(107, 123, 109, 0.25);
       border-radius: 10px;
-      font-size: 1rem;
+      font-size: 0.95rem;
       transition: all 0.3s;
       background: rgba(255, 255, 255, 0.8);
       font-family: 'Montserrat', sans-serif;
+      color: #6B7B6D;
     }
 
-    .form-input:focus {
+    .form-input:focus, .form-select:focus {
       outline: none;
       border-color: #6B7B6D;
       background: white;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .form-hint {
+      font-size: 0.78rem;
+      color: #A8B5A0;
+      margin-top: 4px;
     }
 
     .form-submit {
@@ -385,78 +771,377 @@
       color: white;
       border: none;
       border-radius: 10px;
-      font-size: 1.1rem;
+      font-size: 1.05rem;
       font-weight: 700;
       cursor: pointer;
       transition: all 0.3s;
       margin-top: 10px;
+      font-family: 'Montserrat', sans-serif;
     }
 
     .form-submit:hover {
       transform: translateY(-2px);
       box-shadow: 0 4px 15px rgba(107, 123, 109, 0.4);
     }
+
+    /* ===== 响应式 ===== */
+    @media (max-width: 768px) {
+      .header {
+        flex-direction: column;
+        gap: 12px;
+        text-align: center;
+      }
+
+      .header h1 {
+        font-size: 1.5rem;
+      }
+
+      .header-actions {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .tab-nav {
+        flex-direction: column;
+        border-radius: 12px;
+      }
+
+      .tab-btn {
+        padding: 12px 16px;
+      }
+
+      .tab-btn.active::after {
+        display: none;
+      }
+
+      .profile-top-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .info-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+
+      .prescription-table {
+        font-size: 0.82rem;
+      }
+
+      .prescription-table th,
+      .prescription-table td {
+        padding: 8px 10px;
+        font-size: 0.82rem;
+      }
+
+      .order-product {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .order-product-img {
+        width: 100%;
+        height: 120px;
+      }
+
+      .order-header {
+        flex-direction: column;
+        gap: 8px;
+        align-items: flex-start;
+      }
+
+      .order-footer {
+        flex-direction: column;
+        gap: 12px;
+        align-items: flex-start;
+      }
+    }
+
+    @media (max-width: 480px) {
+      body {
+        padding: 12px;
+      }
+
+      .profile-card {
+        padding: 20px;
+        border-radius: 14px;
+      }
+
+      .modal-content {
+        padding: 25px;
+      }
+
+      .back-btn, .cart-btn {
+        padding: 10px 16px;
+        font-size: 0.88rem;
+      }
+    }
   </style>
 </head>
 <body>
   <div class="container">
+    <!-- 顶部 -->
     <div class="header">
-      <h1>👤 个人中心</h1>
-      <a href="index.html" class="back-btn">返回首页</a>
+      <h1>个人中心</h1>
+      <div class="header-actions">
+        <a href="cart.html" class="cart-btn">🛒 购物车</a>
+        <a href="index.html" class="back-btn">返回首页</a>
+      </div>
     </div>
 
-    <div class="profile-grid">
-      <!-- 左侧用户信息 -->
-      <div class="profile-card user-info">
-        <div class="user-avatar">👤</div>
-        <div class="user-name" id="userName">用户名</div>
-        <div class="user-phone" id="userPhone">138****8888</div>
-        <div class="user-phone" style="margin-top: 5px;">🎂 生日：<span id="userBirthday">1990-01-01</span></div>
+    <!-- Tab 导航 -->
+    <div class="tab-nav">
+      <button class="tab-btn active" data-tab="profile" onclick="switchTab('profile', this)">
+        <span class="section-dot" style="background:#A8B5A0;box-shadow:0 0 6px 3px rgba(168,181,160,0.4);margin-right:6px;"></span>
+        个人资料
+      </button>
+      <button class="tab-btn" data-tab="orders" onclick="switchTab('orders', this)">
+        <span class="section-dot" style="background:#C9A9A8;box-shadow:0 0 6px 3px rgba(201,169,168,0.4);margin-right:6px;"></span>
+        购买记录
+      </button>
+      <button class="tab-btn" data-tab="address" onclick="switchTab('address', this)">
+        <span class="section-dot" style="background:#9EAFC2;box-shadow:0 0 6px 3px rgba(158,175,194,0.4);margin-right:6px;"></span>
+        收货地址
+      </button>
+    </div>
 
-        <div class="points-section">
-          <div class="points-display">
-            <div class="points-number" id="userPoints">0</div>
-            <div class="points-label">我的积分</div>
-          </div>
+    <!-- ==================== 个人资料 Tab ==================== -->
+    <div id="tab-profile" class="tab-content active">
+      <div class="profile-top-grid">
+        <!-- 左：头像与积分 -->
+        <div class="profile-card user-info">
+          <div class="user-avatar">👤</div>
+          <div class="user-name" id="userName">用户名</div>
+          <div class="user-phone" id="userPhone">138****8888</div>
+          <div class="user-phone" style="margin-top:4px;">🎂 生日：<span id="userBirthday">1990-01-01</span></div>
 
-          <div class="points-rules">
-            <h3>💰 积分规则</h3>
-            <ul>
-              <li>消费1元积1分</li>
-              <li>达到1500积分后，100分可抵扣1元</li>
-              <li>生日当天消费享双倍积分</li>
-              <li>积分永久有效，不清零</li>
-            </ul>
+          <div class="points-section">
+            <div class="points-display">
+              <div class="points-number" id="userPoints">0</div>
+              <div class="points-label">我的积分</div>
+            </div>
+            <div class="points-rules">
+              <h3>积分规则</h3>
+              <ul>
+                <li>消费1元积1分</li>
+                <li>1500积分后，100分抵扣1元</li>
+                <li>生日当天双倍积分</li>
+                <li>积分永久有效</li>
+              </ul>
+            </div>
+            <div class="birthday-reminder" id="birthdayReminder" style="display:none;">
+              <strong>🎉 今天是您的生日！</strong><br>
+              生日当天消费可享受双倍积分哦！
+            </div>
           </div>
+        </div>
 
-          <div class="birthday-reminder" id="birthdayReminder" style="display: none;">
-            <strong>🎉 今天是您的生日！</strong><br>
-            生日当天消费可享受双倍积分优惠哦！
+        <!-- 右：基本信息 -->
+        <div class="profile-card">
+          <h2 class="section-title">
+            <span class="section-dot" style="background:#A8B5A0;"></span>
+            基本信息
+          </h2>
+          <div class="info-grid" id="profileInfoGrid">
+            <div class="info-item">
+              <span class="info-label">姓名</span>
+              <div class="info-value" id="infoName">—</div>
+            </div>
+            <div class="info-item">
+              <span class="info-label">手机号码</span>
+              <div class="info-value" id="infoPhone">—</div>
+            </div>
+            <div class="info-item">
+              <span class="info-label">生日</span>
+              <div class="info-value" id="infoBirthday">—</div>
+            </div>
+            <div class="info-item">
+              <span class="info-label">性别</span>
+              <div class="info-value" id="infoGender">—</div>
+            </div>
+            <div class="info-item full-width">
+              <span class="info-label">邮箱</span>
+              <div class="info-value" id="infoEmail">—</div>
+            </div>
           </div>
+          <button class="btn-edit-profile" onclick="openEditProfileModal()">编辑个人信息</button>
         </div>
       </div>
 
-      <!-- 右侧地址管理 -->
-      <div class="profile-card">
-        <h2 class="section-title">📍 收货地址管理</h2>
-        
-        <div class="address-list" id="addressList">
-          <!-- 地址列表将由JavaScript动态生成 -->
+      <!-- 验光处方 -->
+      <div class="profile-card prescription-card">
+        <h2 class="section-title">
+          <span class="section-dot" style="background:#C4B8A0;"></span>
+          我的验光处方
+        </h2>
+
+        <div id="prescriptionContent">
+          <!-- 由JS动态填充 -->
         </div>
 
-        <button class="add-address-btn" onclick="openAddAddressModal()">
-          <span style="font-size: 1.5rem;">+</span>
+        <div class="prescription-note">
+          <strong>温馨提示：</strong>请上传您最近6个月内的验光单数据。准确的处方信息将帮助我们为您配制最合适的镜片。<br>
+          • SPH（球镜/近视度数）：负值为近视，正值为远视，如 -3.00 表示300度近视<br>
+          • CYL（柱镜/散光度数）：如 -0.75 表示75度散光<br>
+          • AXIS（轴位）：散光方向，范围 1°~180°<br>
+          • PD（瞳距）：双眼瞳孔间的距离，单位毫米
+        </div>
+
+        <div class="prescription-actions">
+          <button class="btn-edit-profile" onclick="openPrescriptionModal()">编辑处方</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== 购买记录 Tab ==================== -->
+    <div id="tab-orders" class="tab-content">
+      <div class="profile-card">
+        <h2 class="section-title">
+          <span class="section-dot" style="background:#C9A9A8;"></span>
+          购买记录
+        </h2>
+        <div class="order-list" id="orderList">
+          <!-- 由JS动态填充 -->
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== 收货地址 Tab ==================== -->
+    <div id="tab-address" class="tab-content">
+      <div class="profile-card">
+        <h2 class="section-title">
+          <span class="section-dot" style="background:#9EAFC2;"></span>
+          收货地址管理
+        </h2>
+        
+        <div class="address-list" id="addressList">
+          <!-- 由JS动态填充 -->
+        </div>
+
+        <button class="add-address-btn" onclick="openAddAddressModal()" style="margin-top:15px;">
+          <span style="font-size:1.5rem;">+</span>
           添加新地址
         </button>
       </div>
     </div>
   </div>
 
-  <!-- 添加/编辑地址模态框 -->
+  <!-- ==================== 编辑个人信息模态框 ==================== -->
+  <div id="profileModal" class="modal">
+    <div class="modal-content">
+      <span class="modal-close" onclick="closeModal('profileModal')">&times;</span>
+      <h2 class="modal-title">编辑个人信息</h2>
+      <form id="profileForm" onsubmit="saveProfile(event)">
+        <div class="form-group">
+          <label class="form-label">姓名</label>
+          <input type="text" class="form-input" id="editName" placeholder="请输入姓名" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">手机号码</label>
+          <input type="tel" class="form-input" id="editPhone" placeholder="请输入手机号码" required>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">生日</label>
+            <input type="date" class="form-input" id="editBirthday">
+          </div>
+          <div class="form-group">
+            <label class="form-label">性别</label>
+            <select class="form-input" id="editGender">
+              <option value="">请选择</option>
+              <option value="男">男</option>
+              <option value="女">女</option>
+              <option value="不愿透露">不愿透露</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">邮箱</label>
+          <input type="email" class="form-input" id="editEmail" placeholder="请输入邮箱">
+        </div>
+        <button type="submit" class="form-submit">保存信息</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==================== 编辑验光处方模态框 ==================== -->
+  <div id="prescriptionModal" class="modal">
+    <div class="modal-content">
+      <span class="modal-close" onclick="closeModal('prescriptionModal')">&times;</span>
+      <h2 class="modal-title">编辑验光处方</h2>
+      <form id="prescriptionForm" onsubmit="savePrescription(event)">
+        <p style="text-align:center;color:#8B9B8D;font-size:0.9rem;margin-bottom:20px;">请根据您的验光单填写以下信息</p>
+        
+        <h3 style="color:#6B7B6D;font-size:0.95rem;margin-bottom:12px;">👁 右眼 (OD)</h3>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">球镜 SPH</label>
+            <input type="text" class="form-input" id="rxRSph" placeholder="如 -3.00">
+            <div class="form-hint">近视为负值，远视为正值</div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">柱镜 CYL</label>
+            <input type="text" class="form-input" id="rxRCyl" placeholder="如 -0.75">
+            <div class="form-hint">散光度数</div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">轴位 AXIS</label>
+          <input type="text" class="form-input" id="rxRAxis" placeholder="如 180">
+          <div class="form-hint">范围 1° ~ 180°</div>
+        </div>
+
+        <h3 style="color:#6B7B6D;font-size:0.95rem;margin:20px 0 12px;">👁 左眼 (OS)</h3>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">球镜 SPH</label>
+            <input type="text" class="form-input" id="rxLSph" placeholder="如 -2.50">
+          </div>
+          <div class="form-group">
+            <label class="form-label">柱镜 CYL</label>
+            <input type="text" class="form-input" id="rxLCyl" placeholder="如 -0.50">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">轴位 AXIS</label>
+          <input type="text" class="form-input" id="rxLAxis" placeholder="如 175">
+        </div>
+
+        <h3 style="color:#6B7B6D;font-size:0.95rem;margin:20px 0 12px;">📏 其他参数</h3>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">瞳距 PD (mm)</label>
+            <input type="text" class="form-input" id="rxPD" placeholder="如 63">
+            <div class="form-hint">成人一般58~70mm</div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">瞳高 PH (mm)</label>
+            <input type="text" class="form-input" id="rxPH" placeholder="选填">
+            <div class="form-hint">渐进片需要</div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">ADD（老花附加度数）</label>
+          <input type="text" class="form-input" id="rxAdd" placeholder="选填，如 +1.50">
+          <div class="form-hint">渐进多焦点镜片需要</div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">备注</label>
+          <input type="text" class="form-input" id="rxNote" placeholder="其他需要说明的信息">
+        </div>
+
+        <button type="submit" class="form-submit">保存处方</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==================== 添加/编辑地址模态框 ==================== -->
   <div id="addressModal" class="modal">
     <div class="modal-content">
-      <span class="modal-close" onclick="closeAddressModal()">&times;</span>
-      <h2 class="modal-title" id="modalTitle">添加收货地址</h2>
+      <span class="modal-close" onclick="closeModal('addressModal')">&times;</span>
+      <h2 class="modal-title" id="addressModalTitle">添加收货地址</h2>
       <form id="addressForm" onsubmit="saveAddress(event)">
         <input type="hidden" id="editIndex" value="-1">
         
@@ -467,7 +1152,7 @@
 
         <div class="form-group">
           <label class="form-label">联系电话</label>
-          <input type="tel" class="form-input" id="addressPhone" placeholder="请输入联系电话" pattern="[0-9]{11}" required>
+          <input type="tel" class="form-input" id="addressFormPhone" placeholder="请输入联系电话" required>
         </div>
 
         <div class="form-group">
@@ -509,7 +1194,7 @@
   </div>
 
   <script>
-    // 地址数据
+    // ==================== 地址数据库 ====================
     const addressData = {
       '中国大陆': {
         '北京市': ['东城区', '西城区', '朝阳区', '海淀区', '丰台区', '石景山区', '门头沟区', '房山区', '通州区', '顺义区', '昌平区', '大兴区', '平谷区', '怀柔区', '密云区', '延庆区'],
@@ -554,12 +1239,31 @@
       }
     };
 
-    // 模拟用户数据
+    // ==================== 产品数据 ====================
+    const productNames = [
+      'NO.1 经典复古圆框', 'NO.2 轻奢猫眼框', 'NO.3 极简方框',
+      'NO.4 飞行员框', 'NO.5 文艺半框', 'NO.6 无框切边',
+      'NO.7 复古眉线框', 'NO.8 极简钛架', 'NO.9 奢华猫眼',
+      'NO.10 经典威灵顿'
+    ];
+
+    const productImages = [
+      '图片/1号b.jpg', '图片/2号b.jpg', '图片/3号b.jpg',
+      '图片/4号.jpg', '图片/5号b.jpg', '图片/6号b.jpg',
+      '图片/7号b.jpg', '图片/8号b.jpg', '图片/9号ab.jpg',
+      '图片/10号ab.jpg'
+    ];
+
+    // ==================== 用户数据 ====================
     let userData = {
       name: '张三',
       phone: '13800138000',
       birthday: '1990-06-15',
+      gender: '男',
+      email: '',
       points: 2580,
+      prescription: null,
+      orders: [],
       addresses: [
         {
           name: '张三',
@@ -582,28 +1286,43 @@
       ]
     };
 
-    // 初始化页面
+    // ==================== Tab 切换 ====================
+    function switchTab(tab, btn) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+      document.getElementById('tab-' + tab).classList.add('active');
+      btn.classList.add('active');
+    }
+
+    // ==================== 初始化 ====================
     function initPage() {
-      // 尝试从localStorage加载用户数据
       const savedData = localStorage.getItem('splurgeVisionUser');
       if (savedData) {
         userData = JSON.parse(savedData);
+        if (!userData.gender) userData.gender = '';
+        if (!userData.email) userData.email = '';
+        if (!userData.prescription) userData.prescription = null;
+        if (!userData.orders) userData.orders = [];
       }
 
-      // 显示用户信息
       document.getElementById('userName').textContent = userData.name;
       document.getElementById('userPhone').textContent = userData.phone.replace(/(\d{3})\d{4}(\d{4})/, '$1****$2');
       document.getElementById('userBirthday').textContent = userData.birthday;
       document.getElementById('userPoints').textContent = userData.points.toLocaleString();
 
-      // 检查是否是生日
-      checkBirthday();
+      document.getElementById('infoName').textContent = userData.name || '—';
+      document.getElementById('infoPhone').textContent = userData.phone || '—';
+      document.getElementById('infoBirthday').textContent = userData.birthday || '—';
+      document.getElementById('infoGender').textContent = userData.gender || '—';
+      document.getElementById('infoEmail').textContent = userData.email || '—';
 
-      // 渲染地址列表
+      checkBirthday();
+      renderPrescription();
+      renderOrders();
       renderAddressList();
     }
 
-    // 检查是否是生日
+    // ==================== 生日检查 ====================
     function checkBirthday() {
       const today = new Date();
       const birthday = new Date(userData.birthday);
@@ -612,7 +1331,186 @@
       }
     }
 
-    // 渲染地址列表
+    // ==================== 个人信息编辑 ====================
+    function openEditProfileModal() {
+      document.getElementById('editName').value = userData.name || '';
+      document.getElementById('editPhone').value = userData.phone || '';
+      document.getElementById('editBirthday').value = userData.birthday || '';
+      document.getElementById('editGender').value = userData.gender || '';
+      document.getElementById('editEmail').value = userData.email || '';
+      document.getElementById('profileModal').style.display = 'block';
+    }
+
+    function saveProfile(event) {
+      event.preventDefault();
+      userData.name = document.getElementById('editName').value;
+      userData.phone = document.getElementById('editPhone').value;
+      userData.birthday = document.getElementById('editBirthday').value;
+      userData.gender = document.getElementById('editGender').value;
+      userData.email = document.getElementById('editEmail').value;
+
+      localStorage.setItem('splurgeVisionUser', JSON.stringify(userData));
+      closeModal('profileModal');
+      initPage();
+      alert('个人信息已保存！');
+    }
+
+    // ==================== 验光处方 ====================
+    function renderPrescription() {
+      const container = document.getElementById('prescriptionContent');
+      const rx = userData.prescription;
+
+      if (!rx) {
+        container.innerHTML = `
+          <div class="prescription-empty">
+            <p style="font-size:2rem;margin-bottom:12px;opacity:0.4;">👓</p>
+            <p>暂未录入验光处方</p>
+            <p style="font-size:0.85rem;color:#A8B5A0;margin-top:6px;">录入您的度数信息，方便快速配镜</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = `
+        <table class="prescription-table">
+          <thead>
+            <tr>
+              <th></th>
+              <th>球镜 SPH</th>
+              <th>柱镜 CYL</th>
+              <th>轴位 AXIS</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="eye-label">右眼 OD</td>
+              <td>${rx.rSph || '—'}</td>
+              <td>${rx.rCyl || '—'}</td>
+              <td>${rx.rAxis ? rx.rAxis + '°' : '—'}</td>
+            </tr>
+            <tr>
+              <td class="eye-label">左眼 OS</td>
+              <td>${rx.lSph || '—'}</td>
+              <td>${rx.lCyl || '—'}</td>
+              <td>${rx.lAxis ? rx.lAxis + '°' : '—'}</td>
+            </tr>
+          </tbody>
+        </table>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-top:16px;">
+          <div style="background:rgba(155,168,156,0.08);padding:12px 16px;border-radius:10px;">
+            <div style="font-size:0.8rem;color:#8B9B8D;margin-bottom:4px;">瞳距 PD</div>
+            <div style="font-size:1.1rem;color:#6B7B6D;font-weight:700;">${rx.pd ? rx.pd + ' mm' : '—'}</div>
+          </div>
+          <div style="background:rgba(155,168,156,0.08);padding:12px 16px;border-radius:10px;">
+            <div style="font-size:0.8rem;color:#8B9B8D;margin-bottom:4px;">瞳高 PH</div>
+            <div style="font-size:1.1rem;color:#6B7B6D;font-weight:700;">${rx.ph ? rx.ph + ' mm' : '—'}</div>
+          </div>
+          <div style="background:rgba(155,168,156,0.08);padding:12px 16px;border-radius:10px;">
+            <div style="font-size:0.8rem;color:#8B9B8D;margin-bottom:4px;">ADD</div>
+            <div style="font-size:1.1rem;color:#6B7B6D;font-weight:700;">${rx.add || '—'}</div>
+          </div>
+        </div>
+        ${rx.note ? `<div style="margin-top:12px;padding:10px 14px;background:rgba(201,169,168,0.1);border-radius:8px;font-size:0.85rem;color:#8B9B8D;">📝 备注：${rx.note}</div>` : ''}
+      `;
+    }
+
+    function openPrescriptionModal() {
+      const rx = userData.prescription || {};
+      document.getElementById('rxRSph').value = rx.rSph || '';
+      document.getElementById('rxRCyl').value = rx.rCyl || '';
+      document.getElementById('rxRAxis').value = rx.rAxis || '';
+      document.getElementById('rxLSph').value = rx.lSph || '';
+      document.getElementById('rxLCyl').value = rx.lCyl || '';
+      document.getElementById('rxLAxis').value = rx.lAxis || '';
+      document.getElementById('rxPD').value = rx.pd || '';
+      document.getElementById('rxPH').value = rx.ph || '';
+      document.getElementById('rxAdd').value = rx.add || '';
+      document.getElementById('rxNote').value = rx.note || '';
+      document.getElementById('prescriptionModal').style.display = 'block';
+    }
+
+    function savePrescription(event) {
+      event.preventDefault();
+      userData.prescription = {
+        rSph: document.getElementById('rxRSph').value.trim(),
+        rCyl: document.getElementById('rxRCyl').value.trim(),
+        rAxis: document.getElementById('rxRAxis').value.trim(),
+        lSph: document.getElementById('rxLSph').value.trim(),
+        lCyl: document.getElementById('rxLCyl').value.trim(),
+        lAxis: document.getElementById('rxLAxis').value.trim(),
+        pd: document.getElementById('rxPD').value.trim(),
+        ph: document.getElementById('rxPH').value.trim(),
+        add: document.getElementById('rxAdd').value.trim(),
+        note: document.getElementById('rxNote').value.trim()
+      };
+
+      localStorage.setItem('splurgeVisionUser', JSON.stringify(userData));
+      closeModal('prescriptionModal');
+      renderPrescription();
+      alert('验光处方已保存！');
+    }
+
+    // ==================== 购买记录 ====================
+    function renderOrders() {
+      const container = document.getElementById('orderList');
+      const orders = userData.orders || [];
+
+      if (orders.length === 0) {
+        container.innerHTML = `
+          <div class="order-empty">
+            <div class="order-empty-icon">🛍️</div>
+            <p>暂无购买记录</p>
+            <a href="products.html" class="go-shop-btn">去逛逛</a>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = orders.map((order, idx) => {
+        const statusClass = order.status === '已完成' ? 'status-completed' :
+                            order.status === '配送中' ? 'status-shipping' : 'status-processing';
+        
+        const productsHtml = order.items.map(item => {
+          const imgSrc = productImages[item.productId - 1] || '图片/1号b.jpg';
+          const pName = productNames[item.productId - 1] || '眼镜';
+          return `
+            <div class="order-product">
+              <img src="${imgSrc}" alt="${pName}" class="order-product-img">
+              <div class="order-product-info">
+                <div class="order-product-name">${pName}</div>
+                <div class="order-product-spec">${item.variant || '标准款'}${item.lens ? ' | ' + item.lens : ''}</div>
+              </div>
+              <div style="text-align:right;">
+                <div class="order-product-price">¥${item.price}</div>
+                <div class="order-product-qty">x${item.qty}</div>
+              </div>
+            </div>
+          `;
+        }).join('');
+
+        return `
+          <div class="order-item">
+            <div class="order-header">
+              <div>
+                <div class="order-id">订单号：${order.orderId}</div>
+                <div class="order-date">${order.date}</div>
+              </div>
+              <span class="order-status ${statusClass}">${order.status}</span>
+            </div>
+            <div class="order-products">${productsHtml}</div>
+            <div class="order-footer">
+              <div class="order-total"><span>合计</span>¥${order.total}</div>
+              <div class="order-actions">
+                ${order.status === '已完成' ? '<button class="btn btn-edit" onclick="alert(\'感谢您的评价！\')">评价</button>' : ''}
+                <button class="btn btn-default" onclick="alert(\'订单详情功能开发中\')">详情</button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // ==================== 地址管理 ====================
     function renderAddressList() {
       const listElement = document.getElementById('addressList');
       listElement.innerHTML = '';
@@ -637,20 +1535,13 @@
       });
     }
 
-    // 打开添加地址模态框
     function openAddAddressModal() {
-      document.getElementById('modalTitle').textContent = '添加收货地址';
+      document.getElementById('addressModalTitle').textContent = '添加收货地址';
       document.getElementById('editIndex').value = '-1';
       document.getElementById('addressForm').reset();
       document.getElementById('addressModal').style.display = 'block';
     }
 
-    // 关闭地址模态框
-    function closeAddressModal() {
-      document.getElementById('addressModal').style.display = 'none';
-    }
-
-    // 更新省份选择
     function updateAddressProvinces() {
       const country = document.getElementById('addressCountry').value;
       const provinceSelect = document.getElementById('addressProvince');
@@ -660,8 +1551,7 @@
       citySelect.innerHTML = '<option value="">请先选择省份</option>';
       
       if (country && addressData[country]) {
-        const provinces = Object.keys(addressData[country]);
-        provinces.forEach(province => {
+        Object.keys(addressData[country]).forEach(province => {
           const option = document.createElement('option');
           option.value = province;
           option.textContent = province;
@@ -670,7 +1560,6 @@
       }
     }
 
-    // 更新城市选择
     function updateAddressCities() {
       const country = document.getElementById('addressCountry').value;
       const province = document.getElementById('addressProvince').value;
@@ -679,8 +1568,7 @@
       citySelect.innerHTML = '<option value="">选择城市</option>';
       
       if (country && province && addressData[country] && addressData[country][province]) {
-        const cities = addressData[country][province];
-        cities.forEach(city => {
+        addressData[country][province].forEach(city => {
           const option = document.createElement('option');
           option.value = city;
           option.textContent = city;
@@ -689,45 +1577,39 @@
       }
     }
 
-    // 保存地址
     function saveAddress(event) {
       event.preventDefault();
       
       const editIndex = parseInt(document.getElementById('editIndex').value);
       const newAddress = {
         name: document.getElementById('addressName').value,
-        phone: document.getElementById('addressPhone').value,
+        phone: document.getElementById('addressFormPhone').value,
         country: document.getElementById('addressCountry').value,
         province: document.getElementById('addressProvince').value,
         city: document.getElementById('addressCity').value,
         detail: document.getElementById('addressDetail').value,
-        isDefault: userData.addresses.length === 0 // 如果是第一个地址，自动设为默认
+        isDefault: userData.addresses.length === 0
       };
 
       if (editIndex === -1) {
-        // 添加新地址
         userData.addresses.push(newAddress);
       } else {
-        // 编辑现有地址
         newAddress.isDefault = userData.addresses[editIndex].isDefault;
         userData.addresses[editIndex] = newAddress;
       }
 
-      // 保存到localStorage
       localStorage.setItem('splurgeVisionUser', JSON.stringify(userData));
-
-      closeAddressModal();
+      closeModal('addressModal');
       renderAddressList();
       alert(editIndex === -1 ? '地址添加成功！' : '地址修改成功！');
     }
 
-    // 编辑地址
     function editAddress(index) {
       const address = userData.addresses[index];
-      document.getElementById('modalTitle').textContent = '编辑收货地址';
+      document.getElementById('addressModalTitle').textContent = '编辑收货地址';
       document.getElementById('editIndex').value = index;
       document.getElementById('addressName').value = address.name;
-      document.getElementById('addressPhone').value = address.phone;
+      document.getElementById('addressFormPhone').value = address.phone;
       document.getElementById('addressCountry').value = address.country;
       
       updateAddressProvinces();
@@ -743,7 +1625,6 @@
       document.getElementById('addressModal').style.display = 'block';
     }
 
-    // 删除地址
     function deleteAddress(index) {
       if (userData.addresses[index].isDefault && userData.addresses.length > 1) {
         alert('请先设置其他地址为默认地址，再删除当前地址');
@@ -757,7 +1638,6 @@
       }
     }
 
-    // 设为默认地址
     function setDefaultAddress(index) {
       userData.addresses.forEach((addr, i) => {
         addr.isDefault = (i === index);
@@ -766,15 +1646,19 @@
       renderAddressList();
     }
 
-    // 点击模态框外部关闭
+    // ==================== 模态框通用 ====================
+    function closeModal(id) {
+      document.getElementById(id).style.display = 'none';
+    }
+
     window.onclick = function(event) {
-      const modal = document.getElementById('addressModal');
-      if (event.target === modal) {
-        closeAddressModal();
-      }
+      ['profileModal', 'prescriptionModal', 'addressModal'].forEach(id => {
+        const modal = document.getElementById(id);
+        if (event.target === modal) closeModal(id);
+      });
     };
 
-    // 页面加载时初始化
+    // ==================== 启动 ====================
     initPage();
   </script>
 </body>
