@@ -469,17 +469,20 @@
   <script>
     // ===== 自动生成商品数据 =====
     // 定义主商品图片（每个商品的主图）
-    const mainImages = ["1号.jpg", "2号.jpg", "3号.jpg", "4号.jpg", "5号.jpg", "6号.jpg", "7号.jpg"];
+    const mainImages = ["1号.jpg", "2号.jpg", "3号.jpg", "4号.jpg", "5号.jpg", "6号.jpg", "7号.jpg", "8号.jpg", "9号.jpg", "10号.jpg"];
     
     // 定义每个商品的所有变体图片（包括主图和其他角度）
     const productImageMap = {
-      "1号": ["1号.jpg", "1号b.jpg", "1号c.jpg", "1号d.jpg"],
-      "2号": ["2号.jpg", "2号a.jpg"],
-      "3号": ["3号.jpg", "3号a.jpg", "3号b.jpg", "3号c.jpg", "3号e.jpg", "3号f.jpg", "3号g.jpg"],
+      "1号": ["1号.jpg", "1号b.jpg", "1号c.jpg", "1号d.jpg", "1号a.png", "1号a.jpg", "1号e.jpg", "1号f.jpg", "1号g.jpg", "1号h.jpg", "1号i.jpg", "1号j.jpg", "1号k.jpg", "1号l.jpg"],
+      "2号": ["2号.jpg", "2号a.jpg", "2号a.png", "2号b.jpg", "2号c.jpg", "2号d.jpg", "2号e.jpg", "2号f.jpg", "2号g.jpg", "2号h.jpg", "2号i.jpg", "2号j.jpg", "2号k.jpg", "2号l.jpg"],
+      "3号": ["3号.jpg", "3号a.jpg", "3号b.jpg", "3号c.jpg", "3号e.jpg", "3号f.jpg", "3号g.jpg", "3号a.png", "3号d.jpg", "3号h.jpg", "3号i.jpg", "3号j.jpg", "3号k.jpg", "3号l.jpg", "3号m.jpg"],
       "4号": ["4号.jpg", "4号a.jpg", "4号b.jpg", "4号c.jpg", "4号d.jpg", "4号e.jpg"],
-      "5号": ["5号.jpg", "5号a.jpg", "5号b.jpg", "5号c.jpg", "5号d.jpg", "5号e.jpg"],
-      "6号": ["6号.jpg", "6号cc.jpg", "8号.jpg", "8号a.jpg", "8号b.jpg", "8号c.jpg"],
-      "7号": ["7号.jpg", "7号b.jpg", "7号c.jpg", "7号ccc.jpg", "7号d.jpg", "7号e.jpg", "7号f.jpg"]
+      "5号": ["5号.jpg", "5号a.jpg", "5号b.jpg", "5号c.jpg", "5号d.jpg", "5号e.jpg", "5号a.png", "5号f.jpg", "5号g.jpg", "5号h.jpg", "5号i.jpg", "5号j.jpg", "5号k.jpg", "5号l.jpg", "5号m.jpg", "5号n.jpg", "5号o.jpg", "5号p.jpg"],
+      "6号": ["6号.jpg", "6号cc.jpg", "8号.jpg", "8号a.jpg", "8号b.jpg", "8号c.jpg", "6号a.png", "6号a.jpg", "6号b.jpg", "6号c.jpg", "6号d.jpg", "6号e.jpg", "6号f.jpg", "6号g.jpg", "6号h.jpg", "6号i.jpg", "6号j.jpg", "6号k.jpg", "6号l.jpg", "6号m.jpg"],
+      "7号": ["7号.jpg", "7号b.jpg", "7号c.jpg", "7号ccc.jpg", "7号d.jpg", "7号e.jpg", "7号f.jpg", "7号a.png", "7号a.jpg", "7号g.jpg", "7号h.jpg", "7号i.jpg", "7号j.jpg", "7号k.jpg", "7号l.jpg", "7号m.jpg", "7号n.jpg", "7号o.jpg", "7号p.jpg"],
+      "8号": ["8号a.png", "8号a.jpg", "8号b.jpg", "8号c.jpg", "8号d.jpg", "8号e.jpg", "8号f.jpg", "8号g.jpg", "8号h.jpg", "8号i.jpg", "8号j.jpg", "8号k.jpg", "8号l.jpg", "8号m5.jpg"],
+      "9号": ["9号a.png", "9号a.jpg", "9号ab.jpg", "9号ac.jpg", "9号ad.jpg", "9号ae.jpg", "9号af.jpg", "9号b.jpg", "9号bb.jpg", "9号bc.jpg", "9号bd.jpg", "9号be.jpg", "9号bf.jpg", "9号c.jpg", "9号d.jpg", "9号e.jpg", "9号f.jpg", "9号g.jpg", "9号h.jpg", "9号i.jpg", "9号j.jpg", "9号k.jpg", "9号l.jpg", "9号m.jpg", "9号n.jpg", "9号o.jpg", "9号p.jpg", "9号q.jpg"],
+      "10号": ["10号a.jpg", "10号ab.jpg", "10号ac.jpg", "10号ad.jpg", "10号ae.jpg", "10号af.jpg", "10号b.jpg", "10号bb.jpg", "10号bc.jpg", "10号bd.jpg", "10号be.jpg", "10号c.jpg", "10号d.jpg", "10号e.jpg", "10号f.jpg", "10号g.jpg", "10号h.jpg", "10号i.jpg", "10号j.jpg", "10号k.jpg", "10号l.jpg", "10号m.jpg"]
     };
     
     // 商品描述词库（精心策划的文案）
@@ -490,7 +493,10 @@
       "不追求好看<br>只追求被长期使用",
       "为近距离生活准备<br>适合书页与灯光之间",
       "在存在感与消失之间<br>找到一个刚好的位置",
-      "不是为展示设计<br>而是为陪伴存在"
+      "不是为展示设计<br>而是为陪伴存在",
+      "把克制做到极致<br>让舒适成为习惯",
+      "不需要第二眼确认<br>第一眼就知道对了",
+      "时间会替你选择<br>而它从不出错"
     ];
     
     // 自动生成商品数据
@@ -500,7 +506,7 @@
       const images = productImageMap[id] || [file]; // 获取所有变体图片，如果没有就用主图
       
       // 价格数组：对应 NO.1-7
-      const prices = [258, 249, 219, 219, 489, 249, 358];
+      const prices = [258, 249, 219, 219, 489, 249, 358, 329, 399, 459];
       return {
         id: productId,
         name: `SPLURGE VISION NO.${index + 1}`,
