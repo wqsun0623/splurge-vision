@@ -539,7 +539,7 @@
               <div class="eye-label">🔵 左眼散光</div>
               <div class="form-group">
                 <label class="form-label">散光度数</label>
-                <select class="form-select" onchange="updatePrice()">
+                <select class="form-select" id="leftCyl" onchange="updatePrice()">
                   <option value="0">无散光</option>
                   <option value="50">-0.50（50度）</option>
                   <option value="75">-0.75（75度）</option>
@@ -564,7 +564,7 @@
               <div class="eye-label">🔴 右眼散光</div>
               <div class="form-group">
                 <label class="form-label">散光度数</label>
-                <select class="form-select" onchange="updatePrice()">
+                <select class="form-select" id="rightCyl" onchange="updatePrice()">
                   <option value="0">无散光</option>
                   <option value="50">-0.50（50度）</option>
                   <option value="75">-0.75（75度）</option>
@@ -586,6 +586,13 @@
           </div>
         </div>
         
+        <!-- 车房定制提示（散光≥200度自动显示） -->
+        <div class="info-box" id="cheCarNotice" style="display:none; background:rgba(201,169,168,0.15); border-left:4px solid #C9A9A8; color:#6B7B6D;">
+          <strong>🏭 车房定制模式已激活</strong><br>
+          检测到您的散光度数≥200度，将自动采用<strong>蔡司车房定制</strong>工艺，确保高散光镜片的精准度和舒适度。<br>
+          <span style="font-size:0.85rem;color:#8B9B8D;">车房定制仅支持 1.61 和 1.67 折射率</span>
+        </div>
+
         <!-- 镜片类型（蔡司视特耐） -->
         <div class="form-section">
           <h3 class="section-title">✨ 蔡司视特耐镜片类型</h3>
@@ -675,7 +682,7 @@
         <!-- 价格总结 -->
         <div class="price-summary">
           <div class="price-item">
-            <span>蔡司视特耐镜片（含加工）</span>
+            <span id="lensPriceLabel">蔡司视特耐镜片（含加工）</span>
             <span id="lensPrice">¥150</span>
           </div>
           <div class="price-item">
@@ -763,22 +770,67 @@
       'antiblue':   { '1.56': 210, '1.61': 320, '1.67': 460 }
     };
 
+    // 蔡司车房定制价格表（散光≥200度，× 2）
+    const zeissCustomTable = {
+      'aspherical': { '1.61': 720, '1.67': 1160 },
+      'antiblue':   { '1.61': 760, '1.67': 1200 }
+    };
+
+    // 判断是否需要车房定制（任一眼散光≥200度）
+    function needsCustomGrinding() {
+      const leftCyl = parseInt(document.getElementById('leftCyl').value) || 0;
+      const rightCyl = parseInt(document.getElementById('rightCyl').value) || 0;
+      return leftCyl >= 200 || rightCyl >= 200;
+    }
+
     // 更新价格
     function updatePrice() {
       const lensType = document.querySelector('input[name="lensType"]:checked').value;
       const refractiveIndex = document.querySelector('input[name="refractiveIndex"]:checked').value;
+      const isCustom = needsCustomGrinding();
       
-      const lensPrice = zeissPriceTable[lensType][refractiveIndex];
+      // 显示/隐藏车房定制提示
+      document.getElementById('cheCarNotice').style.display = isCustom ? 'block' : 'none';
+      
+      let lensPrice;
+      if (isCustom) {
+        // 车房定制：仅支持 1.61 / 1.67，如选了 1.56 则自动切到 1.61
+        if (refractiveIndex === '1.56') {
+          const ri161 = document.querySelector('input[name="refractiveIndex"][value="1.61"]');
+          ri161.checked = true;
+          ri161.closest('.lens-option').classList.add('selected');
+          document.querySelector('input[name="refractiveIndex"][value="1.56"]').closest('.lens-option').classList.remove('selected');
+        }
+        const ri = document.querySelector('input[name="refractiveIndex"]:checked').value;
+        lensPrice = zeissCustomTable[lensType][ri];
+        
+        // 更新折射率选项卡显示
+        document.querySelectorAll('.ri-price').forEach(el => {
+          const riVal = el.closest('.lens-option').querySelector('input').value;
+          if (riVal === '1.56') {
+            el.textContent = '不适用';
+            el.style.color = '#bbb';
+          } else {
+            el.textContent = '¥' + zeissCustomTable[lensType][riVal];
+            el.style.color = '#6B7B6D';
+          }
+        });
+      } else {
+        lensPrice = zeissPriceTable[lensType][refractiveIndex];
+        // 更新折射率选项卡显示
+        document.querySelectorAll('.ri-price').forEach(el => {
+          const riVal = el.closest('.lens-option').querySelector('input').value;
+          el.textContent = '¥' + zeissPriceTable[lensType][riVal];
+          el.style.color = '#6B7B6D';
+        });
+      }
+      
       const framePrice = currentFramePrice;
       const total = lensPrice + framePrice;
       
-      // 更新折射率选项卡上的价格显示
-      document.querySelectorAll('.ri-price').forEach(el => {
-        const ri = el.closest('.lens-option').querySelector('input').value;
-        el.textContent = '¥' + zeissPriceTable[lensType][ri];
-      });
-      
+      const labelText = isCustom ? '蔡司车房定制镜片' : '蔡司视特耐镜片（含加工）';
       document.getElementById('lensPrice').textContent = '¥' + lensPrice;
+      document.getElementById('lensPriceLabel').textContent = labelText;
       document.getElementById('totalPrice').textContent = '¥' + total.toLocaleString();
     }
     
