@@ -681,17 +681,9 @@
         
         <!-- 价格总结 -->
         <div class="price-summary">
-          <div class="price-item">
-            <span id="lensPriceLabel">蔡司视特耐镜片（含加工）</span>
-            <span id="lensPrice">¥150</span>
-          </div>
-          <div class="price-item">
-            <span>镜框价格</span>
-            <span id="framePriceDisplay">¥899</span>
-          </div>
           <div class="price-total">
-            <span>总计</span>
-            <span id="totalPrice">¥1,049</span>
+            <span id="lensPriceLabel">蔡司视特耐镜片（含加工）</span>
+            <span id="totalPrice">¥150</span>
           </div>
         </div>
         
@@ -724,16 +716,11 @@
       'sv-product-j': { name: 'SPLURGE VISION NO.10', price: 328 }
     };
     
-    let currentFramePrice = 899;
-    
     if (customProductId && frameData[customProductId]) {
       const product = frameData[customProductId];
-      currentFramePrice = product.price;
       // 更新页面标题和描述
       document.querySelector('.lens-title').textContent = product.name + ' 镜片定制';
       document.querySelector('.lens-subtitle').textContent = '为您的 ' + product.name + ' 定制专属镜片';
-      // 更新镜框价格显示
-      document.getElementById('framePriceDisplay').textContent = '¥' + product.price;
       // 添加返回商品详情链接
       const navDiv = document.querySelector('.header > div');
       const backLink = document.createElement('a');
@@ -825,13 +812,9 @@
         });
       }
       
-      const framePrice = currentFramePrice;
-      const total = lensPrice + framePrice;
-      
       const labelText = isCustom ? '蔡司车房定制镜片' : '蔡司视特耐镜片（含加工）';
-      document.getElementById('lensPrice').textContent = '¥' + lensPrice;
       document.getElementById('lensPriceLabel').textContent = labelText;
-      document.getElementById('totalPrice').textContent = '¥' + total.toLocaleString();
+      document.getElementById('totalPrice').textContent = '¥' + lensPrice.toLocaleString();
     }
     
     // 更新配送信息提示
