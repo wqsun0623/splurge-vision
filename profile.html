@@ -934,6 +934,61 @@
         <!-- 左：头像与积分 -->
         <div class="profile-card user-info">
           <div class="user-avatar">👤</div>
+                    <div class="user-avatar" id="userAvatar" onclick="openAvatarModal()" style="cursor:pointer;">👤<div class="avatar-edit-tip">点击更换头像</div></div>
+          <!-- 头像上传模态框 -->
+          <div id="avatarModal" class="modal" style="display:none;z-index:1002;">
+            <div class="modal-content" style="max-width:400px;text-align:center;">
+              <div class="modal-header">
+                <h2>更换头像</h2>
+                <span class="close" onclick="closeAvatarModal()">&times;</span>
+              </div>
+              <div style="margin:20px 0;">
+                <input type="file" accept="image/*" id="avatarFileInput" style="display:none;" onchange="handleAvatarUpload(event)">
+                <button onclick="document.getElementById('avatarFileInput').click()" class="btn-edit-profile" style="margin-bottom:18px;">从相册选择图片</button>
+                <div id="avatarPreview" style="margin:0 auto;width:120px;height:120px;border-radius:50%;background:#eee;display:flex;align-items:center;justify-content:center;overflow:hidden;font-size:2.5rem;"></div>
+              </div>
+              <button onclick="saveAvatar()" class="btn-edit-profile" style="width:100%;">保存头像</button>
+            </div>
+          </div>
+          <style>
+          .avatar-edit-tip {font-size:0.8rem;color:#8B9B8D;margin-top:4px;}
+          #avatarPreview img {width:100%;height:100%;object-fit:cover;}
+          </style>
+          <script>
+          function openAvatarModal() {
+            document.getElementById('avatarModal').style.display = 'block';
+            // 显示当前头像
+            const user = JSON.parse(localStorage.getItem('splurgeVisionUser')||'{}');
+            const preview = document.getElementById('avatarPreview');
+            preview.innerHTML = user.avatar ? `<img src="${user.avatar}" alt="avatar">` : '👤';
+          }
+          function closeAvatarModal() {
+            document.getElementById('avatarModal').style.display = 'none';
+          }
+          function handleAvatarUpload(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+              document.getElementById('avatarPreview').innerHTML = `<img src="${evt.target.result}" alt="avatar">`;
+              document.getElementById('avatarPreview').dataset.avatar = evt.target.result;
+            };
+            reader.readAsDataURL(file);
+          }
+          function saveAvatar() {
+            const dataUrl = document.getElementById('avatarPreview').dataset.avatar;
+            if (!dataUrl) { alert('请先选择图片'); return; }
+            // 存储到localStorage
+            let user = JSON.parse(localStorage.getItem('splurgeVisionUser')||'{}');
+            user.avatar = dataUrl;
+            localStorage.setItem('splurgeVisionUser', JSON.stringify(user));
+            // 更新页面头像
+            document.getElementById('userAvatar').innerHTML = `<img src="${dataUrl}" alt="avatar" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
+            document.getElementById('userAvatar').appendChild(document.createElement('div')).className = 'avatar-edit-tip';
+            document.getElementById('userAvatar').querySelector('.avatar-edit-tip').textContent = '点击更换头像';
+            closeAvatarModal();
+          }
+          </script>
           <div class="user-name" id="userName">用户名</div>
           <div class="user-phone" id="userPhone">138****8888</div>
           <div class="user-phone" style="margin-top:4px;">🎂 生日：<span id="userBirthday">1990-01-01</span></div>
